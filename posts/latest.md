@@ -1,38 +1,62 @@
-<!-- 이 파일은 posts/2026-10-10.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-10 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-12.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-12 기술 블로그 모음
 
-## [사내 지식으로 Agentic RAG 만들기 (3/3) : 관측 가능한 RAG, 운영되는 도구로](https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-3-3-%EA%B4%80%EC%B8%A1-%EA%B0%80%EB%8A%A5%ED%95%9C-rag-%EC%9A%B4%EC%98%81%EB%90%98%EB%8A%94-%EB%8F%84%EA%B5%AC%EB%A1%9C-dbac813832db)
-- 회사: 여기어때
-- 본문 요약: Langfuse trace로 검색·프롬프트 조립·생성 단계의 입력·출력·토큰·비용을 추적하고, Recall@5·Hit Rate·MRR 검색 지표와 LLM-as-a-judge 정확도 평가를 결합한 이중 평가 파이프라인을 구축했습니다. FastMCP 기반 원격 MCP 서버와 서버 instructions를 다듬어 도구 활용 정확도를 높이고 운영 환경에 제공했습니다.
-- 주목할 point: 검색 오류와 생성 오류를 분리해 관측하고, 모든 변경 전 3회 이상 실험으로 정확도·지연시간·토큰·비용을 비교하는 운영 방식.
-- keyword: #AI #RAG #Langfuse #MCP #FastMCP
+## [Amazon OpenSearch Service 고급 활용 – 자체 빌드 Nori 분석기를 통한 사용자 사전 미세 조정](https://aws.amazon.com/ko/blogs/tech/amazon-opensearch-service-custom-nori-analyzer-user-dictionary-tuning/)
+- 회사: AWS
+- 본문 요약: 상품명 분석을 세밀하게 조정하기 위해 MeCab-Ko와 Lucene Nori 기반의 커스텀 플러그인을 빌드하고, 이를 Amazon OpenSearch Service에 적용해 사용자 사전을 미세 조정하는 과정을 소개합니다.
+- 주목할 point: 관리형 서비스의 기본 Nori 분석기로 부족한 한국어 형태소 분석 품질을 자체 빌드 분석기와 사용자 사전으로 보완하는 실전 접근입니다.
+- keyword: #OpenSearch #Nori #형태소분석 #검색
 
-## [사내 지식으로 Agentic RAG 만들기 (2/3) : 검색을 얹기, LightRAG와 Navigator](https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-2-3-%EA%B2%80%EC%83%89%EC%9D%84-%EC%96%B9%EA%B8%B0-lightrag%EC%99%80-navigator-9f3119060242)
-- 회사: 여기어때
-- 본문 요약: 벡터 검색만으로는 분산된 문서 조각 간 관계와 문서의 계층적 위치를 판별하기 어려워, LightRAG의 Entity·Relation 지식 그래프와 Neo4j 기반 Navigator(Confluence 트리·Jira 계층 보존)를 결합했습니다. 갱신은 삭제·완료 확인·재업로드로 처리하고, 사내 문서용 Entity type·한영 인물 표기 규칙·도메인 few-shot, 헤딩·문단 기반 청킹으로 정확도와 운영 효율을 높였습니다.
-- 주목할 point: 의미 기반 후보 축소 후 계층 탐색으로 문서 위치와 주변 맥락을 확인하는 리트리버 분업, 실패 인덱싱 알림·재처리 자동화.
-- keyword: #AI #RAG #LightRAG #Neo4j #GraphRAG
+## [CJ온스타일, ‘AI 쓰는 회사’가 아니라 ‘AI와 일하는 회사’가 되기까지](https://medium.com/cj-onstyle/cj%EC%98%A8%EC%8A%A4%ED%83%80%EC%9D%BC-ai-%EC%93%B0%EB%8A%94-%ED%9A%8C%EC%82%AC%EA%B0%80-%EC%95%84%EB%8B%88%EB%9D%BC-ai%EC%99%80-%EC%9D%BC%ED%95%98%EB%8A%94-%ED%9A%8C%EC%82%AC-%EA%B0%80-%EB%90%98%EA%B8%B0%EA%B9%8C%EC%A7%80-30e198a5f0ec)
+- 회사: CJ온스타일
+- 본문 요약: 현업 구성원이 AI로 직접 업무 문제를 구현할 수 있도록 교육·코칭·공유 체계를 구축한 과정을 소개합니다.
+- 주목할 point: AI 도구 도입 자체보다 현업이 직접 문제를 풀도록 만드는 조직 차원의 학습·공유 구조에 초점을 둡니다.
+- keyword: #AI #조직문화 #AI교육 #업무자동화
 
-## [쉐도잉 검증 개선기](https://techblog.gccompany.co.kr/%EC%89%90%EB%8F%84%EC%9E%89-%EA%B2%80%EC%A6%9D-%EA%B0%9C%EC%84%A0%EA%B8%B0-cef1ddc8318d)
-- 회사: 여기어때
-- 본문 요약: 레거시 MongoDB 기반 응답을 원천 API 직접 호출로 전환하며 가격·재고 응답 동등성을 검증하기 위해, 비동기 실행·샘플링·키 기반 비교·MATCH/DIFF/ERROR 보고를 공통 ShadowRunner 라이브러리로 통합했습니다. 실제 URI·쿼리·선별 헤더를 기록해 불일치 요청을 재현하고, Prometheus 메트릭과 Loki 로그를 Grafana 대시보드로 연결했습니다.
-- 주목할 point: 메트릭 라벨 카디널리티 방지(필드 경로 정규화·상한·overflow 집계), 리포터 실패가 사용자 응답에 영향 없는 구조, 비교 불가 요청은 일치율 분모에서 제외하고 ERROR는 별도 관찰.
-- keyword: #백엔드 #쉐도잉 #Grafana #Prometheus #Loki
+## [AI 번역의 시대2: 오착(誤錯)](https://meetup.nhncloud.com/posts/425)
+- 회사: NHN
+- 본문 요약: AI 번역의 오착 사례와 환각 연구를 바탕으로, 다음 토큰 예측 방식의 생성 구조(토큰화, 자기회귀 오류 누적, 컨텍스트 희석, RLHF 튜닝)가 갖는 한계를 설명합니다.
+- 주목할 point: 매끄러운 번역문이 원문 충실성을 보장하지 않으므로, 의미 일치 검증 계층과 확신 신호가 없는 결과는 반드시 검토해야 한다고 강조합니다.
+- keyword: #AI번역 #환각 #LLM #번역품질
 
-## [시킬 때마다 다른 결과를 내는 AI에게 도구를 쥐여 주었습니다 — AI가 쓰는 ERD 도구 제작기](https://techblog.gccompany.co.kr/%EC%8B%9C%ED%82%AC-%EB%95%8C%EB%A7%88%EB%8B%A4-%EB%8B%A4%EB%A5%B8-%EA%B2%B0%EA%B3%BC%EB%A5%BC-%EB%82%B4%EB%8A%94-ai%EC%97%90%EA%B2%8C-%EB%8F%84%EA%B5%AC%EB%A5%BC-%EC%A5%90%EC%97%AC-%EC%A3%BC%EC%97%88%EC%8A%B5%EB%8B%88%EB%8B%A4-ai%EA%B0%80-%EC%93%B0%EB%8A%94-erd-%EB%8F%84%EA%B5%AC-%EC%A0%9C%EC%9E%91%EA%B8%B0-f97eefa26354)
-- 회사: 여기어때
-- 본문 요약: 비결정적인 AI가 Mermaid·HTML로 ERD를 만들 때의 배치 불안정 문제를 해결하기 위해, AI는 테이블·관계 설계를, MCP 기반 도구는 영문명·타입·배치 결정을 맡도록 역할을 분리했습니다. 13개 MCP 도구(조회·수정·정렬·내보내기·되돌리기)로 자동 정렬, 직각 관계선, 용어사전·도메인 규칙 기반의 결정적 렌더링을 구현했습니다.
-- 주목할 point: 도구 설명에 사용·미사용 조건과 재질문·거절 기준을 명시하고 변경 전후 값을 응답에 포함해, Haiku·Sonnet·Opus 반복 측정으로 실패 호출을 61회에서 3회로 줄임.
-- keyword: #AI #MCP #ERD #도구설계
+## [요즘 디자이너는 AI를 어떻게 쓸까? 디자이너의 실무 활용법](https://on.com2us.com/tech/designer-ai-workflow/)
+- 회사: 게임빌컴투스플랫폼
+- 본문 요약: 이미지 생성에서 시작한 AI 활용이 레퍼런스 탐색, 시안 확인, Photoshop 리소스 제작, 일본어 텍스트 조합, 웹 페이지 구조 고민, 반복 업무용 소형 프로그램 제작까지 넓어진 과정을 작업별로 정리했습니다.
+- 주목할 point: 하나의 서비스에 의존하지 않고 작업 목적에 맞는 AI 도구를 그때그때 골라 쓰는 실무 방식을 보여줍니다.
+- keyword: #AI디자인 #생성형AI #디자인실무
 
-## [새로운 팀에 기여하기, 그리고 기여의 확장 (feat. 전시개발팀 옵저버빌리티 향상 시키기)](https://techblog.gccompany.co.kr/%EC%83%88%EB%A1%9C%EC%9A%B4-%ED%8C%80%EC%97%90-%EA%B8%B0%EC%97%AC%ED%95%98%EA%B8%B0-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EA%B8%B0%EC%97%AC%EC%9D%98-%ED%99%95%EC%9E%A5-feat-%EC%A0%84%EC%8B%9C%EA%B0%9C%EB%B0%9C%ED%8C%80-%EC%98%B5%EC%A0%80%EB%B2%84%EB%B9%8C%EB%A6%AC%ED%8B%B0-%ED%96%A5%EC%83%81-%EC%8B%9C%ED%82%A4%EA%B8%B0-c39614694661)
-- 회사: 여기어때
-- 본문 요약: 게이트웨이 이후 대량 트래픽을 처리하는 전시 서비스의 장애 대응 흐름에 맞춰 OpenTelemetry·Grafana 기반으로 Metrics·Traces·Logs를 연계한 관측 가능성 대시보드를 구축했습니다. 기존 파이프라인을 활용하고 AI 에이전트로 반복 작업을 줄이며 팀 단위 개선으로 확장했습니다.
-- 주목할 point: 기존 Pinpoint 중심 환경에서 요청·성공·실패·TPS, Incoming/Outgoing, 레이턴시·에러별 지표로 문제 요점을 직관적으로 확인하게 한 점.
-- keyword: #데브옵스 #OpenTelemetry #Grafana #옵저버빌리티
+## [if(kakao)26, 온라인 라이브로 함께해요!](https://tech.kakao.com/posts/839)
+- 회사: 카카오
+- 본문 요약: 10월 13일과 14일 카카오 AI 캠퍼스에서 열리는 if(kakao)26의 키노트를 포함한 모든 발표 세션을 온라인 라이브로 제공한다는 안내입니다. 주제는 AI 시대의 개발자, 신뢰와 안전, AI 방향성, 상생과 성장, Model & Agent 등입니다.
+- 주목할 point: 현장 참석이 어려워도 누구나 모든 세션을 라이브로 시청할 수 있습니다.
+- keyword: #ifkakao #카카오 #컨퍼런스 #AI
 
-## [AI 시대 당신의 팀은 안녕하신가요](https://techblog.gccompany.co.kr/ai-%EC%8B%9C%EB%8C%80-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%8C%80-%EC%A1%B0%EC%A7%81%EC%9D%80-%EC%95%88%EB%85%95%ED%95%98%EC%8B%A0%EA%B0%80%EC%9A%94-c59f982d5add)
-- 회사: 여기어때
-- 본문 요약: AI 생성 코드가 늘면서 결과물만으로는 의도·전제·선택 근거를 알기 어렵다는 문제를 짚고, 스킬·서브에이전트·가이드·히스토리를 공유 저장소에 모은 AI 워크스페이스를 소개했습니다. 작업 중 판단을 즉시 히스토리에 잠정 기록하고 팀 리뷰를 거쳐 검증된 내용만 가이드로 승격합니다.
-- 주목할 point: 기계 검증과 사람 중심의 맥락 리뷰를 분리해 인지 부채·의도 부채를 줄이고 AI 협업의 주도권을 유지하려는 접근.
-- keyword: #AI #팀협업 #에이전트 #코드리뷰
+## [PM이 마음 놓고 커밋하는 리포지토리는 어떻게 만들까?](https://blog.3o3.co.kr/tech-pm-dev-one-repo/)
+- 회사: 삼쩜삼
+- 본문 요약: PM이 페르소나와 프롬프트를 직접 수정·커밋할 수 있는 가상 유저 패널 리포지토리 구조를 소개합니다. 페르소나 캐논 JSON과 프롬프트를 서비스 코드와 분리하고, 모노레포의 레이어 구조를 ESLint 경계 규칙, 테스트·CI, LLM-as-a-Judge 검증으로 보호합니다.
+- 주목할 point: 자동 검사는 규칙 준수를, 개발자 리뷰는 규칙 변경의 적절성과 실제 동작 검증을 맡도록 책임을 분리했습니다.
+- keyword: #PM #LLM #모노레포 #CI #LLM-as-a-Judge
+
+## [CPU 뼛속까지 써먹고, Milvus 사이징 기준을 만들기까지](https://toss.tech/article/milvus-optimization-and-sizing)
+- 회사: 토스
+- 본문 요약: 온프레미스 Milvus 환경에서 LAION-100M 기반으로 recall@10 0.95 이상 조건의 인덱스(HNSW, DISKANN, IVF_SQ8, HNSW_SQ8)를 비교해 HNSW_SQ8을 선택하고, QueryNode의 CPU와 인덱스 메모리를 단일 NUMA 노드에 배치해 검색 품질은 유지한 채 QPS를 41% 높였습니다.
+- 주목할 point: 검색 조건과 자원 측정값을 연결해 서버 사이징 기준까지 만든 점이 실무에 바로 참고할 만합니다.
+- keyword: #Milvus #벡터검색 #NUMA #HNSW #사이징
+
+## [Figma, 더 가볍게.](https://tech.buzzvil.com/blog/figma-downgrade)
+- 회사: 버즈빌
+- 본문 요약: LLM과 코드 리뷰 중심으로 디자인 핸드오프를 draft PR 기반 저장소 흐름으로 전환하고, Figma 구독을 Organization에서 Professional로 조정해 연간 비용을 약 77% 절감할 것으로 예상합니다.
+- 주목할 point: Figma를 자유 탐색 도구로 재정의하고 디자인 시스템 관리를 코드로 옮겼으며, Figma 파일 67개→35개, Dev 시트 23개→4개로 줄었습니다.
+- keyword: #Figma #디자인핸드오프 #LLM #비용절감
+
+## [AI와 배포 점검 같이 하기](https://www.nextree.io/aiwa-baepo-jeomgeom-gati-hagi/)
+- 회사: 넥스트리
+- 본문 요약: 개발·스테이지·운영 환경과 GitOps 저장소에서 반복되는 배포 전후 점검을 Claude Code 스킬과 Desktop 스케줄 작업으로 자동화한 과정을 소개하며, 검사·판단·강제를 분리해 플러그인 구조로 개선했습니다.
+- 주목할 point: DB 반영, 라이브러리 버전 정합, 미커밋·미푸시, 운영 설정 이관 누락 같은 사고 위험을 AI와 함께 반복 점검하는 접근입니다.
+- keyword: #ClaudeCode #GitOps #배포자동화
+
+## [끊기는 선육 간 네트워크에서 데이터 신뢰성 지키기](https://www.nextree.io/ggeunhgineun-seonyug-gan-neteuweokeueseo-deiteo-sinroeseong-jikigi/)
+- 회사: 넥스트리
+- 본문 요약: 선박-육상 데이터 누락을 구간별로 추적하고 선상 복구·재전송·수신 검증까지 연결했으며, 센서 이상 탐지로 데이터 값의 유효성도 함께 관리합니다.
+- 주목할 point: 1분 주기 집계 데이터의 존재 여부뿐 아니라 육상 도달과 값의 유효성까지 보는 데이터 신뢰성 설계입니다.
+- keyword: #Kafka #EMQX #데이터신뢰성 #IoT
