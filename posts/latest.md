@@ -1,62 +1,74 @@
-<!-- 이 파일은 posts/2026-10-12.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-12 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-13.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-13 기술 블로그 모음
 
-## [Amazon OpenSearch Service 고급 활용 – 자체 빌드 Nori 분석기를 통한 사용자 사전 미세 조정](https://aws.amazon.com/ko/blogs/tech/amazon-opensearch-service-custom-nori-analyzer-user-dictionary-tuning/)
-- 회사: AWS
-- 본문 요약: 상품명 분석을 세밀하게 조정하기 위해 MeCab-Ko와 Lucene Nori 기반의 커스텀 플러그인을 빌드하고, 이를 Amazon OpenSearch Service에 적용해 사용자 사전을 미세 조정하는 과정을 소개합니다.
-- 주목할 point: 관리형 서비스의 기본 Nori 분석기로 부족한 한국어 형태소 분석 품질을 자체 빌드 분석기와 사용자 사전으로 보완하는 실전 접근입니다.
-- keyword: #OpenSearch #Nori #형태소분석 #검색
+## [코딩 에이전트가 Spring을 못 짠다면, component scan부터 걷어내 보세요](https://flex.team/blog/2026/10/13/backend46)
+- 회사: flex
+- 본문 요약: 라이브러리 버전 업그레이드 후 컨트롤러 테스트에서 반복된 BeanDefinitionOverrideException을 분석했습니다. 원인은 @SpringBootApplication의 하위 패키지 component scan에 테스트용 @Configuration이 포함되어 다른 테스트 컨텍스트로 유입된 것이었습니다. component scan 대신 @AutoConfiguration, @Import, AutoConfiguration.imports 기반 명시 등록과 @TestConfiguration 전환, @ConfigurationProperties 활용으로 해결했습니다.
+- 주목할 point: 파일 위치에 따라 빈 등록 범위가 달라지는 암묵적 구조는 코딩 에이전트가 추적하기 어렵기 때문에, 명시 등록으로 바꿔 작업의 예측 가능성을 높였습니다. 다만 @Import 누락 시 404·미등록 빈이 생길 수 있어 실제 컨텍스트 검증과 테스트 diff 검토(테스트 비활성화·skip 여부)가 필요합니다.
+- keyword: #SpringBoot #Kotlin #ComponentScan #코딩에이전트
 
-## [CJ온스타일, ‘AI 쓰는 회사’가 아니라 ‘AI와 일하는 회사’가 되기까지](https://medium.com/cj-onstyle/cj%EC%98%A8%EC%8A%A4%ED%83%80%EC%9D%BC-ai-%EC%93%B0%EB%8A%94-%ED%9A%8C%EC%82%AC%EA%B0%80-%EC%95%84%EB%8B%88%EB%9D%BC-ai%EC%99%80-%EC%9D%BC%ED%95%98%EB%8A%94-%ED%9A%8C%EC%82%AC-%EA%B0%80-%EB%90%98%EA%B8%B0%EA%B9%8C%EC%A7%80-30e198a5f0ec)
-- 회사: CJ온스타일
-- 본문 요약: 현업 구성원이 AI로 직접 업무 문제를 구현할 수 있도록 교육·코칭·공유 체계를 구축한 과정을 소개합니다.
-- 주목할 point: AI 도구 도입 자체보다 현업이 직접 문제를 풀도록 만드는 조직 차원의 학습·공유 구조에 초점을 둡니다.
-- keyword: #AI #조직문화 #AI교육 #업무자동화
+## [우리 아이가 달라졌어요: 텍스트에 워터마크를 어떻게 넣을까](http://devocean.sk.com/blog/techBoardDetail.do?id=168550&boardType=techBlog&isShared=Y)
+- 회사: 데보션
+- 본문 요약: LLM 텍스트 워터마크가 문맥과 비밀키로 다음 토큰 샘플링에 통계적 패턴을 남기고 같은 키로 검출하는 원리를 설명하고, KGW(Green 토큰 logit 보너스), SynthID-Text(후보 토너먼트 점수), textGrain(블록·최적수송 기반 샘플링) 방식을 비교했습니다. 신호 강화와 원래 토큰 분포·응답 다양성 사이의 트레이드오프, 짧거나 편집된 텍스트에서 약해지는 검출력을 짚었습니다.
+- 주목할 point: PRD 에이전트에 워터마크를 적용한 뒤 단어 선택이 어색해 PM이 이탈한 사례처럼, 검출력뿐 아니라 요구사항의 강도·책임·기간 같은 의미 보존과 실제 수정 부담을 함께 평가해야 합니다. 어색한 표현, 용어 일관성, 수정 시간, PM 선호도, 응답 다양성을 분리 측정하는 기준이 제안됩니다.
+- keyword: #LLM #텍스트워터마크 #SynthID #PRD에이전트
 
-## [AI 번역의 시대2: 오착(誤錯)](https://meetup.nhncloud.com/posts/425)
-- 회사: NHN
-- 본문 요약: AI 번역의 오착 사례와 환각 연구를 바탕으로, 다음 토큰 예측 방식의 생성 구조(토큰화, 자기회귀 오류 누적, 컨텍스트 희석, RLHF 튜닝)가 갖는 한계를 설명합니다.
-- 주목할 point: 매끄러운 번역문이 원문 충실성을 보장하지 않으므로, 의미 일치 검증 계층과 확신 신호가 없는 결과는 반드시 검토해야 한다고 강조합니다.
-- keyword: #AI번역 #환각 #LLM #번역품질
-
-## [요즘 디자이너는 AI를 어떻게 쓸까? 디자이너의 실무 활용법](https://on.com2us.com/tech/designer-ai-workflow/)
+## [여러 번의 연산으로 필요한 지표 만들기](https://on.com2us.com/tech/chart-secondary-operation-analysis/)
 - 회사: 게임빌컴투스플랫폼
-- 본문 요약: 이미지 생성에서 시작한 AI 활용이 레퍼런스 탐색, 시안 확인, Photoshop 리소스 제작, 일본어 텍스트 조합, 웹 페이지 구조 고민, 반복 업무용 소형 프로그램 제작까지 넓어진 과정을 작업별로 정리했습니다.
-- 주목할 point: 하나의 서비스에 의존하지 않고 작업 목적에 맞는 AI 도구를 그때그때 골라 쓰는 실무 방식을 보여줍니다.
-- keyword: #AI디자인 #생성형AI #디자인실무
+- 본문 요약: Hive 애널리틱스 차트에서 이벤트·속성에 1차 연산으로 측정값을 만들고, 2차 연산으로 일정 간격별 결과의 최대·최소·평균·최신 값을 다시 계산하는 방법을 소개합니다. 예를 들어 2분마다 접속자를 COUNT DISTINCT로 구한 뒤 MAX를 적용하면 하루 최대 동시 접속자 수를 얻을 수 있습니다.
+- 주목할 point: 월간 일평균 AU, 오늘의 최대 동시 접속자 수처럼 한 번의 집계로 얻기 어려운 지표를 별도 쿼리 없이 차트 설정만으로 구성할 수 있습니다.
+- keyword: #애널리틱스 #연산 #차트 #하이브
 
-## [if(kakao)26, 온라인 라이브로 함께해요!](https://tech.kakao.com/posts/839)
-- 회사: 카카오
-- 본문 요약: 10월 13일과 14일 카카오 AI 캠퍼스에서 열리는 if(kakao)26의 키노트를 포함한 모든 발표 세션을 온라인 라이브로 제공한다는 안내입니다. 주제는 AI 시대의 개발자, 신뢰와 안전, AI 방향성, 상생과 성장, Model & Agent 등입니다.
-- 주목할 point: 현장 참석이 어려워도 누구나 모든 세션을 라이브로 시청할 수 있습니다.
-- keyword: #ifkakao #카카오 #컨퍼런스 #AI
+## [차원값을 원하는 기준으로 묶어 비교하기](https://on.com2us.com/tech/chart-dimension-bucket-analysis/)
+- 회사: 게임빌컴투스플랫폼
+- 본문 요약: Hive 애널리틱스 차트의 구간 설정으로 국가 코드 같은 문자형 값은 그룹으로, 가격·레벨 같은 숫자형 값은 직접 입력하거나 등간격 구간으로 나눠 새로운 차원값처럼 비교하는 방법을 설명합니다. 설정하지 않은 나머지 값도 하나의 이름으로 묶어 볼 수 있습니다.
+- 주목할 point: 원본 로그를 바꾸지 않고 화면에서 분류 기준을 바꿔 가며 볼 수 있어, 별도 쿼리나 가공 데이터를 반복해 만들지 않고 분석 준비 시간을 줄일 수 있습니다.
+- keyword: #애널리틱스 #구간설정 #차원 #하이브
 
-## [PM이 마음 놓고 커밋하는 리포지토리는 어떻게 만들까?](https://blog.3o3.co.kr/tech-pm-dev-one-repo/)
-- 회사: 삼쩜삼
-- 본문 요약: PM이 페르소나와 프롬프트를 직접 수정·커밋할 수 있는 가상 유저 패널 리포지토리 구조를 소개합니다. 페르소나 캐논 JSON과 프롬프트를 서비스 코드와 분리하고, 모노레포의 레이어 구조를 ESLint 경계 규칙, 테스트·CI, LLM-as-a-Judge 검증으로 보호합니다.
-- 주목할 point: 자동 검사는 규칙 준수를, 개발자 리뷰는 규칙 변경의 적절성과 실제 동작 검증을 맡도록 책임을 분리했습니다.
-- keyword: #PM #LLM #모노레포 #CI #LLM-as-a-Judge
-
-## [CPU 뼛속까지 써먹고, Milvus 사이징 기준을 만들기까지](https://toss.tech/article/milvus-optimization-and-sizing)
+## [디자이너의 아이디어가 금융상품이 되기까지](https://toss.tech/article/rpg-savings)
 - 회사: 토스
-- 본문 요약: 온프레미스 Milvus 환경에서 LAION-100M 기반으로 recall@10 0.95 이상 조건의 인덱스(HNSW, DISKANN, IVF_SQ8, HNSW_SQ8)를 비교해 HNSW_SQ8을 선택하고, QueryNode의 CPU와 인덱스 메모리를 단일 NUMA 노드에 배치해 검색 품질은 유지한 채 QPS를 41% 높였습니다.
-- 주목할 point: 검색 조건과 자원 측정값을 연결해 서버 사이징 기준까지 만든 점이 실무에 바로 참고할 만합니다.
-- keyword: #Milvus #벡터검색 #NUMA #HNSW #사이징
+- 본문 요약: 자동이체 후 앱을 다시 열 이유가 적었던 기존 ‘키워봐요 적금’의 한계를 넘기 위해, 저금과 캐릭터 성장을 연결한 ‘키우기’ 콘셉트를 재정립했습니다. 일일 스토리와 선택·능력치 기반 멀티엔딩을 갖춘 31일 적금(매일 5,000원 저금 시 연 10% 보상)으로 구체화한 과정을 소개합니다.
+- 주목할 point: 사용자 테스트로 예적금 경험이 적은 사용자의 소액 저축 수요를 확인했고, PO와 비용 구조를, DA와 데이터 분석을 협의하며 입문형 상품의 가치를 도출했습니다. 방치된 제품의 재방문 단계와 이탈 지점을 점검하는 데 참고할 만합니다.
+- keyword: #UI/UX #사용자테스트 #금융상품 #협업
 
-## [Figma, 더 가볍게.](https://tech.buzzvil.com/blog/figma-downgrade)
-- 회사: 버즈빌
-- 본문 요약: LLM과 코드 리뷰 중심으로 디자인 핸드오프를 draft PR 기반 저장소 흐름으로 전환하고, Figma 구독을 Organization에서 Professional로 조정해 연간 비용을 약 77% 절감할 것으로 예상합니다.
-- 주목할 point: Figma를 자유 탐색 도구로 재정의하고 디자인 시스템 관리를 코드로 옮겼으며, Figma 파일 67개→35개, Dev 시트 23개→4개로 줄었습니다.
-- keyword: #Figma #디자인핸드오프 #LLM #비용절감
+## [서비스 개발에 집중할 수 있는 AI 플랫폼 만들기](https://toss.tech/article/ai-platform-foundation)
+- 회사: 토스
+- 본문 요약: GenAI Portal의 모델 사용 신청·프로젝트 설정과 GenAI Gateway의 실제 모델 호출, MCP Gateway의 사내 도구 실행 권한 검증을 연결한 토스 AI 플랫폼 구조를 소개합니다. 프로젝트 단위로 모델 권한·예산·사용량·변경 이력을 통합 관리하고 개인정보·프롬프트 공격 가드레일과 Langfuse 트레이스를 연계했습니다.
+- 주목할 point: 누적 예산과 TPM 한도를 분리하고, 진행 중 요청의 예상 출력 토큰을 예약했다가 완료 후 보정하며, 약정 용량(PTU) 우선 라우팅 후 부족 시 PAYG로 전환하는 운영 방식이 눈에 띕니다. 호출 형식 통일과 별개로 모델별 도구 호출·구조화 출력 지원 여부는 따로 확인해야 합니다.
+- keyword: #AI플랫폼 #LLMGateway #MCP #토스
 
-## [AI와 배포 점검 같이 하기](https://www.nextree.io/aiwa-baepo-jeomgeom-gati-hagi/)
+## [[데이터주권 시리즈] 주권 확보를 위한 다섯 가지 요건](https://library.gabia.com/contents/infrahosting/15814/)
+- 회사: 가비아
+- 본문 요약: 데이터 주권을 법인 지배 구조, 운영 접근 권한, 암호화 키, 공급망, 네트워크 경로의 다섯 요건으로 나눠 판정하는 틀을 정리했습니다. CSF는 사업자 비교용 평가 틀, SecNumCloud는 준수 조항을 둔 국가 자격으로 구분하고, 소재지만 역내이고 실질 통제권은 역외에 있는 상태를 CSF의 SEAL-1 사례로 제시합니다.
+- 주목할 point: 소재지와 인증만으로는 부족하며, 역외 법 집행 명령이 법인·운영 인력·사업자 보관 키를 통해 데이터에 닿는 위험과 하위 수탁자·펌웨어 업데이트·데이터 이동 경로까지 계약·접근권·키 통제권과 함께 점검해야 합니다.
+- keyword: #데이터주권 #cloud #클라우드보안 #SecNumCloud
+
+## [Naver Cloud에서 IaC 기반 Managed Platform 구축하기](https://www.nextree.io/naver-cloudeseo-iac-giban-managed-platform-gucughagi/)
 - 회사: 넥스트리
-- 본문 요약: 개발·스테이지·운영 환경과 GitOps 저장소에서 반복되는 배포 전후 점검을 Claude Code 스킬과 Desktop 스케줄 작업으로 자동화한 과정을 소개하며, 검사·판단·강제를 분리해 플러그인 구조로 개선했습니다.
-- 주목할 point: DB 반영, 라이브러리 버전 정합, 미커밋·미푸시, 운영 설정 이관 누락 같은 사고 위험을 AI와 함께 반복 점검하는 접근입니다.
-- keyword: #ClaudeCode #GitOps #배포자동화
+- 본문 요약: VM 기반 Kubernetes·PostgreSQL 직접 운영의 패치·장애 대응·백업·복구 부담을 줄이기 위해 Naver Cloud의 Managed NKS와 Cloud DB for PostgreSQL 중심의 IaC 운영 플랫폼을 구축한 경험을 정리했습니다. Terraform stack으로 네트워크·보안·NKS·DB 등을 분리 관리하고, Ansible로 VM 내부 구성을, GitOps로 애플리케이션 desired state를 관리합니다.
+- 주목할 point: 도구별 책임을 분리하고 recovery stack 기반 ‘new DB + cutover’ 복구 흐름으로 복구 리허설과 검증 원칙을 세운 점이 핵심입니다.
+- keyword: #Terraform #Ansible #GitOps #NaverCloud
 
-## [끊기는 선육 간 네트워크에서 데이터 신뢰성 지키기](https://www.nextree.io/ggeunhgineun-seonyug-gan-neteuweokeueseo-deiteo-sinroeseong-jikigi/)
+## [MongoDB 클러스터 연결 장애와 설정 개선](https://www.nextree.io/mongodb-keulreoseuteo-yeongyeol-jangaewa-seoljeong-gaeseon/)
 - 회사: 넥스트리
-- 본문 요약: 선박-육상 데이터 누락을 구간별로 추적하고 선상 복구·재전송·수신 검증까지 연결했으며, 센서 이상 탐지로 데이터 값의 유효성도 함께 관리합니다.
-- 주목할 point: 1분 주기 집계 데이터의 존재 여부뿐 아니라 육상 도달과 값의 유효성까지 보는 데이터 신뢰성 설계입니다.
-- keyword: #Kafka #EMQX #데이터신뢰성 #IoT
+- 본문 요약: AWS EKS 배포와 MongoDB Atlas 버전 업그레이드가 겹치며 신규 WAS의 최초 연결이 지연되고, 초기화 대기 중 Kubernetes Health Check와 배포가 진행되어 기존 인스턴스가 종료되는 장애를 분석했습니다. Primary 전환 시 토폴로지 확인·서버 선택 지연과 기본 Timeout 의존이 원인이었고, JVM DNS 캐시 TTL 5초, connectTimeout 3초·readTimeout 5초·serverSelectionTimeout 5초 명시, WriteConcern.MAJORITY와 primaryPreferred 읽기 정책으로 대응했습니다.
+- 주목할 point: Timeout 값은 환경별 기동 허용 시간과 쿼리 특성에 맞춰 조정해야 하고, primaryPreferred는 Secondary 조회에 따른 일관성 요구사항 검토가 필요하며, 재발이 없다는 것만으로 설정 효과를 단정할 수 없습니다.
+- keyword: #MongoDB #EKS #Timeout #장애분석
+
+## [Forge 앱 하나가 Rovo 에이전트가 되고, MCP 도구가 되기까지](https://tech.osci.kr/forge-app-rovo-agent-mcp-tool/)
+- 회사: 오픈소스컨설팅
+- 본문 요약: Confluence 문서의 적절한 폴더 위치를 추천·이동하는 Forge 앱을 Rovo 에이전트와 MCP 도구로 확장한 과정을 소개합니다. Forge 앱이 CQL로 스페이스 계층을 조회해 추천 위치와 사유를 제공하고, get-space-tree-action과 move-page-action을 UI·rovo:agent·rovo:mcp에서 재사용하며 Rovo Studio에서 팀별 지시문과 도구 조합을 구성합니다.
+- 주목할 point: 권한·확인 절차에 유의해야 하며, rovo:mcp는 미리보기 상태이고 Atlassian 외부 MCP 호출은 지원되지 않으며 로그 내 인증 토큰 마스킹이 필요합니다.
+- keyword: #Forge #Rovo #MCP #Confluence
+
+## [“고객의 목소리를 서비스 개선으로 잇는 사람들, 고객만족 CX팀”](https://medium.com/miridih/%EA%B3%A0%EA%B0%9D%EC%9D%98-%EB%AA%A9%EC%86%8C%EB%A6%AC%EB%A5%BC-%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B0%9C%EC%84%A0%EC%9C%BC%EB%A1%9C-%EC%9E%87%EB%8A%94-%EC%82%AC%EB%9E%8C%EB%93%A4-%EA%B3%A0%EA%B0%9D%EB%A7%8C%EC%A1%B1-cx%ED%8C%80-82ae42e8a6c8)
+- 회사: 미리디
+- 본문 요약: 고객 문의를 해결하는 데 그치지 않고 반복 문의·클레임 원인을 분석해 안내 문구·서비스 흐름·내부 프로세스 개선으로 연결하는 CX팀을 소개합니다. 디자인·파일 변환·인쇄·배송 단계별 복합 원인이 생기는 PoD 인쇄 커머스 특성을 이해한 서비스 운영자 역할을 강조합니다.
+- 주목할 point: 약 두 달간 이론 교육, 선배 상담 관찰, 단순 문의 실습, 클레임·품질 이슈 판단으로 이어지는 온보딩과 AI 상담·자동화 프로세스 병행 운영이 특징입니다.
+- keyword: #CX #고객만족 #PoD #온보딩
+
+## [[웨비나 후기] AI 시대, 데이터센터 운영의 기준을 높이다](https://tech.ktcloud.com/entry/2026-10-ktcloud-webinar-review)
+- 회사: KT 클라우드
+- 본문 요약: 운영자가 바이브 코딩으로 현장 분석·예측 도구를 직접 개발하는 AI 기반 AIDC Ops Studio 사례를 소개합니다. BIM과 운영 데이터를 연결해 간섭 검토, LiDAR 3D 스캐닝 기반 시공 검증, AR 기반 사전 현장 검토를 수행하고 Digital Twin 확장 전략을 제시합니다.
+- 주목할 point: FastAPI·Next.js·Google Gemini 계열 모델을 활용하되 민감 데이터는 망 분리하고 API 키를 중앙 관리하는 구성이 언급됩니다.
+- keyword: #AIDC #DigitalTwin #BIM #웨비나
