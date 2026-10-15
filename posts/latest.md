@@ -1,86 +1,62 @@
-<!-- 이 파일은 posts/2026-10-14.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-14 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-15.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-15 기술 블로그 모음
 
-## [에이아이트릭스의 일하는 방식, 어떻게 달라졌을까요?](https://medium.com/aitrics/%EC%97%90%EC%9D%B4%EC%95%84%EC%9D%B4%ED%8A%B8%EB%A6%AD%EC%8A%A4%EC%9D%98-%EC%9D%BC%ED%95%98%EB%8A%94-%EB%B0%A9%EC%8B%9D-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%8B%AC%EB%9D%BC%EC%A1%8C%EC%9D%84%EA%B9%8C%EC%9A%94-fa64466198cb)
-- 회사: AITRICS
-- 본문 요약: 조직 성장에 맞춰 월 단위 선택적 근로시간제(오전 11시~오후 4시 Core Time)와 2시간 단위 반반차를 도입하고, 월 1회 리더·팀원 1 on 1으로 업무 우선순위와 어려움을 정기적으로 나누는 제도를 소개합니다.
-- 주목할 point: 근무시간의 정확한 기록·관리와 승인된 야간·휴일근로에 대한 보상휴가 적용이 필요하며, 1 on 1은 실시 여부만 공유하고 대화 내용은 별도로 기록·수집하지 않습니다.
-- keyword: #조직문화 #선택적근로시간제 #반반차 #1on1
+## [ParallelCluster 잘 쓰고 있는데, 왜 AWS PCS인가(1부) — 관리형 Slurm의 가치와 비용 구조](https://aws.amazon.com/ko/blogs/tech/pcs-1/)
+- 회사: AWS
+- 본문 요약: AWS PCS는 Slurm 컨트롤러 운영(패치·장애 복구·in-place 업그레이드)을 AWS에 맡겨 HPC 클러스터 운영 부담을 줄이는 관리형 서비스입니다. 컨트롤러·큐·accounting DB는 AWS 관리 VPC에, 컴퓨트 노드·AMI·스토리지·네트워크는 고객 VPC에 두며 월 99.9% SLA를 제공합니다. 대신 EC2·스토리지 외에 컨트롤러·노드 관리·선택형 Slurm Accounting 요금이 추가됩니다.
+- 주목할 point: 추가 관리 요금은 가동률, 커스터마이징 요구, 중단 손실까지 포함한 TCO로 판단해야 합니다. 상시 가동 환경은 노드 관리비, 저가동 환경은 컨트롤러 고정비 비중이 커지며, 비용 민감도와 세밀한 커스터마이징 요구가 크면 ParallelCluster가 여전히 선택지가 될 수 있습니다.
+- keyword: #AWS #PCS #Slurm #HPC #ParallelCluster
 
-## [에이아이트릭스만의 공간이 만들어지기까지, 삼성동 오피스 프로젝트](https://medium.com/aitrics/%EC%97%90%EC%9D%B4%EC%95%84%EC%9D%B4%ED%8A%B8%EB%A6%AD%EC%8A%A4%EB%A7%8C%EC%9D%98-%EA%B3%B5%EA%B0%84%EC%9D%B4-%EB%A7%8C%EB%93%A4%EC%96%B4%EC%A7%80%EA%B8%B0%EA%B9%8C%EC%A7%80-%EC%82%BC%EC%84%B1%EB%8F%99-%EC%98%A4%ED%94%BC%EC%8A%A4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-c901478702f5)
-- 회사: AITRICS
-- 본문 요약: 구성원 증가로 기존 오피스의 회의실·휴게 공간 부족, 수납 문제, 맞지 않는 이동 동선 같은 불편이 누적되자, 이를 해결하기 위해 진행한 삼성동 오피스 프로젝트를 소개합니다.
-- 주목할 point: 회사 성장 단계에서 쌓이는 공간 불편을 문제로 정의하고 새 오피스 조성 프로젝트로 풀어낸 과정을 보여주는 조직·사무환경 사례입니다.
-- keyword: #오피스 #사무공간 #조직문화 #삼성동
+## [코드를 모르는 기획자의 Product Engineer 도전 : 준비와 소통으로 서버부터 앱까지](https://techblog.yogiyo.co.kr/%EC%BD%94%EB%93%9C%EB%A5%BC-%EB%AA%A8%EB%A5%B4%EB%8A%94-%EA%B8%B0%ED%9A%8D%EC%9E%90%EC%9D%98-product-engineer-%EB%8F%84%EC%A0%84-%EC%A4%80%EB%B9%84%EC%99%80-%EC%86%8C%ED%86%B5%EC%9C%BC%EB%A1%9C-%EC%84%9C%EB%B2%84%EB%B6%80%ED%84%B0-%EC%95%B1%EA%B9%8C%EC%A7%80-f6c1db423de9)
+- 회사: 요기요
+- 본문 요약: 코드를 읽지 못하는 기획자가 Claude Code와 마크다운 설계 계획서를 활용해 주문추적화면 지도 마커를 광고 지면으로 쓰는 기능을 서버·API·어드민·Android·iOS까지 직접 출시한 경험을 공유합니다. 영향 범위와 기존 마커 동작을 AI로 분석해 계획서에 담고, 영역별 담당자의 설계 리뷰와 코드 리뷰, QA를 병행했습니다. 첫 외부 광고에서 목표 대비 노출수·클릭수 200% 이상을 달성했습니다.
+- 주목할 point: 사소한 스펙 변경도 계획서에 즉시 반영해 AI와 협업자의 공통 맥락을 유지하고, AI 응답은 재질문과 기능 단위 테스트로 검증하는 것이 핵심입니다. 비개발자 PE는 도메인 정책을 잘 아는 작은 서비스부터 시작하고, 오류 로그를 해석할 수 있는 환경(Datadog 등)을 갖추는 것이 중요합니다.
+- keyword: #ProductEngineer #ClaudeCode #AI협업 #기획자 #설계계획서
 
-## [모던 백엔드 - 컨텍스트 전파 리팩토링(3)](https://www.nextree.io/modeon-baegendeu-keontegseuteu-jeonpa-ripaegtoring-3/)
-- 회사: 넥스트리
-- 본문 요약: 게시판 프로젝트의 ThreadLocal 기반 RequestContext를 Java 25 ScopedValue로 리팩토링했습니다. Servlet Filter와 StructuredTaskScope를 수정해 set·clear·finally 같은 수동 컨텍스트 관리 코드를 제거하고, runWith·callWith·getOrSystem·isBound를 갖춘 홀더로 전환합니다.
-- 주목할 point: 구조화된 동시성 환경에서 ThreadLocal의 수동 관리 부담을 ScopedValue로 줄이는 실전 리팩토링 사례입니다.
-- keyword: #Java25 #ScopedValue #ThreadLocal #구조화된동시성
+## [AI 코딩 시대, DDD가 더 필요해진 이유](https://blog.banksalad.com/tech/banksalad-ddd-in-ai-era/)
+- 회사: 뱅크샐러드
+- 본문 요약: Go 마이크로서비스가 커지며 핸들러에 로직이 몰려 사실상 모놀리식화된 신용점수 서비스를 DDD-lite와 Clean Architecture로 리팩토링한 과정을 소개합니다. KCB 데이터 출처 기준 폴더 분리가 잘못된 바운디드 컨텍스트를 만든 문제를 인식하고, 신용점수·신용변동·신용유저 등 비즈니스 개념 단위 컨텍스트와 handler·application·domain·infrastructure 4계층(포트/어댑터 분리)으로 재구성했습니다. 435개 PR로 전체를 정비했습니다.
+- 주목할 point: 명확한 경계와 계층 컨벤션은 사람뿐 아니라 AI 코딩 에이전트의 탐색·리뷰 범위와 읽는 코드량을 줄여 결과물의 일관성을 높입니다. AGENTS.md 규칙으로 컨벤션을 AI에게 명시하는 점도 참고할 만합니다.
+- keyword: #DDD #CleanArchitecture #Go #AI코딩 #리팩토링
 
-## [모던 백엔드 - 컨텍스트 전파 리팩토링(2)](https://www.nextree.io/modeon-baegendeu-keontegseuteu-jeonpa-ripaegtoring-2/)
-- 회사: 넥스트리
-- 본문 요약: StructuredTaskScope의 fork() 호출 시 부모 스레드의 ScopedValue 바인딩이 자동 상속되는 구조를 설명하고, 가상 스레드 환경에서 기존 비동기 코드의 수동 컨텍스트 전달과 set/clear 로직을 제거하는 방법을 다룹니다.
-- 주목할 point: RequestContext.get() 시그니처를 유지해 VirusScanClient·Thumbnailer 같은 하위 컴포넌트를 수정하지 않고 리팩토링하는 전략이 핵심입니다.
-- keyword: #Java #StructuredTaskScope #ScopedValue #가상스레드
-
-## [Spark Connect on Kubernetes #2: Operator로 만드는 Control Plane](https://toss.tech/article/spark-connect-on-kubernetes-2)
+## [토스뱅크가 패키지를 관리하는 방식 #1: 패키지를 ESM으로만 제공하기로 했어요](https://toss.tech/article/package-management-1)
 - 회사: 토스
-- 본문 요약: Apache Spark Operator(SparkApplication 기동·상태 관측·재시도)와 Spark Tenant Operator(테넌트별 replica·설정·교체 관리)를 분리해 Spark Connect 서버의 복구·교체를 제어했습니다. Gateway의 generation 기반 라우팅으로 신규 세션을 새 서버로 보내는 Blue-Green 전환, readiness 개선, glibc arena 제한으로 세션·메모리 문제를 다뤘습니다.
-- 주목할 point: 장기 세션을 유지하는 Spark Connect 서버를 쿠버네티스에서 안전하게 교체하기 위한 Operator 역할 분리와 무중단 전환 설계가 참고할 만합니다.
-- keyword: #Spark #Kubernetes #Operator #BlueGreen
+- 본문 요약: ESM·CJS 이중 배포 시 import와 require()가 서로 다른 구현 파일을 로드해 React 컨텍스트·캐시 같은 공유 상태가 이중화되고, TypeScript 설정에 따라 CJS 경로를 선택하면 타입 파일이 없어 외부 타입이 any로 전파될 수 있는 문제를 분석했습니다. Node.js 22.12.0의 require(esm) 지원을 근거로 사내 패키지를 ESM-only로 전환했습니다.
+- 주목할 point: ESM-only 전환으로 이중 실행 코드와 타입 연결 관리 부담이 줄고 디버깅 복잡도가 감소합니다. 단, require(esm)을 쓰려면 해당 ESM과 의존 모듈에 최상위 await가 없어야 합니다.
+- keyword: #ESM #CJS #Nodejs #TypeScript #패키지관리
 
-## [기업들은 왜 코어밸류를 중요하게 생각할까?](https://tech.channel.io/kr/articles/ca43da42)
+## [채널톡의 FDE는 어떤 일을 할까?](https://tech.channel.io/kr/articles/850fcc83)
 - 회사: 채널톡
-- 본문 요약: 채널 엔지니어링팀이 길고 낯설어 기억되지 않던 기존 코어밸류를 Move Fast, Deep Dive, Share Out 중심의 세 가지 쉬운 표현(v2)으로 재정리하고, 실제 사례와 내부 캠페인으로 일하는 방식과 가치를 연결한 과정을 소개합니다.
-- 주목할 point: 코어밸류를 미래의 추구미로만 인식하거나 Move Fast와 Deep Dive를 상반된 요구로 받아들이는 혼선을 실제 문제·판단·해결 사례 공유로 풀었다는 점이 인상적입니다.
-- keyword: #코어밸류 #조직문화 #MoveFast #DeepDive
+- 본문 요약: FDE(Forward Deployed Engineer)가 고객 요구를 PoC로 빠르게 검증하고 제품화 근거로 전환하는 과정을 소개합니다. 웹 이탈 방문자의 상담 전환, 수천~수만 건의 전화 발신·결과 분석 같은 콜 캠페인 요구에서 응답이 불확실한 요청의 자동 재시도 대신 중복 발신 방지를 우선하고, SQS 대신 PostgreSQL 작업 상태와 주기적 실행기로 초기 운영 복잡도를 줄였습니다.
+- 주목할 point: CPS뿐 아니라 최대 통화 시간에 따른 회선 점유를 고려해 발신 속도와 예약 물량을 산정하고, 원본 발신 대상과 통화 기록을 대조해 미확인 대상을 점검합니다. 고객별 PoC → 반복 사용 검증 → 제품팀의 공통 기능 제품화로 이어지는 흐름이 참고할 만합니다.
+- keyword: #FDE #PoC #콜캠페인 #PostgreSQL #제품화
 
-## [우리가 일해온 방식에 이름을 붙였습니다](https://tech.channel.io/kr/articles/e190d6d0)
-- 회사: 채널톡
-- 본문 요약: 채널 엔지니어링팀이 빠른 실행(Move Fast)·깊은 탐구(Deep Dive)·공유(Share Out)를 순환시키는 업무 방식을 Customer Driven 방향 아래 정의하고, AI 개발, 셀프서비스 배포, 기술 분석과 지식 아카이빙 사례를 소개합니다.
-- 주목할 point: 깊은 이해로 판단 정확도를 높이고 빠르게 실행한 뒤 그 지식을 공유해 다시 순환시키는 구조를 실제 팀 사례로 보여줍니다.
-- keyword: #업무방식 #AI개발 #셀프서비스배포 #지식공유
+## [모던 백엔드- 문법 & 성능 개선(1)](https://www.nextree.io/modeon-baegendeu-munbeob-seongneung-gaeseon-1/)
+- 회사: 넥스트리
+- 본문 요약: Java 25의 유연한 생성자 본문(super()/this() 호출 전 유효성 검사와 필드 사전 초기화), 모듈 임포트 선언, switch·instanceof의 기본형 패턴 매칭 확장을 소개하고, Compact Object Headers 기반 HotSpot JVM 메모리 최적화를 살펴봅니다.
+- 주목할 point: Compact Object Headers는 64비트 객체 헤더를 압축해 힙 사용량을 줄이고 캐시 지역성을 높여, 대규모 트래픽 환경의 JVM 메모리 최적화에 이점이 있습니다. 최신 Java 문법으로 백엔드 코드 생산성 개선을 검토해볼 만합니다.
+- keyword: #Java25 #CompactObjectHeaders #HotSpot #패턴매칭 #백엔드
 
-## [[현장 스케치] AI 인프라의 경쟁력은 '운영' - KubeCon China 2026](https://tech.ktcloud.com/entry/2026-10-ktcloud-kubecon-china-ai-infrastructure-operations)
-- 회사: KT 클라우드
-- 본문 요약: KubeCon China 2026의 GPU 자원 관리, 분산 학습, 장애 복원력 사례를 정리했습니다. Viettel의 OpenStack·Kubernetes·HAMi·KEDA 기반 GPU 공유와 Token-as-a-Service 추론 플랫폼, Huawei HyperParallel 등이 소개됩니다.
-- 주목할 point: AI 인프라 경쟁력은 하드웨어 확보보다 자원 활용 효율과 장애 복원력 같은 효율적이고 안정적인 운영에 있다는 메시지입니다.
-- keyword: #KubeCon #Kubernetes #GPU #분산학습
+## [모던 백엔드 - 문법 & 성능 개선(2)](https://www.nextree.io/modeon-baegendeu-munbeob-seongneung-gaeseon-2/)
+- 회사: 넥스트리
+- 본문 요약: Java 25 유연한 생성자 본문의 프롤로그 영역 규칙과 상속 구조에서의 초기화 순서 함정, 컴팩트 객체 헤더 활성화 플래그(-XX:+UseCompactObjectHeaders)와 적용 여부 검증 방법을 다룹니다.
+- 주목할 point: 프롤로그에서는 파라미터 검증·예외 발생·로컬 연산은 가능하지만 인스턴스 필드 읽기, 인스턴스 메서드 호출, this 유출은 금지됩니다. 성능 진단 시 기동 시간·웜업과 힙 메모리·GC 부하를 구분하고, 메모리 절감에 따른 GC 빈도·STW 감소를 장기 처리량 관점에서 봐야 합니다.
+- keyword: #Java25 #생성자 #JVM #GC #성능개선
 
-## [[기술해설] AI 에이전트 시대의 Kubernetes 인프라 활용: Agent Sandbox 입문](https://tech.ktcloud.com/entry/2026-10-ktcloud-kubernetes-agent-sandbox-crd-1)
-- 회사: KT 클라우드
-- 본문 요약: 장기 실행·상태 유지·고유 ID·격리 환경이 필요한 AI 에이전트용 Kubernetes CRD와 컨트롤러인 Agent Sandbox를 소개합니다. Core API(Sandbox·SandboxTemplate)와 Extensions API(SandboxWarmPool·SandboxClaim) 구성, StatefulSet 방식 대비 관리 단순화를 설명합니다.
-- 주목할 point: WarmPool로 콜드 스타트에 대응할 수 있고, gVisor·Kata 같은 격리 런타임을 쓸 때의 유의점도 함께 정리했습니다.
-- keyword: #Kubernetes #AgentSandbox #CRD #gVisor
+## [데이터 쿼리 AI 에이전트 — SQL 몰라도 돼! 사내 데이터 직접 꺼내 쓰는 방법](https://medium.com/@fasoo.marcom/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BF%BC%EB%A6%AC-ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-sql-%EB%AA%B0%EB%9D%BC%EB%8F%84-%EB%8F%BC-%EC%82%AC%EB%82%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A7%81%EC%A0%91-%EA%BA%BC%EB%82%B4-%EC%93%B0%EB%8A%94-%EB%B0%A9%EB%B2%95-dd5531881acd)
+- 회사: 파수 AI
+- 본문 요약: 조직의 테이블 구조, 컬럼 의미, 지표 정의서, 쿼리 이력 같은 데이터 맥락을 반영해 자연어 질문을 SQL로 바꿔주는 Data Query ACE를 소개합니다. 현업의 반복 조회 요청으로 인한 데이터팀 병목과 일반적 Text to SQL의 실무 신뢰성 한계를 해결 대상으로 삼습니다.
+- 주목할 point: 민감한 스키마와 데이터를 외부 AI 서비스에 올리기 어려운 보안 제약을 Private 환경과 접근 권한 통제로 풀었다는 점이 포인트입니다.
+- keyword: #TextToSQL #AI에이전트 #데이터쿼리 #보안 #Private
 
-## [[분석] DDoS 환경에서 OVS kernel datapath 성능 붕괴](https://tech.ktcloud.com/entry/2026-10-ktcloud-ovs-ddos-datapath-collapse)
-- 회사: KT 클라우드
-- 본문 요약: 무작위 소스 IP·포트의 SYN 플러딩이 OVS의 플로우 지역성을 깨 업콜 스톰, 마스크 폭발(mask_array 선형 순회·TSS 조회), 캐시 스래싱을 일으키는 구조를 분석하고, eBPF/XDP 선제 차단과 TC·하드웨어 오프로드, 운영 지표 기반 대응을 제시합니다.
-- 주목할 point: 처리량 급감으로 정상 트래픽까지 처리하지 못할 수 있는 원인을 커널 datapath 수준에서 설명하고 선제 차단 방안을 제안합니다.
-- keyword: #OVS #DDoS #eBPF #XDP
+## [[보안] 달라지는 공공 클라우드 보안 기준｜꼭 확인해야 할 3가지 변화](https://blog.naver.com/n_cloudplatform/224442401297)
+- 회사: 네이버 클라우드 플랫폼
+- 본문 요약: 국가·공공기관의 클라우드 구축과 민간 서비스 이용에 적용되는 국가 클라우드컴퓨팅 보안 가이드라인 개정안을 소개하며, 정보 등급 분류 기준, 등급별 민간 클라우드 이용 범위, 보안 요건·검증 체계의 변화를 예고합니다.
+- 주목할 point: 보유 정보의 등급과 처리 가능한 클라우드 범위를 우선 확인하고, 개정되는 보안 기준과 절차를 바탕으로 공공 클라우드 도입을 검토해야 합니다.
+- keyword: #공공클라우드 #클라우드보안 #보안가이드라인 #정보등급 #NCP
 
-## [AI가 만든 코드, 팀은 어떻게 관리하나?](https://tech.ktcloud.com/entry/2026-10-ktcloud-ai-code-governance-harness)
-- 회사: KT 클라우드
-- 본문 요약: AI 생성 Terraform(Azure) 코드가 늘면서 명명 규칙·필수 태그·보안 정책을 사람의 리뷰 집중력에 의존하던 PR 검증이 병목이 된 문제를 다뤘습니다. 페르소나 프롬프트는 대화가 길어지면 맥락이 희석되고 SKILL.md 참조만으로는 규칙 준수를 강제하지 못해, SKILL.md와 YAML 기반 Harness로 규칙 검증을 자동화했습니다.
-- 주목할 point: 규칙 검증은 자동화하고 최종 판단은 사람이 맡도록 역할을 나눈 AI 코드 거버넌스 접근입니다.
-- keyword: #AI코드 #Terraform #Harness #거버넌스
-
-## [월간 AI 보안 소식 10월호](https://techblog.ahnlabcloudmate.com/weolgan-ai-boan-sosig-10weolho/)
-- 회사: 클라우드메이트
-- 본문 요약: 금융보안원 초안의 17개 AI 에이전트 보안 점검 항목을 중심으로, 에이전트의 도구 호출·업무 처리·승인·중단까지 실행 계층의 보안 통제를 정리했습니다. 인터페이스·목표·도구 권한·메모리·데이터 유출·공급망 등 단계별 점검, 고위험 작업의 인적 승인, 이상 행동 킬스위치, 전 과정 로깅과 감사체계를 다룹니다.
-- 주목할 point: 문서상 정책이 아니라 실제 업무에서 권한·승인·중단·기록 체계가 작동하는지 검증해야 하며, 제한·권한 부족 상황에서 우회하지 않도록 하는 점이 강조됩니다.
-- keyword: #AI보안 #AI에이전트 #금융보안원 #감사로깅
-
-## [ISMS-P 개편 대비, Teleport로 접근 권한과 접속기록 준비하기](https://insight.infograb.net/blog/2026/10/14/isms-p-teleport/)
-- 회사: 인포그랩
-- 본문 요약: ISMS-P 개편과 안전성 확보조치 기준 변경(2026년 10월 31일부터 접근 권한·외부 접속 인증·접속기록 의무 대상 확대)에 대비해, Teleport 기반 서버·DB 접속 경로 단일화와 RBAC 최소 권한, SSO·MFA, 접속기록, GitLab 기반 취약점 관리 증적 준비 방법을 소개합니다.
-- 주목할 point: 로그 미보관이나 보안 패치 미적용 같은 중대 결함은 인증 취소 위험으로 이어질 수 있어 증적 체계를 미리 갖추는 것이 중요합니다.
-- keyword: #ISMS-P #Teleport #GitLab #SSO #MFA
-
-## [Bespin_AWM_TechBlog.docx](https://blog.bespinglobal.com/post/managing-ai-agents-as-digital-employees-2/)
-- 회사: 베스핀글로벌
-- 본문 요약: AI 에이전트를 등록·배치·성과 평가·운영 종료 대상으로 관리하는 AWM 체계와, 운영 지표를 경영진용 ROI·FTE 지표로 환산하는 방식을 소개합니다. 업무 인벤토리의 사람 기준 시간·비용 기준선, HITL, 감사 기록으로 성과와 규정 준수를 함께 관리합니다.
-- 주목할 point: AI 에이전트 확대에도 시간·비용 절감 효과와 규정 준수를 정량적으로 증명하기 어려운 문제를 운영 지표와 ROI 사이의 환산 단계로 풀었습니다.
-- keyword: #AI에이전트 #LLMOps #HITL #AI기본법 #거버넌스
+## [PaaS란? 서비스형 플랫폼의 개념·구조·과금 방식 정리](https://library.gabia.com/contents/infrahosting/15825/)
+- 회사: 가비아
+- 본문 요약: PaaS의 책임 경계(제공자는 네트워크·서버·OS·런타임, 사용자는 애플리케이션·데이터 관리)와 코드 저장소/CLI 배포 → CI/CD → 런타임·미들웨어·관리형 DB → 모니터링으로 이어지는 구성, 사용량 기반·플랜 정액제 과금 방식을 정리했습니다.
+- 주목할 point: 도입 시 지원 런타임 범위와 버전 종료 정책, 벤더 종속, 보안 책임, 사용량 증가에 따른 확장 비용을 확인해야 합니다. 오토스케일링 최소·최대 인스턴스, 월 예산, 유휴 시간 과금 여부와 데이터 내보내기 가능성도 점검하세요.
+- keyword: #PaaS #클라우드 #배포 #과금 #벤더종속
