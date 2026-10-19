@@ -1,20 +1,68 @@
-<!-- 이 파일은 posts/2026-10-18.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-18 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-19.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-19 기술 블로그 모음
 
-## [AWS에서 AI 에이전트 실행 환경 격리하기 1부: Amazon EKS와 Agent Sandbox, 개념과 구성](https://aws.amazon.com/ko/blogs/tech/aws-ai-agent-sandbox-eks-isolation-part-1/)
-- 회사: AWS
-- 본문 요약: Kubernetes SIG Apps의 Agent Sandbox v1.0.5와 gVisor를 EKS 1.36에 구성하고, 모델이 생성한 신뢰할 수 없는 코드를 막는 격리 계층을 runc와 gVisor로 비교했습니다. Sandbox·SandboxTemplate·Warm Pool·SandboxClaim 리소스 구조와 설치 순서(gVisor 전용 Managed Node Group, RuntimeClass, VPC CNI NetworkPolicy 활성화, 컨트롤러·sandbox-router 설치)를 설명합니다. 동일 점검 스크립트(/etc/shadow 읽기, setuid(0), ServiceAccount 토큰 읽기) 결과, 4개 항목 중 3개는 gVisor가 아닌 PodSpec 보안 설정과 컨트롤러 기본값이 막았고 gVisor는 호스트 커널 노출을 줄이는 역할을 했습니다.
-- 주목할 point: EKS Auto Mode는 runsc 등록이 불가능해 Managed Node Group이 필요하고, VPC CNI NetworkPolicy를 켜지 않으면 템플릿의 정책이 적용되지 않습니다. gVisor를 도입해도 Pod 보안 설정(비루트, capability 제거 등)은 그대로 갖춰야 합니다.
-- keyword: #AgentSandbox #gVisor #EKS #Kubernetes #AI에이전트 #보안
+## [프론티어 모델 대신, 우리 모델이 모든 상담을 분석합니다](https://tech.channel.io/kr/articles/f70a8f22)
+- 회사: 채널톡
+- 본문 요약: 상담의 핵심 이슈 추출·토픽 배정·상담 평가를 상용 LLM으로 처리하며 API 비용이 늘자, 세 작업을 처리하는 자체 멀티태스크 단일 모델로 전환했습니다. CX팀 Rubric과 학습 데이터에서 분리한 1만 2천 건 골든셋으로 평가하고, Distillation 데이터 분포 불일치와 다중 작업 간 Gradient Conflict를 실험으로 조정했습니다.
+- 주목할 point: 상용 LLM 대비 성능 개선과 API 비용 99.4% 절감(연간 약 6억 원 순절감 추정), Multi-LoRA 대비 p95 TTFT 약 16배 개선·throughput 54.4% 향상. 정답이 모호한 LLM 작업일수록 현업 Rubric과 독립 골든셋을 먼저 구축하라는 시사점.
+- keyword: #LLM #Distillation #멀티태스크 #골든셋 #비용절감
 
-## [AWS에서 AI 에이전트 실행 환경 격리하기 2부: Amazon EKS와 Agent Sandbox, 개념과 구성](https://aws.amazon.com/ko/blogs/tech/aws-ai-agent-sandbox-eks-isolation-part-2/)
-- 회사: AWS
-- 본문 요약: 운영 환경 적용 시 확인할 사항을 측정 결과와 함께 다룹니다. NetworkPolicy 활성화 전후 비교(메타데이터·K8s API 차단), 기본 DNS 주입(8.8.8.8)을 Route 53 Resolver로 바꾸는 사용자 정의 정책, Warm Pool 사용 시 Claim→Ready가 약 2초에서 약 55ms로 단축(Cold Start 대비 34~36배), Pod IP 재사용 대기(30초)로 인한 burst 지연, gVisor의 시스템 콜 비용(2~12배), 만료·일시 중지·EBS 상태 보존, Bedrock의 Claude 에이전트 연동, sandbox-router 인증·접근 제한을 설명합니다.
-- 주목할 point: 기본 정책은 인터넷 egress를 모두 허용하므로 외부 통신은 egress 프록시·Network Firewall 등으로 따로 통제해야 합니다. 에이전트와 샌드박스의 역할 분리는 네트워크가 아니라 자격 증명 계층에서 성립하며, router는 기본 allow-all이고 port-forward는 NetworkPolicy를 우회하므로 RBAC 제한이 필요합니다.
-- keyword: #AgentSandbox #WarmPool #NetworkPolicy #VPCCNI #sandbox-router #Bedrock
+## [그룹웨어 비용, 얼마가 적당할까? 과금 방식부터 숨은 비용까지 총정리](https://library.gabia.com/contents/groupware/15859/)
+- 회사: 가비아
+- 본문 요약: 그룹웨어는 단가가 아니라 과금 방식, 포함 기능, 숨은 비용을 합친 연간 총비용으로 비교해야 한다고 설명합니다. 클라우드 구독형, 구축형, 무료·번들형의 트레이드오프와 단계별 기능 범위(메일·일정부터 SSO·권한 관리·인사/ERP 연동까지)를 다룹니다.
+- 주목할 point: 저장 용량 초과, 기능별 별도 과금, 퇴사자 계정 과금, 첫해 할인 종료 후 정상가 등 숨은 비용 항목을 여러 업체에 동일하게 질의하는 비교표 방식이 유용합니다.
+- keyword: #그룹웨어 #SaaS비용 #총소유비용 #클라우드 #도입가이드
 
-## [AWS Direct Connect 정액 요금제(Flat-rate) 손익분기점 분석](https://aws.amazon.com/ko/blogs/tech/aws-direct-connect-flat-rate-breakeven-analysis/)
-- 회사: AWS
-- 본문 요약: 2026년 9월 출시된 10/100 Gbps 전용 연결의 정액 요금제를 서울 리전 10 Gbps 연결 2개(20 Gbps) 기준으로 분석합니다. Tier 1 정액 요금은 포트페어 1쌍 월 8,154.24 USD, 독립 연결 2개 월 16,308.48 USD이며, 손익분기 월 DTO는 각각 약 114 TB(평균 376 Mbps)와 약 309 TB(평균 1.01 Gbps)입니다. 가상 청구서(종량제 80,052.47 USD) 대비 절감률은 89.81%와 79.63%입니다.
-- 주목할 point: 포트페어의 사용 가능 용량은 포트 1개 분량(10 Gbps)이라는 점, Tier 범위 밖 DTO·Transit Gateway 처리 요금은 별도라는 점, 같은 로케이션 연결은 같은 요금제여야 하고 6개월 3회로 변경이 제한된다는 점을 전환 전에 확인해야 합니다.
-- keyword: #DirectConnect #정액요금제 #비용최적화 #손익분기점 #네트워킹
+## [JEV의 판정 계약을 사내 LLM에 적용하기](https://techblog.samsung.com/blog/article/101)
+- 회사: 삼성전자
+- 본문 요약: 채팅형 LLM에 분류·등급 산정을 맡길 때 생기는 텍스트 파싱과 재시도 부담을 줄이기 위해, JEV의 질문·답 계약을 LLM Gateway 판정 API로 구현해 사내 소형 LLM에 짧은 판정 요청을 위임했습니다. 라벨 오류로 지적된 항목만 재판정하는 기능도 적용했습니다.
+- 주목할 point: 출력 간소화 실험으로 항목당 지연 시간이 1,534ms에서 804ms로 단축되었고, 기존 리뷰를 보존하는 적용 원칙을 제시합니다.
+- keyword: #LLM #LLMGateway #판정API #코드리뷰 #지연시간
+
+## [2026년 10월 인도 핀테크 뉴스](https://blog.afinit.com/2026%EB%85%84-10%EC%9B%94-%EC%9D%B8%EB%8F%84-%ED%95%80%ED%85%8C%ED%81%AC-%EB%89%B4%EC%8A%A4-382004)
+- 회사: 밸런스히어로
+- 본문 요약: 인도 소액 신용 시장에서 NBFC의 신규 신용대출 비중이 커지고 소매 연체율은 낮게 유지되는 흐름, AI 신용관리 플랫폼 Oolka의 대규모 투자 유치 협상, Moneyview IPO 급등과 True Balance의 AI 생성 브랜드 필름 캠페인 사례를 정리했습니다.
+- 주목할 point: AI 생성 필름으로 제작 기간이 수주에서 수일로 줄고 조회수·인지도·전환율 지표가 개선되었으며, Moneyview는 상장 후 급등 뒤 하락 변동성이 있었습니다.
+- keyword: #핀테크 #인도 #NBFC #AI신용관리 #IPO
+
+## [MultiDatasource·Prologue로 Pod·JVM 비용 절감](https://www.nextree.io/multidatasource-prologuero-pod-jvm-biyong-jeolgam/)
+- 회사: 넥스트리
+- 본문 요약: 마이크로서비스마다 Pod·JVM·Spring Context·thread pool·connection pool이 반복되는 비용을 줄이기 위해, 서비스·데이터 경계는 유지한 채 통합 Boot를 단일 실행 진입점으로 두는 구조를 설계했습니다. 서비스별 EntityManagerFactory·JpaTransactionManager·Flyway를 분리하고 package 기반으로 트랜잭션을 라우팅하며, 이 구성을 Prologue 자동 구성으로 공통화했습니다.
+- 주목할 point: 하나의 JVM에서 중복 런타임 자원을 줄일 수 있지만 서비스별 connection pool 예산을 통합 관리해야 하는 트레이드오프가 있습니다.
+- keyword: #SpringBoot #MSA #MultiDatasource #JPA #비용절감
+
+## [모바일 앱 QA, 어디서 어떻게 검증해야 할까](https://www.nextree.io/mobail-aeb-qa-eodiseo-eoddeohge-geomjeunghaeya-halgga/)
+- 회사: 넥스트리
+- 본문 요약: 모바일 앱 QA에서 Safe Area, 키보드, 터치, 화면 전환을 실기기로 검증해야 하는 이유를 설명하고, Figma·STG 웹·TestFlight STG 앱·운영 앱별 검수 목적과 한계를 구분합니다. 출시 전 전체 품질 확인에서 출시 후 변경 영향 확인 중심으로 QA 범위를 바꾸는 운영 원칙을 제안합니다.
+- 주목할 point: 스크린샷 비교로는 놓치기 쉬운 입력 실패·하단 버튼 가림·이전 화면 상태 잔존을 잡을 수 있고, 수정 완료 보고와 실기기 재검수 완료를 분리해 관리하라는 점이 실용적입니다.
+- keyword: #모바일QA #실기기 #SafeArea #TestFlight #검수프로세스
+
+## [평균 CPU는 여유로운데, 커밋은 왜 느릴까?](https://toss.tech/article/nic-interrupt-bottleneck)
+- 회사: 토스
+- 본문 요약: Oracle DB에서 커밋 시 log file sync 대기가 0.1초 이상 반복되는데 평균 CPU·스토리지·네트워크 지표는 정상이던 문제를 분석했습니다. /proc/interrupts 차분과 pidstat으로 CPU별 인터럽트와 LGWR 실행 위치를 추적해, LGWR가 특정 CPU에서 NIC 인터럽트와 경합함을 확인했습니다.
+- 주목할 point: 인터커넥트 NIC를 서로 다른 소켓 연결 슬롯으로 옮기고 본딩 방식을 바꿔 인터럽트를 분산한 결과 CPU·SQL 성능이 개선되었습니다. 평균 지표에 가려진 문제는 CPU별 관측이 필요하다는 교훈입니다.
+- keyword: #Oracle #RAC #NIC인터럽트 #NUMA #성능분석
+
+## [디자인 퀄리티와 사용 편의성 사이, 최적의 균형을 만드는 미리캔버스 템플릿 디자이너](https://medium.com/miridih/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%80%84%EB%A6%AC%ED%8B%B0%EC%99%80-%EC%82%AC%EC%9A%A9-%ED%8E%B8%EC%9D%98%EC%84%B1-%EC%82%AC%EC%9D%B4-%EC%B5%9C%EC%A0%81%EC%9D%98-%EA%B7%A0%ED%98%95%EC%9D%84-%EB%A7%8C%EB%93%9C%EB%8A%94-%EB%AF%B8%EB%A6%AC%EC%BA%94%EB%B2%84%EC%8A%A4-%ED%85%9C%ED%94%8C%EB%A6%BF-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88-ba801dd8be92)
+- 회사: 미리디
+- 본문 요약: 미리캔버스 템플릿 팀이 사용자 데이터와 국가별 활용 패턴을 분석해 프레젠테이션 기본 레이아웃을 도출하고, 일본 신규 사용자를 위한 수정 가능한 템플릿 구조·슬라이드 가이드·샘플북을 제공한 과정을 소개합니다.
+- 주목할 point: 가이드·샘플북 적용 후 노출 대비 채택률이 약 2배, 노출 대비 다운로드율이 약 2.5배 올랐으며, 편집 구조와 여백 유연성을 디자인 초기부터 고려하는 설계가 핵심입니다.
+- keyword: #미리캔버스 #템플릿디자인 #사용자데이터 #UX #디자인시스템
+
+## [누구나 전문가처럼 만들 수 있게: 미리캔버스 템플릿 디자이너가 일하는 법](https://medium.com/miridih/%EB%88%84%EA%B5%AC%EB%82%98-%EC%A0%84%EB%AC%B8%EA%B0%80%EC%B2%98%EB%9F%BC-%EB%A7%8C%EB%93%A4-%EC%88%98-%EC%9E%88%EA%B2%8C-%EB%AF%B8%EB%A6%AC%EC%BA%94%EB%B2%84%EC%8A%A4-%ED%85%9C%ED%94%8C%EB%A6%BF-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EA%B0%80-%EC%9D%BC%ED%95%98%EB%8A%94-%EB%B2%95-e1e3aff07211)
+- 회사: 미리디
+- 본문 요약: 템플릿 디자이너가 타겟과 목적을 분석하고 주제 분석·레퍼런스 수집·템플릿 제작·내부 리뷰를 거치며 글로벌 트렌드 기반의 디자인 가설을 실험하는 방식을 소개합니다. 북미·일본 시장별 사용자 반응에 맞춰 구성, 톤앤매너, 정보 구조를 설계합니다.
+- 주목할 point: 클레이 스타일, 두들·기하학 도형 등 컨셉별 템플릿의 실제 반응을 검증하고, 템플릿을 결과물이 아니라 콘텐츠 제작의 시작점으로 설계한다는 관점이 돋보입니다.
+- keyword: #미리캔버스 #템플릿 #디자인가설 #일본시장 #사용자경험
+
+## [이벤트 트래픽 오토스케일링 (임터보)](https://tech.imweb.me/posts/event-traffic-autoscaling-imturbo/)
+- 회사: 아임웹
+- 본문 요약: 공유 웹 서버 풀에서 특정 고객사의 이벤트 트래픽이 다른 고객사 성능까지 떨어뜨리던 문제를, 이벤트를 전용 풀로 격리하고 증설·원복·회고를 자동화해 해결했습니다. Jira 일정을 수집해 DynamoDB 이벤트 목록 기준으로 Lambda 라우팅과 Kubernetes CronJob 용량 작업을 분리하고, 이벤트 전후 CloudFront 원본을 전용 풀로 전환했다가 복귀시킵니다.
+- 주목할 point: 워커 점유율·포화도·초당 요청 수별 필요 대수 중 최대값으로 용량을 산정하고, 예약판매 시 초당 요청 80배 증가·123만 건 요청에서 5xx 오류 0건을 기록했으며 고객 예약형 유료 기능으로 확장했습니다.
+- keyword: #오토스케일링 #CloudFront #Lambda #Kubernetes #이벤트트래픽
+
+## [모나드와 범주론 ② 다른 계산, 같은 합성](https://hyper-accel.github.io/posts/kleisli-category/)
+- 회사: 하이퍼엑셀
+- 본문 요약: 1편의 Option 합성(composeOption)에 이어 List를 반환하는 함수의 합성 composeList를 만들어 두 합성의 공통 형태를 찾고, 결합법칙과 항등법칙을 도입합니다. 이 법칙들을 Lean 4로 증명한 뒤 범주와 Kleisli 범주로 일반화해 서로 다른 계산이 같은 규칙으로 합성됨을 보여 줍니다.
+- 주목할 point: 모나드를 "계산을 합성하는 규칙"이라는 관점에서 범주론과 연결하며, 예제 확인에서 모든 입력에 대한 증명으로 넘어가는 과정이 인상적입니다.
+- keyword: #모나드 #범주론 #Kleisli #Lean4 #함수형프로그래밍
