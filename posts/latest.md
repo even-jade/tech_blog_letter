@@ -1,68 +1,74 @@
-<!-- 이 파일은 posts/2026-10-19.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-19 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-20.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-20 기술 블로그 모음
 
-## [프론티어 모델 대신, 우리 모델이 모든 상담을 분석합니다](https://tech.channel.io/kr/articles/f70a8f22)
-- 회사: 채널톡
-- 본문 요약: 상담의 핵심 이슈 추출·토픽 배정·상담 평가를 상용 LLM으로 처리하며 API 비용이 늘자, 세 작업을 처리하는 자체 멀티태스크 단일 모델로 전환했습니다. CX팀 Rubric과 학습 데이터에서 분리한 1만 2천 건 골든셋으로 평가하고, Distillation 데이터 분포 불일치와 다중 작업 간 Gradient Conflict를 실험으로 조정했습니다.
-- 주목할 point: 상용 LLM 대비 성능 개선과 API 비용 99.4% 절감(연간 약 6억 원 순절감 추정), Multi-LoRA 대비 p95 TTFT 약 16배 개선·throughput 54.4% 향상. 정답이 모호한 LLM 작업일수록 현업 Rubric과 독립 골든셋을 먼저 구축하라는 시사점.
-- keyword: #LLM #Distillation #멀티태스크 #골든셋 #비용절감
+## [Jenkins 배치 220개를 Temporal로 옮기며 고민한 것들](https://tech.inflab.com/20261009-jenkins-to-temporal/)
+- 회사: 인프런
+- 본문 요약: Jenkins 디스크 포화·플러그인 충돌로 인한 배치 전체 중단, 알림 누락, 낮은 자원 활용 문제를 해결하려고 EC2 12대에서 돌던 220개 잡(하루 약 15,900회 실행)을 Temporal과 Kubernetes Job 기반 구조로 이관했습니다. Temporal 서버를 EKS에 두고 Aurora PostgreSQL을 상태 저장소로 쓰며, 서비스별 TypeScript 워커와 공용 라이브러리로 스케줄·컨테이너 실행·실패 알림을 통합했습니다.
+- 주목할 point: 실행 ID와 시도 번호 기반 Job 이름으로 중복 실행을 막고, Activity 타임아웃·heartbeat와 catchup 제한으로 멈춤·밀린 실행을 관리합니다. Jenkins EC2 종료 시 배치 비용 절반 이상 절감을 기대하지만 Temporal·Datadog 학습과 구조 복잡도 증가라는 트레이드오프도 언급합니다.
+- keyword: #Temporal #Jenkins #Kubernetes #배치 #EKS
 
-## [그룹웨어 비용, 얼마가 적당할까? 과금 방식부터 숨은 비용까지 총정리](https://library.gabia.com/contents/groupware/15859/)
-- 회사: 가비아
-- 본문 요약: 그룹웨어는 단가가 아니라 과금 방식, 포함 기능, 숨은 비용을 합친 연간 총비용으로 비교해야 한다고 설명합니다. 클라우드 구독형, 구축형, 무료·번들형의 트레이드오프와 단계별 기능 범위(메일·일정부터 SSO·권한 관리·인사/ERP 연동까지)를 다룹니다.
-- 주목할 point: 저장 용량 초과, 기능별 별도 과금, 퇴사자 계정 과금, 첫해 할인 종료 후 정상가 등 숨은 비용 항목을 여러 업체에 동일하게 질의하는 비교표 방식이 유용합니다.
-- keyword: #그룹웨어 #SaaS비용 #총소유비용 #클라우드 #도입가이드
+## [[보안] AI 시대의 보안, 우리 회사는 얼마나 준비되어 있을까요? ✅](https://blog.naver.com/n_cloudplatform/224447858441)
+- 회사: 네이버 클라우드 플랫폼
+- 본문 요약: 생성형 AI와 AI 에이전트 확산으로 기업 보안 관리 필요성이 커지는 배경을 다루고, 네이버클라우드의 보안 자가진단 사이트 오픈 소식을 소개합니다.
+- 주목할 point: 자가진단 사이트로 기업의 AI 시대 보안 현황을 점검해 볼 수 있으며, 보안 특화 AI 파운데이션 모델 사업 선정 역량도 함께 언급됩니다.
+- keyword: #AI보안 #보안자가진단 #생성형AI #AI에이전트
 
-## [JEV의 판정 계약을 사내 LLM에 적용하기](https://techblog.samsung.com/blog/article/101)
-- 회사: 삼성전자
-- 본문 요약: 채팅형 LLM에 분류·등급 산정을 맡길 때 생기는 텍스트 파싱과 재시도 부담을 줄이기 위해, JEV의 질문·답 계약을 LLM Gateway 판정 API로 구현해 사내 소형 LLM에 짧은 판정 요청을 위임했습니다. 라벨 오류로 지적된 항목만 재판정하는 기능도 적용했습니다.
-- 주목할 point: 출력 간소화 실험으로 항목당 지연 시간이 1,534ms에서 804ms로 단축되었고, 기존 리뷰를 보존하는 적용 원칙을 제시합니다.
-- keyword: #LLM #LLMGateway #판정API #코드리뷰 #지연시간
+## [AI 에이전트 시대의 기업 토큰 경제학: 비용 방정식으로 측정하고 Amazon Bedrock에서 줄이기](https://aws.amazon.com/ko/blogs/tech/ai-agent-token-economics-measure-and-reduce-costs-on-amazon-bedrock/)
+- 회사: AWS
+- 본문 요약: AI 에이전트 총비용을 사용자 수·세션 수·턴 수·요청 수·요청당 토큰·토큰당 가격의 여섯 항목 방정식으로 분해해 측정하는 방법을 정리했습니다. Bedrock 청구·호출 로그·CloudWatch 지표와 Claude Code·Codex OpenTelemetry 이벤트를 통합 측정하고, 모델·추론 강도 분리, 자동 컴팩션, 프롬프트 캐시 TTL 분리, MCP 도구 검색, 코드 모드 등으로 요청당 토큰을 줄이는 방안을 제시합니다.
+- 주목할 point: 비용 귀속용 추론 프로필·할당 태그, 실시간 세션 비용 표시, AWS Budgets 임계 알림, 주간 안티패턴 리포트 등 다층 넛지로 운영하며, 절감률은 환경에 따라 달라질 수 있어 직접 검증이 필요합니다.
+- keyword: #토큰비용 #AmazonBedrock #AI에이전트 #FinOps #ClaudeCode
 
-## [2026년 10월 인도 핀테크 뉴스](https://blog.afinit.com/2026%EB%85%84-10%EC%9B%94-%EC%9D%B8%EB%8F%84-%ED%95%80%ED%85%8C%ED%81%AC-%EB%89%B4%EC%8A%A4-382004)
-- 회사: 밸런스히어로
-- 본문 요약: 인도 소액 신용 시장에서 NBFC의 신규 신용대출 비중이 커지고 소매 연체율은 낮게 유지되는 흐름, AI 신용관리 플랫폼 Oolka의 대규모 투자 유치 협상, Moneyview IPO 급등과 True Balance의 AI 생성 브랜드 필름 캠페인 사례를 정리했습니다.
-- 주목할 point: AI 생성 필름으로 제작 기간이 수주에서 수일로 줄고 조회수·인지도·전환율 지표가 개선되었으며, Moneyview는 상장 후 급등 뒤 하락 변동성이 있었습니다.
-- keyword: #핀테크 #인도 #NBFC #AI신용관리 #IPO
+## [나는 하네스 깎는 노인이 되었다 시리즈 2: 안녕, 실버불릿](https://meetup.nhncloud.com/posts/426)
+- 회사: NHN
+- 본문 요약: 개인용 AI 하네스에 채팅 입출력을 연결해 팀 동료처럼 쓰는 '실버불릿' 구성을 소개합니다. 서비스 가이드·코드·로그·과거 문의 기록을 엮어 결론·원인·근거·대응방안 중심으로 답하고, 답변을 다시 기록으로 쌓는 순환 구조입니다. 개인 권한 오남용을 막기 위해 사용자별 역할로 권한을 분리하고 텍스트 규칙이 아닌 구조적 차단을 적용했습니다.
+- 주목할 point: 장애 원인 파악 시간이 30~50분 이상에서 4~10분으로, 문의 답변 시간이 몇 시간~하루 이상에서 보통 5분 이내로 단축되었다고 합니다.
+- keyword: #AI하네스 #AI에이전트 #권한분리 #운영자동화
 
-## [MultiDatasource·Prologue로 Pod·JVM 비용 절감](https://www.nextree.io/multidatasource-prologuero-pod-jvm-biyong-jeolgam/)
+## [2026년과 이후 JavaScript의 동향 - JavaScript(ECMAScript)](https://d2.naver.com/helloworld/2675915)
+- 회사: 네이버 D2
+- 본문 요약: 2020년 이후 ESM 전환, 도구의 Go·Rust 전환, TypeScript 기본값화 등 JavaScript 생태계 변화를 정리하고, TC39 절차와 ES2022~ES2025 흐름, ES2026의 Array.fromAsync·Upsert·Iterator.concat 등 7개 기능과 런타임 지원 현황, 진행 중인 제안을 살펴봅니다.
+- 주목할 point: Node.js의 require(esm) 지원으로 CommonJS에서 ESM으로의 호환성 장벽이 완화되었다는 점이 실무적으로 눈에 띕니다.
+- keyword: #JavaScript #ECMAScript #ES2026 #TC39 #ESM
+
+## [모던 백엔드 - Spring Boot 4.0 개관(3)](https://www.nextree.io/modeon-baegendeu-spring-boot-4-0-gaegwan-3/)
 - 회사: 넥스트리
-- 본문 요약: 마이크로서비스마다 Pod·JVM·Spring Context·thread pool·connection pool이 반복되는 비용을 줄이기 위해, 서비스·데이터 경계는 유지한 채 통합 Boot를 단일 실행 진입점으로 두는 구조를 설계했습니다. 서비스별 EntityManagerFactory·JpaTransactionManager·Flyway를 분리하고 package 기반으로 트랜잭션을 라우팅하며, 이 구성을 Prologue 자동 구성으로 공통화했습니다.
-- 주목할 point: 하나의 JVM에서 중복 런타임 자원을 줄일 수 있지만 서비스별 connection pool 예산을 통합 관리해야 하는 트레이드오프가 있습니다.
-- keyword: #SpringBoot #MSA #MultiDatasource #JPA #비용절감
+- 본문 요약: Spring Boot 4.0의 Jackson 3 전환(tools.jackson 네임스페이스, JacksonException 기반 언체크 예외)과 JSpecify 기반 널 안전성 표준을 살펴봅니다.
+- 주목할 point: 날짜 포맷 기본값이 숫자에서 ISO 8601 문자열로 바뀌고 파싱이 엄격해져, 컴파일은 되지만 API 응답 규격이 깨지는 침묵의 결함이 생길 수 있습니다. Jackson 2 지원 유예·7.2 삭제 로드맵을 고려한 마이그레이션 계획이 필요합니다.
+- keyword: #SpringBoot #Jackson3 #JSpecify #마이그레이션
 
-## [모바일 앱 QA, 어디서 어떻게 검증해야 할까](https://www.nextree.io/mobail-aeb-qa-eodiseo-eoddeohge-geomjeunghaeya-halgga/)
+## [AI 다섯을 고용했더니, 내가 제일 바빴다](https://www.nextree.io/ai-daseoseul-goyonghaessdeoni-naega-jeil-babbassda/)
 - 회사: 넥스트리
-- 본문 요약: 모바일 앱 QA에서 Safe Area, 키보드, 터치, 화면 전환을 실기기로 검증해야 하는 이유를 설명하고, Figma·STG 웹·TestFlight STG 앱·운영 앱별 검수 목적과 한계를 구분합니다. 출시 전 전체 품질 확인에서 출시 후 변경 영향 확인 중심으로 QA 범위를 바꾸는 운영 원칙을 제안합니다.
-- 주목할 point: 스크린샷 비교로는 놓치기 쉬운 입력 실패·하단 버튼 가림·이전 화면 상태 잔존을 잡을 수 있고, 수정 완료 보고와 실기기 재검수 완료를 분리해 관리하라는 점이 실용적입니다.
-- keyword: #모바일QA #실기기 #SafeArea #TestFlight #검수프로세스
+- 본문 요약: Codex 기반으로 작가·학습 편집자·드라마 리뷰어·제작 감독·영상/음향 리뷰어 다섯 역할의 AI 에이전트를 두고 한국어 학습 드라마를 제작한 운영 경험을 소개합니다. 역할별 검토 후에도 어색한 대사, 컷 간 소품 불일치 등이 남았습니다.
+- 주목할 point: 대사 ID·파일 버전·해시 기록과 단일 원고 수정 담당자로 충돌을 막고, 승인 범위 밖의 새 선택은 사람에게 넘기는 경계를 둔 것이 핵심입니다. 역할 정의 파일만으로 인수인계가 되지 않아 호출마다 작업 범위·대상 파일을 명시해야 합니다.
+- keyword: #AI에이전트 #Codex #멀티에이전트 #워크플로
 
-## [평균 CPU는 여유로운데, 커밋은 왜 느릴까?](https://toss.tech/article/nic-interrupt-bottleneck)
-- 회사: 토스
-- 본문 요약: Oracle DB에서 커밋 시 log file sync 대기가 0.1초 이상 반복되는데 평균 CPU·스토리지·네트워크 지표는 정상이던 문제를 분석했습니다. /proc/interrupts 차분과 pidstat으로 CPU별 인터럽트와 LGWR 실행 위치를 추적해, LGWR가 특정 CPU에서 NIC 인터럽트와 경합함을 확인했습니다.
-- 주목할 point: 인터커넥트 NIC를 서로 다른 소켓 연결 슬롯으로 옮기고 본딩 방식을 바꿔 인터럽트를 분산한 결과 CPU·SQL 성능이 개선되었습니다. 평균 지표에 가려진 문제는 CPU별 관측이 필요하다는 교훈입니다.
-- keyword: #Oracle #RAC #NIC인터럽트 #NUMA #성능분석
+## [SI 퍼블리셔를 위한 웹 접근성(A11y) 실전 가이드](https://www.nextree.io/si-peobeulrisyeoreul-wihan-web-jeobgeunseong-a11y-siljeon-gaideu/)
+- 회사: 넥스트리
+- 본문 요약: React SPA에서 자주 생기는 접근성 결함(모달 초점 이탈, 화면 갱신 미낭독, 토글 상태 미전달, 아이콘 버튼 목적 미안내)과 JSX 마크업 규칙을 정리하고, 모달·아코디언·동적 알림의 ARIA·초점 제어 검증 방법을 제시합니다.
+- 주목할 point: 네이티브 시맨틱 태그를 우선하고, aria-expanded와 연결 ID, 모달 focus trap·초점 복귀, aria-live 알림, WebVTT 자막 등을 구현 체크리스트로 쓸 수 있습니다.
+- keyword: #웹접근성 #A11y #React #ARIA
 
-## [디자인 퀄리티와 사용 편의성 사이, 최적의 균형을 만드는 미리캔버스 템플릿 디자이너](https://medium.com/miridih/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%80%84%EB%A6%AC%ED%8B%B0%EC%99%80-%EC%82%AC%EC%9A%A9-%ED%8E%B8%EC%9D%98%EC%84%B1-%EC%82%AC%EC%9D%B4-%EC%B5%9C%EC%A0%81%EC%9D%98-%EA%B7%A0%ED%98%95%EC%9D%84-%EB%A7%8C%EB%93%9C%EB%8A%94-%EB%AF%B8%EB%A6%AC%EC%BA%94%EB%B2%84%EC%8A%A4-%ED%85%9C%ED%94%8C%EB%A6%BF-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88-ba801dd8be92)
+## [미리캔버스의 SVG 필터 활용기: 브라우저에서 이미지 보정하기](https://medium.com/miridih/%EB%AF%B8%EB%A6%AC%EC%BA%94%EB%B2%84%EC%8A%A4%EC%9D%98-svg-%ED%95%84%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B8%B0-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%97%90%EC%84%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%B3%B4%EC%A0%95%ED%95%98%EA%B8%B0-e8b4604ba996)
 - 회사: 미리디
-- 본문 요약: 미리캔버스 템플릿 팀이 사용자 데이터와 국가별 활용 패턴을 분석해 프레젠테이션 기본 레이아웃을 도출하고, 일본 신규 사용자를 위한 수정 가능한 템플릿 구조·슬라이드 가이드·샘플북을 제공한 과정을 소개합니다.
-- 주목할 point: 가이드·샘플북 적용 후 노출 대비 채택률이 약 2배, 노출 대비 다운로드율이 약 2.5배 올랐으며, 편집 구조와 여백 유연성을 디자인 초기부터 고려하는 설계가 핵심입니다.
-- keyword: #미리캔버스 #템플릿디자인 #사용자데이터 #UX #디자인시스템
+- 본문 요약: 브라우저에서 SVG 필터로 이미지 보정 기능을 구현한 활용 사례를 다루며, 실제 프로젝트 적용 시 마주친 네 가지 실전 이슈를 중심으로 설명합니다.
+- 주목할 point: 이미지 보정 기능을 구현할 때 SVG 필터를 프로젝트에 적용하는 방식과 실전 이슈를 사전에 검토해 볼 수 있습니다.
+- keyword: #SVG #SVG필터 #이미지보정 #프론트엔드
 
-## [누구나 전문가처럼 만들 수 있게: 미리캔버스 템플릿 디자이너가 일하는 법](https://medium.com/miridih/%EB%88%84%EA%B5%AC%EB%82%98-%EC%A0%84%EB%AC%B8%EA%B0%80%EC%B2%98%EB%9F%BC-%EB%A7%8C%EB%93%A4-%EC%88%98-%EC%9E%88%EA%B2%8C-%EB%AF%B8%EB%A6%AC%EC%BA%94%EB%B2%84%EC%8A%A4-%ED%85%9C%ED%94%8C%EB%A6%BF-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EA%B0%80-%EC%9D%BC%ED%95%98%EB%8A%94-%EB%B2%95-e1e3aff07211)
-- 회사: 미리디
-- 본문 요약: 템플릿 디자이너가 타겟과 목적을 분석하고 주제 분석·레퍼런스 수집·템플릿 제작·내부 리뷰를 거치며 글로벌 트렌드 기반의 디자인 가설을 실험하는 방식을 소개합니다. 북미·일본 시장별 사용자 반응에 맞춰 구성, 톤앤매너, 정보 구조를 설계합니다.
-- 주목할 point: 클레이 스타일, 두들·기하학 도형 등 컨셉별 템플릿의 실제 반응을 검증하고, 템플릿을 결과물이 아니라 콘텐츠 제작의 시작점으로 설계한다는 관점이 돋보입니다.
-- keyword: #미리캔버스 #템플릿 #디자인가설 #일본시장 #사용자경험
+## [여기어때 해외투어 프론트엔드 구축기록](https://techblog.gccompany.co.kr/%EC%97%AC%EA%B8%B0%EC%96%B4%EB%95%8C-%ED%95%B4%EC%99%B8%ED%88%AC%EC%96%B4-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B5%AC%EC%B6%95%EA%B8%B0%EB%A1%9D-056eeab367cc)
+- 회사: 여기어때
+- 본문 요약: 모노레포 기반으로 웹 19개·앱 웹뷰 18개 라우트와 별도 React·Vite 채팅 앱을 병렬 구축한 과정을 정리했습니다. 플랫폼 Provider와 공통 디자인 시스템을 재사용하고 웹·웹뷰는 같은 화면 컴포넌트를 공유하며, 딥링크·뒤로가기·세션·찜 동기화 등 앱 전용 기능은 브릿지로 처리했습니다.
+- 주목할 point: 컴포넌트 중심 설계와 API 계층화로 QA 대응과 후속 확장이 쉬워졌다고 합니다.
+- keyword: #모노레포 #React #웹뷰 #디자인시스템 #프론트엔드
 
-## [이벤트 트래픽 오토스케일링 (임터보)](https://tech.imweb.me/posts/event-traffic-autoscaling-imturbo/)
-- 회사: 아임웹
-- 본문 요약: 공유 웹 서버 풀에서 특정 고객사의 이벤트 트래픽이 다른 고객사 성능까지 떨어뜨리던 문제를, 이벤트를 전용 풀로 격리하고 증설·원복·회고를 자동화해 해결했습니다. Jira 일정을 수집해 DynamoDB 이벤트 목록 기준으로 Lambda 라우팅과 Kubernetes CronJob 용량 작업을 분리하고, 이벤트 전후 CloudFront 원본을 전용 풀로 전환했다가 복귀시킵니다.
-- 주목할 point: 워커 점유율·포화도·초당 요청 수별 필요 대수 중 최대값으로 용량을 산정하고, 예약판매 시 초당 요청 80배 증가·123만 건 요청에서 5xx 오류 0건을 기록했으며 고객 예약형 유료 기능으로 확장했습니다.
-- keyword: #오토스케일링 #CloudFront #Lambda #Kubernetes #이벤트트래픽
+## [올리브영의 첫 테크 컨퍼런스, define:OMNI 2026이 열립니다](https://oliveyoung.tech/2026-10-20/oy-conference-2026-notice/)
+- 회사: 올리브영
+- 본문 요약: 옴니채널 기술과 제품·조직의 고민을 공유하는 첫 테크 컨퍼런스 define:OMNI 2026 개최 안내입니다. 키노트와 OMNI·EXPERT·BEYOND 트랙 발표, 오늘드림 시스템 데모, 전시, 1:1 오피스아워, 네트워킹이 마련됩니다.
+- 주목할 point: 2026년 11월 19일 성수에서 열리며 공식 사이트에서 사전 신청을 받습니다.
+- keyword: #올리브영 #테크컨퍼런스 #옴니채널 #define_OMNI
 
-## [모나드와 범주론 ② 다른 계산, 같은 합성](https://hyper-accel.github.io/posts/kleisli-category/)
-- 회사: 하이퍼엑셀
-- 본문 요약: 1편의 Option 합성(composeOption)에 이어 List를 반환하는 함수의 합성 composeList를 만들어 두 합성의 공통 형태를 찾고, 결합법칙과 항등법칙을 도입합니다. 이 법칙들을 Lean 4로 증명한 뒤 범주와 Kleisli 범주로 일반화해 서로 다른 계산이 같은 규칙으로 합성됨을 보여 줍니다.
-- 주목할 point: 모나드를 "계산을 합성하는 규칙"이라는 관점에서 범주론과 연결하며, 예제 확인에서 모든 입력에 대한 증명으로 넘어가는 과정이 인상적입니다.
-- keyword: #모나드 #범주론 #Kleisli #Lean4 #함수형프로그래밍
+## [빠른 기기가 왜 기다려야 하지?](https://techblog.musinsa.com/%EB%B9%A0%EB%A5%B8-%EA%B8%B0%EA%B8%B0%EA%B0%80-%EC%99%9C-%EA%B8%B0%EB%8B%A4%EB%A0%A4%EC%95%BC-%ED%95%98%EC%A7%80-a0533ee53dd2)
+- 회사: 무신사
+- 본문 요약: 기기별 고정 시나리오 배정 때문에 먼저 끝난 기기가 놀던 실기기 BVT의 병목을 공유 Queue와 중앙 디바이스 설정으로 해소했습니다. 대기 시간 최적화와 모니터링 개선으로 전체 실행 시간과 운영 부담을 줄였습니다.
+- 주목할 point: 기기 추가마다 전용 스크립트를 쓰던 부담과 병렬 실행 증가에 따른 Slack 알림 과다 문제도 함께 개선했습니다.
+- keyword: #BVT #테스트자동화 #실기기 #Queue #QA
