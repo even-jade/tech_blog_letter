@@ -1,74 +1,110 @@
-<!-- 이 파일은 posts/2026-10-20.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-20 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-21.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-21 기술 블로그 모음
 
-## [Jenkins 배치 220개를 Temporal로 옮기며 고민한 것들](https://tech.inflab.com/20261009-jenkins-to-temporal/)
-- 회사: 인프런
-- 본문 요약: Jenkins 디스크 포화·플러그인 충돌로 인한 배치 전체 중단, 알림 누락, 낮은 자원 활용 문제를 해결하려고 EC2 12대에서 돌던 220개 잡(하루 약 15,900회 실행)을 Temporal과 Kubernetes Job 기반 구조로 이관했습니다. Temporal 서버를 EKS에 두고 Aurora PostgreSQL을 상태 저장소로 쓰며, 서비스별 TypeScript 워커와 공용 라이브러리로 스케줄·컨테이너 실행·실패 알림을 통합했습니다.
-- 주목할 point: 실행 ID와 시도 번호 기반 Job 이름으로 중복 실행을 막고, Activity 타임아웃·heartbeat와 catchup 제한으로 멈춤·밀린 실행을 관리합니다. Jenkins EC2 종료 시 배치 비용 절반 이상 절감을 기대하지만 Temporal·Datadog 학습과 구조 복잡도 증가라는 트레이드오프도 언급합니다.
-- keyword: #Temporal #Jenkins #Kubernetes #배치 #EKS
+## [모델만 바꿨는데 LLM 비용이 3배가 된 이유](https://medium.com/daangn/%EB%AA%A8%EB%8D%B8%EB%A7%8C-%EB%B0%94%EA%BF%A8%EB%8A%94%EB%8D%B0-llm-%EB%B9%84%EC%9A%A9%EC%9D%B4-3%EB%B0%B0%EA%B0%80-%EB%90%9C-%EC%9D%B4%EC%9C%A0-5ae60ab5108b)
+- 회사: 당근마켓
+- 본문 요약: Gemini에서 OpenAI GPT-5.6으로 모델을 교체한 뒤 응답 오류 없이 요청당 비용이 3.2배 늘었고, 프롬프트 캐시 히트율이 85.8%에서 2.3%로 떨어진 원인을 분석했다. GPT-5.6부터 자동 캐시 구분점이 최근 메시지 끝에만 생성되는데, 고정 지시문과 가변 본문을 한 메시지로 보내 '지시문+글 전체'만 캐시에 쓰이고 캐시 쓰기 할증 1.25배까지 붙은 것이 원인이었다.
+- 주목할 point: 고정부 끝에 명시적 캐시 구분점을 두고 캐시 히트율과 비용을 운영 지표로 관리하는 해법. 모델 교체 시 오류가 없어도 캐시 정책 변화로 비용이 급증할 수 있다는 점이 핵심.
+- keyword: #LLM #프롬프트캐시 #비용최적화 #모델교체
 
-## [[보안] AI 시대의 보안, 우리 회사는 얼마나 준비되어 있을까요? ✅](https://blog.naver.com/n_cloudplatform/224447858441)
+## [앱 리뷰 자동화 일주일만에 만들기](https://medium.com/wantedjobs/%EC%95%B1-%EB%A6%AC%EB%B7%B0-%EC%9E%90%EB%8F%99%ED%99%94-%EC%9D%BC%EC%A3%BC%EC%9D%BC%EB%A7%8C%EC%97%90-%EB%A7%8C%EB%93%A4%EA%B8%B0-00a798a73975)
+- 회사: 원티드
+- 본문 요약: 조직 개편 과정에서 담당 주체가 사라져 약 3년간 방치된 원티드 Android·iOS 앱 리뷰에 다시 답글을 달기 시작하기 위해, 일주일 만에 리뷰 답글 자동화를 구축한 경험을 공유한다.
+- 주목할 point: 방치된 운영 업무를 짧은 기간 안에 자동화로 되살린 사례로, 작게 시작해 리뷰 응답을 재개한 접근이 참고할 만하다.
+- keyword: #앱리뷰 #자동화 #모바일 #운영
+
+## [2026년과 이후 JavaScript의 동향 - 브라우저 밖의 JavaScript](https://d2.naver.com/helloworld/1443473)
+- 회사: 네이버
+- 본문 요약: 2019년 이후 브라우저 밖 JavaScript 생태계의 변화를 Node.js 중심으로 정리한 글. 런타임의 기능 내장화와 Node.js 호환 경쟁, Node.js·Deno·Bun의 공존, Deno의 npm·Node.js 호환 전환과 Cloudflare 합류, 공급망 보안과 릴리스 정책 변화를 다룬다.
+- 주목할 point: 런타임 간 경쟁이 '호환성' 중심으로 수렴하고 있고, 공급망 보안과 릴리스 정책이 런타임 선택의 중요한 기준이 되고 있다는 점.
+- keyword: #JavaScript #Node.js #Deno #Bun #공급망보안
+
+## [LLM 추론 칩 검증 이야기 1편: 칩의 정답은 어디서 오는가](https://hyper-accel.github.io/posts/chip-verification-ground-truth/)
+- 회사: 하이퍼엑셀
+- 본문 요약: LLM 추론 칩(LPU) 검증에서 '정답'의 출처를 다룬다. IP 레벨은 검증자가 스펙 문서만 보고 독립적으로 만든 레퍼런스 모델과 bit-exact로 비교하고, Top 레벨은 실제 AI 모델(PyTorch golden)과 기능 시뮬레이터(fsim), ZeBu 에뮬레이터 위의 RTL을 단계별로 비교한다. 허용오차는 fsim↔golden 비교 두 곳에만 두고 RTL이 걸린 비교는 모두 bit-exact로 한다.
+- 주목할 point: 비교 축마다 '한 가지만 다르게' 하면 git bisect처럼 불일치 원인이 좁혀진다는 원칙. 스펙 자체가 틀리면 IP 레벨 검증은 통과하므로 스펙을 거치지 않는 golden이 필요하다는 점.
+- keyword: #칩검증 #RTL #LLM추론 #AI반도체 #bit-exact
+
+## [글로벌 최고 수준의 자체 비전 인코더, Kanana-2-vision-encoder 개발기](https://tech.kakao.com/posts/840)
+- 회사: 카카오
+- 본문 요약: 카카오가 from scratch로 개발한 독자 비전 인코더 Kanana-2-vision-encoder를 소개한다. Kanana-2 LLM의 가중치와 구조를 활용해 학습·추론 효율을 높였고 고해상도 이미지 처리를 지원한다.
+- 주목할 point: LLM의 구조와 가중치를 비전 인코더에 재활용해 멀티모달 모델의 학습·추론 효율을 노린 점.
+- keyword: #Kanana #비전인코더 #멀티모달 #LLM
+
+## [critical-script, 배달의민족 웹뷰 로딩 성능을 30% 개선한 인라인 스크립트 로딩 전략 이야기](https://techblog.woowahan.com/27864/)
+- 회사: 우아한형제들
+- 본문 요약: HTML·번들 다운로드·실행·API 요청·렌더링이 직렬로 이어지던 웹뷰 로딩 워터폴을, HTML 파싱 시점의 인라인 스크립트로 초기 API 요청을 시작해 번들 로딩과 병렬화함으로써 웹뷰 LCP를 개선했다. Vite 플러그인으로 타입 공유, 페이지 인접 배치, 스크립트 크기 제한을 지원했다.
+- 주목할 point: 번들 로딩과 데이터 요청을 병렬화하는 단순한 전략으로 체감 속도를 크게 개선했고, 빌드 플러그인으로 개발 경험과 안전장치(크기 제한)를 함께 챙긴 점.
+- keyword: #웹뷰 #LCP #성능최적화 #Vite #프론트엔드
+
+## [모델보다 먼저 고민한 데이터](https://www.nextree.io/modelboda-meonjeo-gominhan-deiteo/)
+- 회사: 넥스트리
+- 본문 요약: 행동 이력과 학습 데이터가 쌓이지 않은 초기 추천 시스템에서, 모델을 먼저 정하면 필요한 데이터가 뒤늦게 누락될 위험이 있다고 보고 모델별(속성 기반, 협업 필터링, 지도학습 랭킹) 데이터 요구사항과 행동 이벤트의 의미를 검토했다. 필수 조건은 Filtering으로 분리하고 노출·요청·응답을 연결해 기록하는 구조를 제안한다.
+- 주목할 point: 추천 시점의 조건·프로필·정책까지 포함해 이벤트를 연결 기록해야 이후 모델 확장이 가능하다는 점.
+- keyword: #추천시스템 #데이터설계 #이벤트로그
+
+## [Spring Boot와 JPA로 시작하는 데이터베이스 멀티테넌시](https://www.nextree.io/spring-bootwa-jparo-sijaghaneun-deiteobeiseu-meoltiteneonsi/)
+- 회사: 넥스트리
+- 본문 요약: Repository마다 반복되는 테넌트 조건과 누락 시 타 테넌트 데이터 노출 위험을 줄이기 위해 Hibernate 멀티테넌시로 행·스키마·DB 분리 방식을 비교하고 테넌트별 조회 흐름을 설명한다. 요청 헤더의 테넌트 ID를 ScopedValue 기반 TenantContext에 바인딩하고, 세션 경계·네이티브 SQL·커넥션 풀 운영 시 주의점을 정리했다.
+- 주목할 point: 테넌트 격리를 개별 쿼리가 아닌 프레임워크 레벨에서 보장하되, 네이티브 SQL과 커넥션 풀 같은 우회 경로를 별도로 점검해야 한다는 점.
+- keyword: #멀티테넌시 #SpringBoot #JPA #Hibernate
+
+## [[YELO Report #1] 익숙한 것을 다시 보다](https://blog.rapportlabs.kr/4050-research-customer-insight-report)
+- 회사: 라포랩스
+- 본문 요약: 4050 여성을 소비자가 아니라 삶·관계·나이 듦의 변화를 겪는 사람으로 연구하는 4050연구소 YELO의 첫 리포트. 화장품 선택, 노화 경험, 의류 선택의 세 생활 장면을 통해 기존 인식을 다시 살펴본다.
+- 주목할 point: 소비 행동을 단일 특성으로 일반화하지 않고 생활 맥락에서 해석하려는 UX 리서치 접근.
+- keyword: #UX리서치 #고객인사이트 #4050
+
+## [Module Federation: singleton이면 당연히 하나겠죠?](https://tech.channel.io/kr/articles/c33a7784)
+- 회사: 채널톡
+- 본문 요약: Module Federation에서 singleton 설정만으로 해결되지 않는 React·Context 중복 로딩의 원인을 분석했다. 런타임, import 경로, pnpm 설치 사본까지 점검 기준을 제시한다.
+- 주목할 point: singleton을 설정해도 import 경로나 패키지 사본 차이로 중복이 생길 수 있어, 런타임·경로·설치 구조를 함께 점검해야 한다는 점.
+- keyword: #ModuleFederation #React #마이크로프론트엔드 #pnpm
+
+## [쌓여 있는 영상과 이미지 속 그 장면, 바로 찾을 수 있다면?ㅣMedia Intelligence 프로모션 (~11/2)](https://blog.naver.com/n_cloudplatform/224449020220)
 - 회사: 네이버 클라우드 플랫폼
-- 본문 요약: 생성형 AI와 AI 에이전트 확산으로 기업 보안 관리 필요성이 커지는 배경을 다루고, 네이버클라우드의 보안 자가진단 사이트 오픈 소식을 소개합니다.
-- 주목할 point: 자가진단 사이트로 기업의 AI 시대 보안 현황을 점검해 볼 수 있으며, 보안 특화 AI 파운데이션 모델 사업 선정 역량도 함께 언급됩니다.
-- keyword: #AI보안 #보안자가진단 #생성형AI #AI에이전트
+- 본문 요약: 누적된 영상·이미지에서 원하는 장면을 찾기 어려운 미디어 관리 문제를 제시하고, 네이버클라우드 미디어 솔루션 8종을 소개하는 Media Intelligence 릴레이 프로모션(~11/2)의 첫 소식을 전한다.
+- 주목할 point: 영상·스틸컷·사진이 분리 관리되어 생기는 중복 검색 문제를 AI 기반 장면 검색으로 풀겠다는 제품 소개 글.
+- keyword: #MediaIntelligence #네이버클라우드 #영상검색
 
-## [AI 에이전트 시대의 기업 토큰 경제학: 비용 방정식으로 측정하고 Amazon Bedrock에서 줄이기](https://aws.amazon.com/ko/blogs/tech/ai-agent-token-economics-measure-and-reduce-costs-on-amazon-bedrock/)
-- 회사: AWS
-- 본문 요약: AI 에이전트 총비용을 사용자 수·세션 수·턴 수·요청 수·요청당 토큰·토큰당 가격의 여섯 항목 방정식으로 분해해 측정하는 방법을 정리했습니다. Bedrock 청구·호출 로그·CloudWatch 지표와 Claude Code·Codex OpenTelemetry 이벤트를 통합 측정하고, 모델·추론 강도 분리, 자동 컴팩션, 프롬프트 캐시 TTL 분리, MCP 도구 검색, 코드 모드 등으로 요청당 토큰을 줄이는 방안을 제시합니다.
-- 주목할 point: 비용 귀속용 추론 프로필·할당 태그, 실시간 세션 비용 표시, AWS Budgets 임계 알림, 주간 안티패턴 리포트 등 다층 넛지로 운영하며, 절감률은 환경에 따라 달라질 수 있어 직접 검증이 필요합니다.
-- keyword: #토큰비용 #AmazonBedrock #AI에이전트 #FinOps #ClaudeCode
+## [[현장 스케치] AI 데이터센터의 미래를 만나다! - Tech Week Singapore 2026](https://tech.ktcloud.com/entry/2026-10-ktcloud-tech-week-singapore-ai-datacenter-trends)
+- 회사: KT 클라우드
+- 본문 요약: Tech Week Singapore 2026의 AI 데이터센터 전시·컨퍼런스 현장 동향을 정리했다. 액체냉각·모듈형 구축·통합 설계 흐름과 전력·부지·투자, 지역사회 신뢰, 운영 인력 육성 과제가 논의되었다.
+- 주목할 point: GPU 집적도와 발열 증가에 대응한 액체냉각과 모듈형 구축이 업계 공통 흐름이라는 점.
+- keyword: #AI데이터센터 #액체냉각 #TechWeek
 
-## [나는 하네스 깎는 노인이 되었다 시리즈 2: 안녕, 실버불릿](https://meetup.nhncloud.com/posts/426)
-- 회사: NHN
-- 본문 요약: 개인용 AI 하네스에 채팅 입출력을 연결해 팀 동료처럼 쓰는 '실버불릿' 구성을 소개합니다. 서비스 가이드·코드·로그·과거 문의 기록을 엮어 결론·원인·근거·대응방안 중심으로 답하고, 답변을 다시 기록으로 쌓는 순환 구조입니다. 개인 권한 오남용을 막기 위해 사용자별 역할로 권한을 분리하고 텍스트 규칙이 아닌 구조적 차단을 적용했습니다.
-- 주목할 point: 장애 원인 파악 시간이 30~50분 이상에서 4~10분으로, 문의 답변 시간이 몇 시간~하루 이상에서 보통 5분 이내로 단축되었다고 합니다.
-- keyword: #AI하네스 #AI에이전트 #권한분리 #운영자동화
+## [[분석] AI 데이터센터 냉방 시스템의 Fail-Safe: 마지막 방어선 래칭릴레이](https://tech.ktcloud.com/entry/2026-10-ktcloud-datacenter-cooling-fail-safe-latching-relay)
+- 회사: KT 클라우드
+- 본문 요약: 고집적 GPU 클러스터에서 냉방설비가 동시에 멈추면 빠르게 온도 임계치에 도달하는 위험을 다룬다. 정전뿐 아니라 PLC 오류·통신 이상·로직 리셋으로 운전 명령 신호가 사라지는 경우를 구분하고, 래칭릴레이로 최종 접점 상태를 유지하는 Fail-Safe 설계를 소개한다.
+- 주목할 point: 제어 신호 소실에도 마지막 접점 상태를 유지하도록 하드웨어 레벨 안전장치를 두는 설계.
+- keyword: #데이터센터 #냉방 #FailSafe #래칭릴레이
 
-## [2026년과 이후 JavaScript의 동향 - JavaScript(ECMAScript)](https://d2.naver.com/helloworld/2675915)
-- 회사: 네이버 D2
-- 본문 요약: 2020년 이후 ESM 전환, 도구의 Go·Rust 전환, TypeScript 기본값화 등 JavaScript 생태계 변화를 정리하고, TC39 절차와 ES2022~ES2025 흐름, ES2026의 Array.fromAsync·Upsert·Iterator.concat 등 7개 기능과 런타임 지원 현황, 진행 중인 제안을 살펴봅니다.
-- 주목할 point: Node.js의 require(esm) 지원으로 CommonJS에서 ESM으로의 호환성 장벽이 완화되었다는 점이 실무적으로 눈에 띕니다.
-- keyword: #JavaScript #ECMAScript #ES2026 #TC39 #ESM
+## [[인사이트] 로봇은 왜 챗봇과 GPU 수요가 다를까? 피지컬 AI 시대의 인프라 전략](https://tech.ktcloud.com/entry/2026-10-ktcloud-physical-ai-rfm-gpu-infrastructure)
+- 회사: KT 클라우드
+- 본문 요약: 로봇 파운데이션 모델(RFM)은 학습·시뮬레이션·엣지 추론을 함께 요구해 LLM과 다른 GPU 수요 구조를 보인다. Three Computers 구성과 Omniverse·Cosmos 기반 가상 데이터 생성, Jetson·Thor 기반 엣지 추론을 소개하며, 국내에서는 제조 데이터와 보안 요건을 고려한 피지컬 AI 인프라 전략이 중요하다고 설명한다.
+- 주목할 point: 피지컬 AI는 학습, 합성데이터 시뮬레이션, 엣지 추론의 세 축으로 인프라를 설계해야 한다는 점.
+- keyword: #피지컬AI #RFM #GPU #엣지추론
 
-## [모던 백엔드 - Spring Boot 4.0 개관(3)](https://www.nextree.io/modeon-baegendeu-spring-boot-4-0-gaegwan-3/)
-- 회사: 넥스트리
-- 본문 요약: Spring Boot 4.0의 Jackson 3 전환(tools.jackson 네임스페이스, JacksonException 기반 언체크 예외)과 JSpecify 기반 널 안전성 표준을 살펴봅니다.
-- 주목할 point: 날짜 포맷 기본값이 숫자에서 ISO 8601 문자열로 바뀌고 파싱이 엄격해져, 컴파일은 되지만 API 응답 규격이 깨지는 침묵의 결함이 생길 수 있습니다. Jackson 2 지원 유예·7.2 삭제 로드맵을 고려한 마이그레이션 계획이 필요합니다.
-- keyword: #SpringBoot #Jackson3 #JSpecify #마이그레이션
+## [[기술해설] AI 질문 한 줄은 얼마나 많은 에너지를 쓸까? 데이터센터가 지능을 만드는 법](https://tech.ktcloud.com/entry/2026-10-ktcloud-ai-data-center-power-liquid-cooling)
+- 회사: KT 클라우드
+- 본문 요약: LLM의 토큰 생성이 GPU 연산, 열 발생, 데이터센터 전력 부하로 이어지는 흐름을 설명한다. 30MW급 데이터센터의 전력 인입·변압 손실·분배 구조와, GPU 랙당 최대 80kW 밀도에서 공랭의 한계, DLC와 PUE 관리의 중요성을 정리했다.
+- 주목할 point: 고밀도 GPU 환경에서는 공랭이 한계에 이르러 DLC와 PUE 관리가 필수라는 점.
+- keyword: #데이터센터 #전력 #DLC #PUE
 
-## [AI 다섯을 고용했더니, 내가 제일 바빴다](https://www.nextree.io/ai-daseoseul-goyonghaessdeoni-naega-jeil-babbassda/)
-- 회사: 넥스트리
-- 본문 요약: Codex 기반으로 작가·학습 편집자·드라마 리뷰어·제작 감독·영상/음향 리뷰어 다섯 역할의 AI 에이전트를 두고 한국어 학습 드라마를 제작한 운영 경험을 소개합니다. 역할별 검토 후에도 어색한 대사, 컷 간 소품 불일치 등이 남았습니다.
-- 주목할 point: 대사 ID·파일 버전·해시 기록과 단일 원고 수정 담당자로 충돌을 막고, 승인 범위 밖의 새 선택은 사람에게 넘기는 경계를 둔 것이 핵심입니다. 역할 정의 파일만으로 인수인계가 되지 않아 호출마다 작업 범위·대상 파일을 명시해야 합니다.
-- keyword: #AI에이전트 #Codex #멀티에이전트 #워크플로
+## [SaaS란? 서비스형 소프트웨어의 개념·구조·과금 방식 정리](https://library.gabia.com/contents/infrahosting/15846/)
+- 회사: 가비아
+- 본문 요약: SaaS의 책임 범위(사업자는 애플리케이션~네트워크, 사용자는 데이터·계정·접근 권한·단말 보안), IaaS·PaaS·SaaS의 차이, 멀티테넌시 구조와 구독·사용량 기반 과금 방식을 정리했다. 도입 전 계정·데이터 관리, 이전성, SLA, 요금 구조를 확인해야 한다고 안내한다.
+- 주목할 point: SaaS 도입 시 데이터 이전성과 SLA, 요금 구조를 사전에 확인해야 한다는 체크포인트.
+- keyword: #SaaS #클라우드 #멀티테넌시 #과금
 
-## [SI 퍼블리셔를 위한 웹 접근성(A11y) 실전 가이드](https://www.nextree.io/si-peobeulrisyeoreul-wihan-web-jeobgeunseong-a11y-siljeon-gaideu/)
-- 회사: 넥스트리
-- 본문 요약: React SPA에서 자주 생기는 접근성 결함(모달 초점 이탈, 화면 갱신 미낭독, 토글 상태 미전달, 아이콘 버튼 목적 미안내)과 JSX 마크업 규칙을 정리하고, 모달·아코디언·동적 알림의 ARIA·초점 제어 검증 방법을 제시합니다.
-- 주목할 point: 네이티브 시맨틱 태그를 우선하고, aria-expanded와 연결 ID, 모달 focus trap·초점 복귀, aria-live 알림, WebVTT 자막 등을 구현 체크리스트로 쓸 수 있습니다.
-- keyword: #웹접근성 #A11y #React #ARIA
+## [[상품소개] 온프레미스와 클라우드를 전용회선으로 잇는, 호스트센터 하이브리드 클라우드](https://blog.naver.com/n_cloudplatform/224448071155)
+- 회사: 네이버 클라우드 플랫폼
+- 본문 요약: 온프레미스와 네이버클라우드를 전용회선으로 연결해 두 환경을 하나의 IT 운영 환경처럼 쓰는 호스트센터 하이브리드 클라우드 출시를 소개한다. 마켓플레이스 신규 상품이며 커넥트 라인 이용료 외에 환경 간 트래픽 비용이 없는 점이 장점이다.
+- 주목할 point: 전용회선 기반 연결에서 환경 간 트래픽 비용이 없다는 점.
+- keyword: #하이브리드클라우드 #전용회선 #네이버클라우드
 
-## [미리캔버스의 SVG 필터 활용기: 브라우저에서 이미지 보정하기](https://medium.com/miridih/%EB%AF%B8%EB%A6%AC%EC%BA%94%EB%B2%84%EC%8A%A4%EC%9D%98-svg-%ED%95%84%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B8%B0-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%97%90%EC%84%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%B3%B4%EC%A0%95%ED%95%98%EA%B8%B0-e8b4604ba996)
-- 회사: 미리디
-- 본문 요약: 브라우저에서 SVG 필터로 이미지 보정 기능을 구현한 활용 사례를 다루며, 실제 프로젝트 적용 시 마주친 네 가지 실전 이슈를 중심으로 설명합니다.
-- 주목할 point: 이미지 보정 기능을 구현할 때 SVG 필터를 프로젝트에 적용하는 방식과 실전 이슈를 사전에 검토해 볼 수 있습니다.
-- keyword: #SVG #SVG필터 #이미지보정 #프론트엔드
-
-## [여기어때 해외투어 프론트엔드 구축기록](https://techblog.gccompany.co.kr/%EC%97%AC%EA%B8%B0%EC%96%B4%EB%95%8C-%ED%95%B4%EC%99%B8%ED%88%AC%EC%96%B4-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B5%AC%EC%B6%95%EA%B8%B0%EB%A1%9D-056eeab367cc)
-- 회사: 여기어때
-- 본문 요약: 모노레포 기반으로 웹 19개·앱 웹뷰 18개 라우트와 별도 React·Vite 채팅 앱을 병렬 구축한 과정을 정리했습니다. 플랫폼 Provider와 공통 디자인 시스템을 재사용하고 웹·웹뷰는 같은 화면 컴포넌트를 공유하며, 딥링크·뒤로가기·세션·찜 동기화 등 앱 전용 기능은 브릿지로 처리했습니다.
-- 주목할 point: 컴포넌트 중심 설계와 API 계층화로 QA 대응과 후속 확장이 쉬워졌다고 합니다.
-- keyword: #모노레포 #React #웹뷰 #디자인시스템 #프론트엔드
-
-## [올리브영의 첫 테크 컨퍼런스, define:OMNI 2026이 열립니다](https://oliveyoung.tech/2026-10-20/oy-conference-2026-notice/)
-- 회사: 올리브영
-- 본문 요약: 옴니채널 기술과 제품·조직의 고민을 공유하는 첫 테크 컨퍼런스 define:OMNI 2026 개최 안내입니다. 키노트와 OMNI·EXPERT·BEYOND 트랙 발표, 오늘드림 시스템 데모, 전시, 1:1 오피스아워, 네트워킹이 마련됩니다.
-- 주목할 point: 2026년 11월 19일 성수에서 열리며 공식 사이트에서 사전 신청을 받습니다.
-- keyword: #올리브영 #테크컨퍼런스 #옴니채널 #define_OMNI
-
-## [빠른 기기가 왜 기다려야 하지?](https://techblog.musinsa.com/%EB%B9%A0%EB%A5%B8-%EA%B8%B0%EA%B8%B0%EA%B0%80-%EC%99%9C-%EA%B8%B0%EB%8B%A4%EB%A0%A4%EC%95%BC-%ED%95%98%EC%A7%80-a0533ee53dd2)
-- 회사: 무신사
-- 본문 요약: 기기별 고정 시나리오 배정 때문에 먼저 끝난 기기가 놀던 실기기 BVT의 병목을 공유 Queue와 중앙 디바이스 설정으로 해소했습니다. 대기 시간 최적화와 모니터링 개선으로 전체 실행 시간과 운영 부담을 줄였습니다.
-- 주목할 point: 기기 추가마다 전용 스크립트를 쓰던 부담과 병렬 실행 증가에 따른 Slack 알림 과다 문제도 함께 개선했습니다.
-- keyword: #BVT #테스트자동화 #실기기 #Queue #QA
+## [루프를 품은 그래프 엔지니어링: Claude Code와 OmO로 본 설계와 실행](https://insight.infograb.net/blog/2026/10/21/graph-engineering/)
+- 회사: 인포그랩
+- 본문 요약: 다중 에이전트 작업을 그래프로 설계하는 방법과 Claude Code·OmO의 구현 차이를 비교했다. PR 리뷰를 정확성·보안·성능 리뷰, 검증, 수정, 테스트 반복의 순환 그래프로 설계하고, Claude Code는 JavaScript 스크립트 기반 분기·반복과 pipeline()으로, OmO는 DAG(run·dependsOn)와 노드별 모델 선택, 의존성 단위 재실행으로 구현한 차이를 보인다.
+- 주목할 point: 도구 구조보다 검증 기준, 모델, 셸 권한 차이가 결과 판정에 더 큰 영향을 미쳤고, 판정 없는 출력과 기각을 구분하고 비용·반복 제한·종료 조건을 사전에 정해야 한다는 점.
+- keyword: #에이전트 #그래프엔지니어링 #ClaudeCode #OmO #워크플로
