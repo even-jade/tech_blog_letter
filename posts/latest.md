@@ -1,62 +1,44 @@
-<!-- 이 파일은 posts/2026-10-22.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-22 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-23.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-23 기술 블로그 모음
 
-## [셀프 호스팅 Grafana 알림으로 AWS DevOps Agent의 인시던트 자동 조사 시작하기](https://aws.amazon.com/ko/blogs/tech/aws-devops-agent-self-hosted-grafana-webhook-trigger/)
+## [Pennylane을 활용한 Amazon Braket에서의 maxcut 문제의 해결 (1부) – Max-Cut 개념 및 QAOA 구현](https://aws.amazon.com/ko/blogs/tech/amazon-braket-pennylane-maxcut-qaoa-part1/)
 - 회사: AWS
-- 본문 요약: 셀프 호스팅 Grafana의 Webhook Contact Point로 Alert 발생 시 AWS DevOps Agent가 인시던트를 자동 조사하도록 구성하는 방법을 다룹니다. Alert Rule → Webhook → 인시던트 생성 → Grafana·CloudWatch·배포 이력 상관 분석 → RCA 리포트 전달 흐름이며, Webhook 시크릿과 Viewer Service Account Token의 인증 목적을 분리하고 OAM Sink·Link와 IAM 역할로 멀티 계정 조회를 구성합니다.
-- 주목할 point: Amazon Managed Grafana의 직접 HTTP POST 미지원과 30일 토큰 만료 제약 때문에 셀프 호스팅을 택했고, 대신 토큰 교체와 보안 패치의 운영 책임이 따릅니다. curl → Contact Point 테스트 → 항상 firing되는 테스트 규칙 순의 단계별 검증이 유용합니다.
-- keyword: #Grafana #AWS #DevOpsAgent #인시던트 #Observability
+- 본문 요약: 그래프 정점을 두 집합으로 나눠 집합 간 간선 수(가중치 합)를 최대화하는 Max-Cut 문제를 비용 해밀토니언으로 변환하고, PennyLane 기반 QAOA 회로(Hadamard 초기화 후 비용·믹서 레이어 p회 반복)로 구현합니다. 양자 회로의 비용 기댓값과 고전 경사 하강법을 결합해 γ·β 파라미터를 최적화하는 루프를 설명합니다.
+- 주목할 point: device_arn만 바꿔 로컬 시뮬레이터, Amazon Braket 시뮬레이터, QPU 실행을 전환할 수 있고, NISQ 환경에 적합한 얕은 하이브리드 근사 알고리즘을 다룹니다.
+- keyword: #AWS #AmazonBraket #PennyLane #QAOA #MaxCut #양자컴퓨팅
 
-## [테스트 로그로 수집 구조와 지표 검증하기: 이벤트 로그 전송 2편](https://on.com2us.com/tech/event-test-log-validation/)
-- 회사: 게임빌컴투스플랫폼
-- 본문 요약: 이벤트 전송 기능을 개발하기 전에 테스트 로그를 보내 이벤트·속성이 의도한 구조와 자료형으로 수집되는지, 원하는 지표를 구성할 수 있는지 미리 검증하는 방법을 설명합니다. Hive 애널리틱스의 ETL 시뮬레이션으로 전송하고 데이터 미리보기·BigQuery·Create에서 결과를 확인합니다.
-- 주목할 point: 완료 이벤트에 이용자 식별자가 없거나 플레이 시간이 문자형이면 지표 계산이 불가능한 점을 개발 후에야 발견하는 문제를 예방합니다. 상용 환경에서는 별도 테스트 앱 ID를 쓰고 테스트 데이터를 집계에서 제외하는 방법을 정해야 합니다.
-- keyword: #애널리틱스 #이벤트전송 #테스트로그 #하이브
+## [W컨셉, AWS Transform과 Kiro로 .NET 10까지 대규모 현대화 여정](https://aws.amazon.com/ko/blogs/tech/wconcept-dotnet-modernization-aws-transform-kiro/)
+- 회사: AWS (W컨셉)
+- 본문 요약: 160만 라인 규모의 레거시 .NET 애플리케이션(Windows Server 기반)을 AWS Transform과 Kiro를 역할 분담해 .NET 10으로 현대화하고, 기존 Jenkins 파이프라인을 재활용해 Linux 기반 Amazon ECS로 이전했습니다. COM+ 결제·본인인증 모듈 API 분리 등 사전 제약 제거 후 JMeter·Datadog 성능 테스트와 QA로 검증했습니다.
+- 주목할 point: 약 7주 내 주요 현대화를 마치고 마이그레이션 공수를 90% 절감했으며, 라이선스 비용도 줄였습니다. Playwright 기반 Golden Master·특성화 테스트로 변환 전후 기능 동등성을 검증한 점이 인상적입니다.
+- keyword: #AWSTransform #Kiro #dotnet #ECS #현대화 #마이그레이션
 
-## [이벤트 템플릿으로 수집 구조 정의하기: 이벤트 로그 전송 1편](https://on.com2us.com/tech/event-template-collection-structure/)
-- 회사: 게임빌컴투스플랫폼
-- 본문 요약: Hive 애널리틱스가 제공하는 이벤트 템플릿(사전 정의된 이벤트명·속성)을 이용해 로그 수집 구조를 처음부터 설계하지 않고 정의하는 방법을 소개합니다. 데이터 > 이벤트에서 템플릿과 활용 가능한 지표를 확인하고, 속성을 수정·추가한 뒤 개발 환경에 맞는 소스를 생성하며, 개발 요청 전 테스트 로그로 검증합니다.
-- 주목할 point: 게임마다 이벤트를 제각각 설계하면 같은 행동도 다른 이름·구조로 수집되어 여러 게임 데이터를 같은 기준으로 비교하기 어렵다는 점에서 일관된 이벤트 정의의 가치를 강조합니다.
-- keyword: #데이터분석 #애널리틱스 #이벤트전송 #이벤트템플릿 #하이브
-
-## [팀 이름을 DevOps가 아니라 Cloud Platform으로 지은 이유](https://flex.team/blog/2026/10/22/backend47)
-- 회사: flex
-- 본문 요약: DevOps를 별도 운영 대행 조직이 아니라 개발 조직 전체의 업무 방식으로 보고, Cloud Platform 팀을 셀프서비스 내부 플랫폼 조직으로 정의한 배경을 설명합니다. 반복 요청을 티켓 대신 셀프서비스 도구로 전환하고, Kafka 토픽 정의·PR·Terraform 모듈로 개발자 주도 인프라 변경을 지원하며, 검색 엔진 노드 재시작 전후 7단계 안전성 확인과 스키마·CI 검증을 둡니다.
-- 주목할 point: 개발자와 AI 에이전트를 모두 플랫폼 사용자로 보는 제품 관점이 특징이며, 직접 운영 확대에 따른 책임 경계와 표준 강화로 인한 변경 속도 저하가 트레이드오프로 언급됩니다.
-- keyword: #DevOps #플랫폼엔지니어링 #Terraform #셀프서비스 #AI에이전트
-
-## [의료 AI 도입과 활용, 병원이 준비해야 할 세 가지 기반 – IHF 2026 현장 리뷰](https://tech.cloud.nongshim.co.kr/blog/aws/4565/)
-- 회사: 농심데이터시스템
-- 본문 요약: IHF 2026 사례를 바탕으로 의료 AI 도입에 필요한 데이터 표준화(FHIR), 업무 통합, 거버넌스 기반을 정리합니다. AI 기록 작성 후 의료진 검토·서명, 음성 삭제와 전사문 비식별화, 도입 전 검증과 운영 중 지속 모니터링의 중요성을 설명합니다.
-- 주목할 point: 도입 전 사용 목적·검증 근거·책임 주체·중단 권한을 확인하고, 운영 중 성능·의료진 수정 비율·드리프트를 재검토하는 체크리스트가 실무에 참고할 만합니다.
-- keyword: #의료AI #FHIR #AI거버넌스 #IHF2026
-
-## [카카오 AI 돛 Summit 26 다시보기 공개 — AI 인프라부터 서비스 적용, 개발과 창업까지](https://tech.kakao.com/posts/842)
-- 회사: 카카오
-- 본문 요약: 부산에서 약 800명이 참가한 카카오 AI 돛 Summit 26의 주요 세션 VOD를 공개했습니다. AI 인프라, 서비스 적용, 개발, 창업 주제로 구성됩니다.
-- 주목할 point: 행사 소개 및 다시보기 안내 성격의 글로, 세부 기술 내용은 각 세션 영상에서 확인해야 합니다.
-- keyword: #카카오 #AI #Summit #VOD
-
-## [React와 Day.js를 활용한 공수 캘린더 직접 구현하기](https://www.nextree.io/reactwa-day-jsreul-hwalyonghan-gongsu-kaelrindeo-jigjeob-guhyeonhagi/)
+## [온라인 시험 답안 유실 방지를 위한 기술 도입기](https://www.nextree.io/onrain-siheom-daban-yusil-bangjireul-wihan-gisul-doibgi/)
 - 회사: 넥스트리
-- 본문 요약: React와 Day.js로 공수·금액·휴일·메모 등 날짜별 정보를 담는 재사용 가능한 캘린더를 구현합니다. CustomCalendar, CalendarMonthGrid, buildWeeks로 역할을 나누고 월 첫날 이전 빈칸을 포함해 7개 단위 주 배열을 만들어 렌더링합니다.
-- 주목할 point: 날짜 계산과 UI를 분리하고, 빈칸을 렌더링하지 않으면 요일 위치가 틀어지므로 CSS Grid 7열 고정과 빈칸 포함 배열이 중요하다는 점을 짚습니다.
-- keyword: #React #Day.js #캘린더 #CSSGrid #프론트엔드
+- 본문 요약: 온라인 시험 종료 시점에 몰리는 자동 저장·수동 제출·자동 제출 요청과 네트워크 재시도, 패킷 역전, 클라이언트 시계 오차로 인한 답안 유실 위험을 분석하고, Kafka 비동기 자동 저장(attemptId 파티션 키, clientSeq 조건부 업데이트)과 CAS 기반 단방향 제출 상태 머신으로 해결했습니다.
+- 주목할 point: 서버 시간을 단일 기준으로 삼고 3초 유예 시간으로 지연을 흡수하며, 멱등성 응답과 스케줄러 자동 마감으로 중복 제출과 미마감 세션을 수렴시킵니다.
+- keyword: #Kafka #동시성 #멱등성 #상태머신 #백엔드
 
-## [애자일 프로젝트에서 구성원의 역할](https://www.nextree.io/aejail-peurojegteueseo-guseongweonyi-yeoghal/)
+## [S3 기반 데이터 티어링 도입기](https://www.nextree.io/s3-giban-deiteo-tieoring-doibgi/)
 - 회사: 넥스트리
-- 본문 요약: 계약·일정·예산이 정해진 SI 프로젝트에서 Scrum 역할과 Sprint 운영을 기존 직책(PM, PL, 기획자, 개발자, QA)과 연결하는 방법을 설명합니다. 고객 담당자를 Product Owner로 두고 2주 단위 Sprint와 Review·Retrospective를 반복하며, 핵심 기능은 Pair Work로 지식을 분산합니다.
-- 주목할 point: 계약 범위를 벗어난 변경 요구는 별도 변경관리로 일정·비용을 협의하고, Sprint 반복 자체보다 회고 개선사항의 실제 적용을 중시합니다.
-- keyword: #애자일 #Scrum #SI프로젝트 #Sprint #회고
+- 본문 요약: MSA 분산 로그 증가로 MongoDB 비용과 성능 문제가 커지자, 최근 30일 로그는 MongoDB(Hot), 31일~1년 로그는 S3 Standard(Cold)로 분리하는 데이터 티어링을 도입했습니다. 커서 페이징과 임시 파일 스트리밍으로 S3에 업로드한 뒤 ID 기준 배치 삭제하며 S3 객체 만료도 설정합니다.
+- 주목할 point: MongoDB 보관 범위를 고정해 인덱스를 RAM 안에서 관리하고, 스트리밍·배치 처리로 OOM과 DB 쓰기 부하를 줄였습니다. 제네릭·함수형 인터페이스로 마이그레이션 로직을 재사용합니다.
+- keyword: #MongoDB #S3 #데이터티어링 #로그 #DevOps
 
-## [“대표님이 직접 쓰신 줄 알았어요” - 최인아책방에서 만난 『매스니치 서바이벌』](https://blog.afinit.com/%EB%8C%80%ED%91%9C%EB%8B%98%EC%9D%B4-%EC%A7%81%EC%A0%91-%EC%93%B0%EC%8B%A0-%EC%A4%84-%EC%95%8C%EC%95%98%EC%96%B4%EC%9A%94-%EC%B5%9C%EC%9D%B8%EC%95%84%EC%B1%85%EB%B0%A9%EC%97%90%EC%84%9C-%EB%A7%8C%EB%82%9C-%EB%A7%A4%EC%8A%A4%EB%8B%88%EC%B9%98-%EC%84%9C%EB%B0%94%EC%9D%B4%EB%B2%8C-387713)
-- 회사: 밸런스히어로(어피닛)
-- 본문 요약: 『매스니치 서바이벌』 북콘서트에서 인도 핀테크 어피닛의 창업·위기·회복 과정을 소개합니다. 신용 기록이 부족한 인도에서 대안신용평가가 금융 접근성을 여는 수단이 된 점과, 코로나19 및 복수 금융서비스 동시 추진 실패를 거친 생존 과정, 인도인 팀장과 한국인 팀원의 권한·역할 분담을 다룹니다.
-- 주목할 point: 기술이 시장 문제에 따라 보완재에서 핵심 수단이 될 수 있다는 점과, 기업사를 일방적 성공담이 아니라 구성원별 상반된 평가까지 함께 기록했다는 점이 눈에 띕니다.
-- keyword: #핀테크 #대안신용평가 #인도 #스타트업
+## [[네이버클라우드 아카데미] 영남대학교X대구대학교 SW중심대학과 함께한 <클라우드 Advanced 교육과정 1기> 돌아보기](https://blog.naver.com/n_cloudplatform/224451286717)
+- 회사: 네이버 클라우드 플랫폼
+- 본문 요약: 영남대학교·대구대학교 SW중심대학 학생을 대상으로 8월 24일~31일 6일간 총 30시간 진행한 클라우드 Advanced 교육과정 1기 회고입니다. 클라우드 심화 이론, 실무 프로젝트, NCP 공인 자격증 대비로 구성되었습니다.
+- 주목할 point: 정규 교육 전 오리엔테이션으로 과정 안내와 참여자 준비를 돕는 운영 방식이 언급됩니다.
+- keyword: #네이버클라우드 #NCP #클라우드교육 #SW중심대학
 
-## [감으로 맞추던 값을 식을 세워서 kubernetes 최적화하기](https://medium.com/watcha/kubernetes-%EB%B0%B0%EC%B9%98-%EC%9B%8C%ED%81%AC%EB%A1%9C%EB%93%9C%EC%9D%98-%EB%B9%84%EC%9A%A9-%EB%AA%A8%EB%8D%B8%EA%B3%BC-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%EA%B2%B0%EC%A0%95-3724d2c4ad99)
-- 회사: 왓챠
-- 본문 요약: Kubernetes 기반 인코딩 작업의 비용·시간 변수를 수식화해 Pod 확장 임계값(V)을 최적화한 사례입니다. Segment당 비용과 전체 완료 시간을 Pod 단가, 처리·대기 시간, 재작업 요소로 모델링하고, 완료 시간 확률 분포와 허용 초과율 기반 마감선으로 V=2를 선정했습니다.
-- 주목할 point: 작업 시간당 비용 45~74% 절감, 전체 완료 시간 14% 및 느린 상위 5% 작업 35% 단축을 확인했고, AI로 식 작성을 돕되 실측과 비판적 검증을 병행했다는 점이 인상적입니다.
-- keyword: #Kubernetes #오토스케일링 #비용최적화 #인코딩 #모델링
+## [AI가 먼저 거는 전화는 어떻게 만들까?](https://tech.channel.io/kr/articles/e7597f39)
+- 회사: 채널톡
+- 본문 요약: 미납 안내·일정 확인 같은 아웃바운드 AI 전화를 위해 LLM의 고객 답변 분류와 노드 기반 대화 엔진의 지정 발화·다음 단계 실행을 분리했습니다. 발신처 문의·재통화 요청 등은 전역 규칙으로 우선 처리하고, SVAD로 의미론적 발화 종료를 판단해 응답성을 높였습니다.
+- 주목할 point: Jev 도입으로 평균 분류 응답 시간이 196.2ms로 기존 LLM 대비 약 65% 단축되었고, 2,500건 대상 캠페인에서 상담 희망 고객 83명을 발굴했습니다. 발화 버전 검증으로 비동기 결과 오반영을 방지합니다.
+- keyword: #AI전화 #LLM #음성에이전트 #SVAD #채널톡
+
+## [머릿속에 있던 로그 정의 기준을 모두의 AI 스킬로 만들기](https://toss.tech/article/dataops-log-definition-skill)
+- 회사: 토스
+- 본문 요약: DataOps Manager 개인 경험에 의존하던 앱로그 명세 정의를 AI 스킬과 lctl 검증을 결합해 표준화했습니다. 스킬이 기존 명세 조회·재사용 검토·신규 초안을 제안하고, DOM이 최종 확정한 뒤에만 로그센터에 반영하며, lctl과 로그센터가 규칙 위반을 걸러냅니다.
+- 주목할 point: 스킬(맥락 판단), lctl(기계 판정), 로그센터(최종 저장)로 역할을 분리하고 스킬을 lctl에 통합 배포해 개인 도구를 팀 표준 도구로 전환했습니다. 향후 도메인 지식 베이스 축적을 계획합니다.
+- keyword: #토스 #AI스킬 #로그설계 #DataOps #lctl
