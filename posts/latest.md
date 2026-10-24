@@ -1,44 +1,8 @@
-<!-- 이 파일은 posts/2026-10-23.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-23 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-24.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-24 기술 블로그 모음
 
-## [Pennylane을 활용한 Amazon Braket에서의 maxcut 문제의 해결 (1부) – Max-Cut 개념 및 QAOA 구현](https://aws.amazon.com/ko/blogs/tech/amazon-braket-pennylane-maxcut-qaoa-part1/)
-- 회사: AWS
-- 본문 요약: 그래프 정점을 두 집합으로 나눠 집합 간 간선 수(가중치 합)를 최대화하는 Max-Cut 문제를 비용 해밀토니언으로 변환하고, PennyLane 기반 QAOA 회로(Hadamard 초기화 후 비용·믹서 레이어 p회 반복)로 구현합니다. 양자 회로의 비용 기댓값과 고전 경사 하강법을 결합해 γ·β 파라미터를 최적화하는 루프를 설명합니다.
-- 주목할 point: device_arn만 바꿔 로컬 시뮬레이터, Amazon Braket 시뮬레이터, QPU 실행을 전환할 수 있고, NISQ 환경에 적합한 얕은 하이브리드 근사 알고리즘을 다룹니다.
-- keyword: #AWS #AmazonBraket #PennyLane #QAOA #MaxCut #양자컴퓨팅
-
-## [W컨셉, AWS Transform과 Kiro로 .NET 10까지 대규모 현대화 여정](https://aws.amazon.com/ko/blogs/tech/wconcept-dotnet-modernization-aws-transform-kiro/)
-- 회사: AWS (W컨셉)
-- 본문 요약: 160만 라인 규모의 레거시 .NET 애플리케이션(Windows Server 기반)을 AWS Transform과 Kiro를 역할 분담해 .NET 10으로 현대화하고, 기존 Jenkins 파이프라인을 재활용해 Linux 기반 Amazon ECS로 이전했습니다. COM+ 결제·본인인증 모듈 API 분리 등 사전 제약 제거 후 JMeter·Datadog 성능 테스트와 QA로 검증했습니다.
-- 주목할 point: 약 7주 내 주요 현대화를 마치고 마이그레이션 공수를 90% 절감했으며, 라이선스 비용도 줄였습니다. Playwright 기반 Golden Master·특성화 테스트로 변환 전후 기능 동등성을 검증한 점이 인상적입니다.
-- keyword: #AWSTransform #Kiro #dotnet #ECS #현대화 #마이그레이션
-
-## [온라인 시험 답안 유실 방지를 위한 기술 도입기](https://www.nextree.io/onrain-siheom-daban-yusil-bangjireul-wihan-gisul-doibgi/)
-- 회사: 넥스트리
-- 본문 요약: 온라인 시험 종료 시점에 몰리는 자동 저장·수동 제출·자동 제출 요청과 네트워크 재시도, 패킷 역전, 클라이언트 시계 오차로 인한 답안 유실 위험을 분석하고, Kafka 비동기 자동 저장(attemptId 파티션 키, clientSeq 조건부 업데이트)과 CAS 기반 단방향 제출 상태 머신으로 해결했습니다.
-- 주목할 point: 서버 시간을 단일 기준으로 삼고 3초 유예 시간으로 지연을 흡수하며, 멱등성 응답과 스케줄러 자동 마감으로 중복 제출과 미마감 세션을 수렴시킵니다.
-- keyword: #Kafka #동시성 #멱등성 #상태머신 #백엔드
-
-## [S3 기반 데이터 티어링 도입기](https://www.nextree.io/s3-giban-deiteo-tieoring-doibgi/)
-- 회사: 넥스트리
-- 본문 요약: MSA 분산 로그 증가로 MongoDB 비용과 성능 문제가 커지자, 최근 30일 로그는 MongoDB(Hot), 31일~1년 로그는 S3 Standard(Cold)로 분리하는 데이터 티어링을 도입했습니다. 커서 페이징과 임시 파일 스트리밍으로 S3에 업로드한 뒤 ID 기준 배치 삭제하며 S3 객체 만료도 설정합니다.
-- 주목할 point: MongoDB 보관 범위를 고정해 인덱스를 RAM 안에서 관리하고, 스트리밍·배치 처리로 OOM과 DB 쓰기 부하를 줄였습니다. 제네릭·함수형 인터페이스로 마이그레이션 로직을 재사용합니다.
-- keyword: #MongoDB #S3 #데이터티어링 #로그 #DevOps
-
-## [[네이버클라우드 아카데미] 영남대학교X대구대학교 SW중심대학과 함께한 <클라우드 Advanced 교육과정 1기> 돌아보기](https://blog.naver.com/n_cloudplatform/224451286717)
-- 회사: 네이버 클라우드 플랫폼
-- 본문 요약: 영남대학교·대구대학교 SW중심대학 학생을 대상으로 8월 24일~31일 6일간 총 30시간 진행한 클라우드 Advanced 교육과정 1기 회고입니다. 클라우드 심화 이론, 실무 프로젝트, NCP 공인 자격증 대비로 구성되었습니다.
-- 주목할 point: 정규 교육 전 오리엔테이션으로 과정 안내와 참여자 준비를 돕는 운영 방식이 언급됩니다.
-- keyword: #네이버클라우드 #NCP #클라우드교육 #SW중심대학
-
-## [AI가 먼저 거는 전화는 어떻게 만들까?](https://tech.channel.io/kr/articles/e7597f39)
-- 회사: 채널톡
-- 본문 요약: 미납 안내·일정 확인 같은 아웃바운드 AI 전화를 위해 LLM의 고객 답변 분류와 노드 기반 대화 엔진의 지정 발화·다음 단계 실행을 분리했습니다. 발신처 문의·재통화 요청 등은 전역 규칙으로 우선 처리하고, SVAD로 의미론적 발화 종료를 판단해 응답성을 높였습니다.
-- 주목할 point: Jev 도입으로 평균 분류 응답 시간이 196.2ms로 기존 LLM 대비 약 65% 단축되었고, 2,500건 대상 캠페인에서 상담 희망 고객 83명을 발굴했습니다. 발화 버전 검증으로 비동기 결과 오반영을 방지합니다.
-- keyword: #AI전화 #LLM #음성에이전트 #SVAD #채널톡
-
-## [머릿속에 있던 로그 정의 기준을 모두의 AI 스킬로 만들기](https://toss.tech/article/dataops-log-definition-skill)
-- 회사: 토스
-- 본문 요약: DataOps Manager 개인 경험에 의존하던 앱로그 명세 정의를 AI 스킬과 lctl 검증을 결합해 표준화했습니다. 스킬이 기존 명세 조회·재사용 검토·신규 초안을 제안하고, DOM이 최종 확정한 뒤에만 로그센터에 반영하며, lctl과 로그센터가 규칙 위반을 걸러냅니다.
-- 주목할 point: 스킬(맥락 판단), lctl(기계 판정), 로그센터(최종 저장)로 역할을 분리하고 스킬을 lctl에 통합 배포해 개인 도구를 팀 표준 도구로 전환했습니다. 향후 도메인 지식 베이스 축적을 계획합니다.
-- keyword: #토스 #AI스킬 #로그설계 #DataOps #lctl
+## [[AI-Native AFINIT] 5분 안에 데이터 분석 질문을 답해주는 AI 데이터 분석가를 만든 이야기](https://blog.afinit.com/ainative-afinit-5%EB%B6%84-%EC%95%88%EC%97%90-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D-%EC%A7%88%EB%AC%B8%EC%9D%84-%EB%8B%B5%ED%95%B4%EC%A3%BC%EB%8A%94-ai-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D%EA%B0%80%EB%A5%BC-%EB%A7%8C%EB%93%A0-%EC%9D%B4%EC%95%BC%EA%B8%B0-390779)
+- 회사: 밸런스히어로(어피닛)
+- 본문 요약: PM이 사실상 데이터 분석 요청을 도맡던 문제를 해결하기 위해, Cursor로 몇 달간 쌓은 검증된 SQL·Python·Markdown·Slack 초안을 GitHub repo(Sidekick)에 축적하고 이를 참조하는 Slack 데이터 분석 에이전트를 만들었습니다. 채널에서 봇을 멘션하면 진행 이모지가 붙고, DDL 검색 → 컬럼 확인 → 읽기 전용 SELECT 실행(Athena) 순으로 처리해 스레드에 표·인사이트를 답하며, 반나절 걸리던 분석이 약 5분으로 줄었습니다. 답변에는 지표 정의·사용 테이블·참고 파일·쿼리 역할을 footer로 붙여 신뢰성을 높였습니다.
+- 주목할 point: 에이전트 성능은 모델보다 repo에 쌓인 도메인 지식(레거시 테이블 사용 금지, CDC 테이블의 dt 파티션 등)과 검증된 산출물에 좌우된다는 점, 그리고 스레드 맥락 재확인·rate limit 시 폴링 분리·24시간 원격 서버 배포 같은 운영 시행착오를 공유합니다. 지표 정의가 모호하거나 복잡한 분석은 여전히 사람의 검토가 필요하다고 짚습니다.
+- keyword: #AI에이전트 #Slack #SQL #Athena #Cursor
