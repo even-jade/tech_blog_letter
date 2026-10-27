@@ -1,80 +1,86 @@
-<!-- 이 파일은 posts/2026-10-26.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-26 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-27.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-27 기술 블로그 모음
 
-## [기존 LangGraph 워크플로우를 Amazon Bedrock AgentCore Runtime으로: 아이지에이웍스 클레어의 프로덕션 이관과 운영 경험](https://aws.amazon.com/ko/blogs/tech/igaworks-claire-agentic-agent-with-amazon-bedrock-agentcore-part-2/)
-- 회사: AWS (아이지에이웍스 사례)
-- 본문 요약: 단일 ECS 컨테이너에서 여러 LangGraph 워크플로우를 돌리며 생긴 동시성 지연과 장애 격리 문제를, FastAPI·LangGraph 코드를 재작성하지 않고 AgentCore Runtime의 /invocations, /ping 프로토콜 어댑터로 이관해 해결했습니다. Runtime 세션 식별자와 LangGraph thread_id를 분리하고, VPC 모드와 에이전트별 IAM 역할·보안 그룹으로 최소 권한을 구성했습니다. 그래프 재사용, 불필요한 LLM 호출 제거, 의존성 병렬 초기화, Redshift 워밍으로 동시성 16에서 Warm 세션 TTFT p95를 3.702초에서 0.174초로 줄였습니다.
-- 주목할 point: 신규 세션 급증 시 pre-warmed 용량 초과로 콜드 스타트·초기화 실패가 생길 수 있고, 세션별 환경에 맞춰 DB 커넥션 풀을 줄이고 유휴 연결을 검증해야 합니다. Langfuse trace와 CloudWatch 구조화 로그를 묶은 관측 체계도 필요합니다.
-- keyword: #AmazonBedrock #AgentCore #LangGraph #TTFT
+## [손가락 튕기기로 LLM 비용 줄이기](https://toss.tech/article/snap-llm-cost-reduction)
+- 회사: 토스
+- 본문 요약: 대용량 LLM 호출로 커진 비용·지연을 줄이기 위해 SNAP 시스템을 만들었습니다. System Prompt 앞부분 해시 기반 Task Fingerprint로 이질적인 로그를 작업 단위로 분류하고, 비용 기준 후보 선정·레이블/데이터셋 검증·소형 모델 학습·레지스트리 등록을 Airflow 일일 배치로 자동화했습니다. Confidence가 임계값 이상인 요청만 내재화 모델이 처리하고 나머지는 기존 LLM으로 폴백합니다.
+- 주목할 point: 동일상품 판별 작업에서 목표 일치율 99.9% 조건으로 배포한 뒤 6일간 요청의 약 33~37%를 내재화 모델이 처리해 입력 토큰 약 76억 개, 출력 토큰 약 4,520만 개를 절감했습니다. 초당 1,203건에서 p99 15.23ms이며, 전체 전환보다 검증된 고신뢰 구간부터 전환하는 트레이드오프가 참고할 만합니다.
+- keyword: #LLM #fine-tuning #비용절감 #Airflow
 
-## [아이지에이웍스 클레어의 Agentic AI PoC 여정: Amazon Bedrock AgentCore로 설계하고 평가하기](https://aws.amazon.com/ko/blogs/tech/igaworks-claire-agentic-agent-with-amazon-bedrock-agentcore-part-1/)
-- 회사: AWS (아이지에이웍스 사례)
-- 본문 요약: 고정형 LangGraph 워크플로우로는 운영 DB·DW를 결합한 복합 질의 처리에 한계가 있어, supervisor 그래프의 구조화 출력 기반 triage와 코드 라우팅으로 Haiku 기반 안내 경로와 Opus 기반 SQL ReAct 경로를 분리했습니다. MCP 도구 서버, AgentCore Gateway·Memory로 도구 연결과 세션 복원을 검증하고, JSONL 시나리오·assertions·trajectory 대조 기반 Evaluations 체계를 재설계했습니다.
-- 주목할 point: 절대 수치 대신 실제 도구 호출 결과와 응답의 일치 여부를 평가 기준으로 삼았고, 출력 토큰 제한·도구 로딩 병렬화·MCP 세션 유지로 복합 질의 응답 시간을 약 60% 단축했습니다. trace 관측 → 수정 → 배포·평가·롤백으로 이어지는 개선 루프가 참고할 만합니다.
-- keyword: #LLM #AmazonBedrockAgentCore #MCP #Evaluation
+## [상태 전이마다 테스트가 없으면, 운영 가이드가 빌드되지 않습니다](https://flex.team/blog/2026/10/27/backend48)
+- 회사: flex
+- 본문 요약: 운영 가이드만으로 완료한 업무가 25개 중 6개에 그칠 만큼 가이드와 실제 동작이 어긋나 있었습니다. 엔티티별 YAML에 상태, 정상·금지 전이, 화면 액션, 코드 위치, 테스트 참조를 단일 선언으로 통합하고, 백엔드 PR의 CI에서 검증해 운영 가이드와 상태 다이어그램(Mermaid·ELK)을 자동 생성합니다.
+- 주목할 point: 테스트 없는 전이나 소스에 없는 테스트 참조가 있으면 생성기가 빌드를 중단해 PR 병합을 막습니다. 알려진 결함도 선언에 기록해 가이드에 노출하며, 선언 작성 과정에서 구독·청구서·견적의 미검증 전이 테스트가 보강됐습니다.
+- keyword: #YAML #CI/CD #운영가이드 #테스트
 
-## [Search OS의 SEO와 GEO 최적화 솔루션: Amazon EKS와 Amazon CloudFront로 구축한 상품 콘텐츠 구조화 시스템](https://aws.amazon.com/ko/blogs/tech/search-os-seo-geo-optimization-eks-cloudfront/)
-- 회사: AWS (Search OS 사례)
-- 본문 요약: 이미지·동적 페이지 중심의 상품 정보를 검색엔진과 생성형 AI가 읽기 어려운 문제를, 분석 결과를 의미 구조가 드러나는 HTML로 변환해 제공하는 방식으로 풀었습니다. CloudFront Functions가 대상 요청만 Search OS 콘텐츠 경로로 연결해 고객사 애플리케이션 변경이 필요 없고, EKS에서 분석·HTML 생성·제공 워크로드를 분리하며 결과는 S3에 저장·재사용합니다.
-- 주목할 point: KEDA(작업량 기반 파드 조절)와 Karpenter(노드 증감), ElastiCache for Valkey 비동기 큐, EC2 Spot으로 시즌성 부하와 비용을 흡수했습니다. GA4·Amplitude·Search Console·봇 로그·AI 답변 분석으로 유입부터 매출까지 측정합니다.
-- keyword: #SEO #GEO #AmazonEKS #CloudFront
+## [ParallelCluster 잘 쓰고 있는데, 왜 AWS PCS인가? (2부) — 워크로드별 적용과 전환 실전 가이드](https://aws.amazon.com/ko/blogs/tech/pcs-2/)
+- 회사: AWS
+- 본문 요약: AWS PCS의 관리형 Slurm 운영, 월 99.9% 가동률 SLA, 무중단 패치와 롤링 노드 교체가 CFD/CAE 장기 해석과 분산 학습에 주는 이점을 설명합니다. 단일 PCS 클러스터에 다중 큐·노드 그룹을 구성해 GPU 학습과 CPU 시뮬레이션을 통합하고, 여러 큐가 노드 그룹을 공유해 유휴 자원을 줄입니다.
+- 주목할 point: ParallelCluster 설정은 자동 변환되지 않아 PCS 클러스터·노드 그룹·큐를 재구성해야 하며, 스토리지를 공유하는 blue/green 컷오버가 안전한 전환 방식입니다. Kubernetes 기반 파이프라인, 10대 미만 소규모 클러스터, 컨트롤러 심층 수정이 필요한 경우엔 PCS가 맞지 않고 SageMaker HyperPod 등 대안을 검토해야 합니다.
+- keyword: #AWSPCS #ParallelCluster #Slurm #HPC
 
-## [10년 만에 새로 쓴 기업홈페이지, 내부 힘으로 다시 만들기](https://medium.com/cj-onstyle/10%EB%85%84-%EB%A9%88%EC%B6%98-%EA%B8%B0%EC%97%85%ED%99%88%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%82%B4%EB%B6%80-%ED%9E%98%EC%9C%BC%EB%A1%9C-%EB%8B%A4%EC%8B%9C-%EB%A7%8C%EB%93%A4%EA%B8%B0-eb4c3a315659?source=rss----c2837295b0fd---4)
-- 회사: CJ온스타일
-- 본문 요약: CJ ENM 커머스부문 기업홈페이지를 10년 만에 외주 없이 내부 역량으로 리뉴얼한 과정을 다룹니다. 정보구조 재설계, 반응형 UI 반영, SEO와 GEO 고려가 주요 내용입니다. (확인 가능한 범위는 요약 수준이며 세부 구현 내용은 확인하지 못했습니다.)
-- 주목할 point: 오래된 기업 사이트 리뉴얼에서 검색(SEO)뿐 아니라 생성형 AI 검색 노출(GEO)까지 설계 단계에서 고려한 점이 눈에 띕니다.
-- keyword: #UI/UX #SEO #GEO #반응형UI
+## [AI 시대의 개발자를 꿈꾸는 학생 개발자에게](https://d2.naver.com/helloworld/1975819)
+- 회사: 네이버 D2
+- 본문 요약: AI 시대 개발자는 에이전트에 목표·맥락·평가 기준을 전달하고 병렬 작업을 감독하며, 정보 접근·권한·피드백 루프·모듈 경계를 설계하고 배포 책임을 지는 역할로 이동한다고 설명합니다. 소통을 통한 맥락 수집과 검증 체계, 성능·정합성·비용·조직 맥락을 아우르는 종합 판단 역량을 강조합니다.
+- 주목할 point: LLM 결과의 불확정성, 환경 차이로 인한 지연·메모리 초과·데이터 오염, 의존성 취약점과 AI 기반 공격에 대응하기 위해 정적 분석·보안 리뷰와 변경 위험도별 사람 승인 정책이 필요하다고 짚습니다. 팀 고유 용어를 기록해 AI의 해석 오류를 줄이라는 제안도 실용적입니다.
+- keyword: #AI에이전트 #개발자역량 #코드리뷰 #보안
 
-## [Flava MCP Hub가 걸어온 길: AI 시대를 위한 배관 공사](https://techblog.lycorp.co.jp/ko/flava-mcp-hub-ai-infrastructure)
-- 회사: 라인
-- 본문 요약: 팀별로 MCP 서버가 늘며 중복 구현, 인증·권한 분산, 사용 현황 부재가 생기고, MCP 표준의 동적 클라이언트 연결 방식과 사내 IAM 기반 인증 사이에 Protocol Gap이 있었습니다. 이를 Connection·Proxy·Authorization·Monitoring의 4층 모델로 정리하고, stdio 기반 Connector가 OIDC 처리·토큰 캐시/자동 갱신·Bearer 헤더 주입을 맡도록 했습니다.
-- 주목할 point: 오픈소스 Gateway로 시작했으나 JWKS ES512 파싱, CORS 미들웨어 순서, OOM, Rust 운영 부담 때문에 Go 기반 자체 Gateway로 전환했습니다. 현재 650개 이상 MCP 서버, 200개 이상 팀, 누적 1,150만 건 이상 도구 호출을 관측하며, 카탈로그 기반 1분 내 연결과 인증 포함 5분 내 배포를 지원합니다.
-- keyword: #MCP #LLM #Gateway #인증
+## [대AI시대에 일하는 방식의 변화에 대한 고찰](https://techblog.musinsa.com/%EB%8C%80ai%EC%8B%9C%EB%8C%80%EC%97%90-%EC%9D%BC%ED%95%98%EB%8A%94-%EB%B0%A9%EC%8B%9D%EC%9D%98-%EB%B3%80%ED%99%94%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0-6d11e0b1fead?source=rss----f107b03c406e---4)
+- 회사: 무신사
+- 본문 요약: AI 코딩 에이전트를 git worktree·tmux로 병렬 운용하면서 병목이 코딩 속도에서 사람의 기억·판단·책임 용량으로 옮겨갔음을 돌아봅니다. 병렬 세션이 늘수록 지시 망각, 세션 혼동, 결과 검토 누락, 무검토 승인 위험이 생겼습니다.
+- 주목할 point: 열린 창 수가 아니라 즉시 판단이 필요한 작업 수가 한계이므로 판단 대기 작업을 세 개로 제한하고 추가 작업은 큐에 둡니다. 지침 문서·메모리 파일로 컨텍스트를 외부화하고 1차 검증을 자동화하며, 개인 리뷰 적체가 동료 리뷰 큐로 전이될 가능성도 경계합니다.
+- keyword: #AI코딩에이전트 #병렬작업 #컨텍스트관리 #코드리뷰
 
-## [‘왜 이렇게 만들었을까’라는 질문으로 성장하는 웹 에디터 팀](https://medium.com/miridih/%EC%99%9C-%EC%9D%B4%EB%A0%87%EA%B2%8C-%EB%A7%8C%EB%93%A4%EC%97%88%EC%9D%84%EA%B9%8C%EB%9D%BC%EB%8A%94-%EC%A7%88%EB%AC%B8%EC%9C%BC%EB%A1%9C-%EC%84%B1%EC%9E%A5%ED%95%98%EB%8A%94-%EC%9B%B9-%EC%97%90%EB%94%94%ED%84%B0-%ED%8C%80-db3f60d6f6d4?source=rss----79ed61a9dcb1---4)
-- 회사: 미리디
-- 본문 요약: 웹 에디터 팀은 해결할 문제 정의 → 구조 설계 → 구현 순서로 일하며, 반복 로직의 싱글톤 관리, 인터페이스·추상화, 편집 동작을 위한 커맨드 패턴을 활용합니다. 애니메이션 기능은 기존 구조 분석과 설계 리뷰를 거쳐 재생 전반에 적용 가능한 인터페이스로 설계했고, Jotai 기반 상태 관리와 메모이제이션으로 다수 페이지 편집 성능을 챙깁니다.
-- 주목할 point: 코드 리뷰에서 지적 대신 구조의 배경과 동작 원리를 묻는 질문 중심 피드백, 정기 회의·회고를 통한 설계 관점의 상호 학습이 팀 문화 사례로 참고할 만합니다.
-- keyword: #React #Jotai #코드리뷰 #커맨드패턴
+## [사진 속 별자리 찾기: 7년 걸린 Plate Solver 만들기](https://tech.buzzvil.com/blog/star-byb-kr-plate-solver)
+- 회사: 버즈빌
+- 본문 요약: 밤하늘 사진의 별 배치를 회전·크기 변화에 강한 지문으로 바꿔 별 지도와 대조하는 브라우저 Plate Solver 개발기입니다. quad 지문 기반 빠른 탐색을 삼각형 기반 넓은 범위 탐색으로 보완하고, HEALPix 분할과 KD-tree로 후보를 줄였습니다. 주변 고리 밝기 균일성 기반 별다움 점수와 상단 하늘 영역 재시도로 지상 불빛·건물·구름 오인을 줄였습니다.
+- 주목할 point: 패턴 DB를 브라우저에서 생성하고 OpenCV.js를 제거하며 글꼴을 분할해 다운로드를 28MB에서 0.68MB로 줄였습니다. 8초 제한 검증에서 미확인 사진 200장 중 102장을 확신했고 확신 결과 중 오답은 0장이었으며, Claude Code와 브라우저 기반 반복 디버깅을 활용했습니다.
+- keyword: #PlateSolver #KD-tree #브라우저 #AI협업
 
-## [미리캔버스의 편집 로직을 책임지는 웹 에디터 팀 엔진 개발자들](https://medium.com/miridih/%EB%AF%B8%EB%A6%AC%EC%BA%94%EB%B2%84%EC%8A%A4%EC%9D%98-%ED%8E%B8%EC%A7%91-%EB%A1%9C%EC%A7%81%EC%9D%84-%EC%B1%85%EC%9E%84%EC%A7%80%EB%8A%94-%EC%9B%B9-%EC%97%90%EB%94%94%ED%84%B0-%ED%8C%80-%EC%97%94%EC%A7%84-%EA%B0%9C%EB%B0%9C%EC%9E%90%EB%93%A4-e98aec7d2397?source=rss----79ed61a9dcb1---4)
-- 회사: 미리디
-- 본문 요약: 미리캔버스 웹 에디터 팀 엔진 개발자의 역할을 소개합니다. 문서 로딩, 요소 추가·삭제·복사·붙여넣기, 실행 취소/다시 실행, 썸네일 반영 같은 핵심 편집 로직과, 디자인 요소·상태 계층과 사용자 상호작용 계층의 책임 분리를 설명합니다. 편집 영역·템플릿·요소 패널은 MFA(마이크로 프론트엔드)로 독립 서비스화했습니다.
-- 주목할 point: 드래그·크기 조절 같은 실시간 조작의 즉각 반응, 수백 개 요소 동시 처리 최적화, 동시 편집 문제 대응을 다루며, 기능 추가 전 전체 구조와 영향 범위를 확인하는 습관을 강조합니다.
-- keyword: #MFA #웹에디터 #상태관리 #성능
+## [데이터센터 보안 | CCTV 이상의 물리·정보·운영보안](https://library.gabia.com/contents/infrahosting/15897/)
+- 회사: 가비아
+- 본문 요약: 데이터센터 보안을 물리·정보·운영보안 세 층위로 나누고, 사업자가 제공하는 보안과 고객이 관리하는 서버·OS·계정·데이터 범위를 구분해 설명합니다. CCTV 유무보다 법정 보호조치, 인증기준, 기록·관제 절차를 함께 확인해야 한다고 강조합니다.
+- 주목할 point: 주요시설 출입기록(CCTV 녹화·출입통제장치 로그 포함) 2개월 이상 보관, 중앙감시실·24시간 상근 경비원, 분기별 모의대응훈련 등 구체 기준을 제시합니다. 계약 시 출입 권한·출입기록 검토·원격 작업 승인 등 공동 책임 범위를 명확히 하고 ISMS 인증 범위를 분리해 확인하라는 점이 유용합니다.
+- keyword: #데이터센터 #물리보안 #ISMS #공동책임
 
-## [모던 백엔드 _ Spring Boot 4.0 개관(4)](https://www.nextree.io/modeon-baegendeu-_-spring-boot-4-0-gaegwan-4/)
-- 회사: 넥스트리
-- 본문 요약: Spring Boot 4.0의 API 버저닝(경로·쿼리 파라미터·요청 헤더·미디어 타입 4가지 방식), @HttpExchange 기반 선언형 HTTP 클라이언트, 재시도·동시성 제한 등 내장 회복 탄력성 기능을 소개합니다.
-- 주목할 point: 마이그레이션 전 점검 대상으로 Undertow 지원 중단(Tomcat/Jetty 전환), javax.annotation → jakarta.annotation, ListenableFuture → CompletableFuture, DevTools LiveReload 비활성화가 있으며 RestTemplate 대신 선언형 클라이언트나 WebClient를 권장합니다.
-- keyword: #SpringBoot4 #API버저닝 #HttpExchange #마이그레이션
+## [[기술해설] 데이터센터를 지키는 마지막 방어선, 소방 설비에 대하여](https://tech.ktcloud.com/entry/2026-10-ktcloud-datacenter-fire-safety-systems)
+- 회사: KT 클라우드
+- 본문 요약: 데이터센터 화재 대응을 감지·연동·소화·시공·점검 관점에서 설명합니다. 공기흡입형 감지설비와 R형 수신기로 조기 감지·연동 제어를 하고, 교차회로·준비작동식 스프링클러·가스계 소화설비를 조합해 오방수·오방출을 막으며 서버실·UPS실·배터리실·발전기실별로 화재원과 소화 방식을 분리합니다.
+- 주목할 point: 리튬이온 배터리 열폭주에는 가스계 소화의 냉각 한계가 있어 배터리실 수계 설비 병행이 필요합니다. 관통부 내화충전·방호구역 기밀성·과압배출구 관리, 오경보 대응용 연동 정지의 상시화 방지, BMS 연동·가스 감지·열화상 기반 전조 감시를 권합니다.
+- keyword: #데이터센터 #소방설비 #배터리열폭주 #가스계소화
 
-## [우리가 굳이 엔지니어의 고민까지 기록하는 이유](https://tech.channel.io/kr/articles/d81e77cf)
-- 회사: 채널톡
-- 본문 요약: DEV POSTING은 기술적 결과뿐 아니라 문제 정의, 선택 기준, 시행착오까지 기록·공유하는 활동입니다. 매주 두 명의 엔지니어가 기술, 시스템 설계, AI, 제품, 협업·팀 운영 경험을 링크드인에 게시하며, 초안 공유와 동료 피드백을 거칩니다.
-- 주목할 point: 완성도 높은 블로그·발표로 남기기 어려운 작은 개선과 미해결 고민의 기록 수단이 되고, 외부 엔지니어가 팀의 일하는 방식을 이해하는 창구가 됩니다. 결과물 중심 기록에 의사결정 배경을 함께 남기는 회고 방식으로 적용해볼 만합니다.
-- keyword: #개발문화 #문서화 #DEVPOSTING
+## [[인사이트] AI 트랜스포메이션의 진짜 병목은 어디인가? 네트워크 인프라가 맞이한 거대한 지각변동](https://tech.ktcloud.com/entry/2026-10-ktcloud-ai-network-traffic-wan-architecture)
+- 회사: KT 클라우드
+- 본문 요약: GPU 연산 성능과 별개로 데이터 전송 경로의 대역폭·신뢰성 부족이 AI 워크로드 병목이 된다고 분석합니다. 분산 학습은 패킷 손실이 생기면 전체 GPU 노드가 대기하고, 추론은 토큰 스트리밍으로 장기 세션과 업스트림 트래픽이 늘어납니다.
+- 주목할 point: 분산 학습용 RoCEv2·PFC·ECN 기반 무손실 이더넷 또는 InfiniBand, 데이터센터 간 Tbps급 DCI와 MACsec 가속 암호화, 에지 추론 구조를 제안합니다. 평균 응답 속도 대신 작업 완료 시간(JCT)으로 AI 인프라를 평가하고 AI 트래픽을 일반 업무와 격리하라고 합니다.
+- keyword: #AI네트워크 #RoCEv2 #JCT #DCI
 
-## [에이전트의 도구 실행 경로를 native tool calling으로 전환하다](https://www.nextree.io/eijeonteuyi-dogu-silhaeng-gyeongroreul-native-tool-callingeuro-jeonhwanhada/)
-- 회사: 넥스트리
-- 본문 요약: 프롬프트에 도구 목록을 넣고 텍스트 JSON을 파싱하던 에이전트 루프는 형식 오류 시 도구를 호출하지 못하고 종료되고, 관측 전문 재조립으로 프롬프트가 선형 증가했습니다. 엔진 포트를 messages + tools 기반으로 바꿔 Spring AI 2.0의 native tool calling(구조화된 tool_calls)을 쓰되, 도구 실행은 기존 ToolExecutionGateway가 그대로 맡도록 했습니다.
-- 주목할 point: 정책·승인·감사 게이트웨이는 변경하지 않았고, 도메인 기반 도구 선택(40개 이상 도구 전량 전송 개선), TTL 캐시, 도구 불필요 요청 조기 종료를 적용했습니다. native 방식 실패에 대비한 fallback과 단위 테스트 7종도 추가했습니다.
-- keyword: #SpringAI #ToolCalling #MCP #LLM
+## [[트렌드 리포트] AI로 데이터센터를 운영하는 시대, 현장은 얼마나 준비됐을까?](https://tech.ktcloud.com/entry/2026-10-ktcloud-trendreport)
+- 회사: KT 클라우드
+- 본문 요약: 설문으로 데이터센터 운영의 최대 과제가 장애 원인 파악·신속 대응이며 전력·에너지 효율 관리, 인력 부족, 방대한 운영 데이터 활용 부담이 뒤따른다는 점을 보여줍니다. 설계·시공·운영 단계 정보의 단절, 시스템별로 흩어진 데이터, 형식·기준 불일치를 원인으로 짚고 AI 도입 성숙도를 검토·PoC·일부/다수 적용으로 나눕니다.
+- 주목할 point: 장애 분석·반복 점검 자동화, 냉각·전력 효율 최적화에 AI 수요가 크지만 보안·데이터 유출 방지와 분석 결과의 신뢰성 확보가 과제입니다. AIDC Ops Studio와 BIM 기반 정보 연계 사례를 소개합니다.
+- keyword: #데이터센터 #AIOps #트렌드리포트 #BIM
 
-## [React 비제어 입력으로 타이핑 지연 해결하기](https://www.nextree.io/react-bijeeo-ibryeogeuro-taiping-jiyeon-haegyeolhagi/)
-- 회사: 넥스트리
-- 본문 요약: VoC 상세 페이지 댓글 입력 시 커서 멈춤, 한글 조합 깨짐이 간헐적으로 발생했습니다. 최상위 commentText state 갱신이 화면 전체 리렌더를 일으키고, 렌더마다 호출되는 label()이 localStorage 읽기·JSON.parse·라벨 맵 복사를 반복하는 것이 원인이었습니다. 입력 영역 분리 후에도 남은 비용을 없애기 위해 ref 기반 비제어 입력으로 전환했습니다.
-- 주목할 point: 제출 시점에만 inputRef.current.value를 읽고 성공 후 직접 초기화합니다. 전환 후에도 빈 입력 비활성화, 실패 시 입력 보존, 중복 등록 방지를 별도로 유지해야 하며, MUI TextField와 react-hook-form 연동 시 inputRef와 register ref 분리, React 18 StrictMode의 updater 중복 실행도 주의점입니다.
-- keyword: #React #비제어컴포넌트 #성능 #react-hook-form
+## [장애 대응 AI 에이전트 — AI 장애 분석이 놓치기 쉬운 3가지 리스크](https://medium.com/@fasoo.marcom/%EC%9E%A5%EC%95%A0-%EB%8C%80%EC%9D%91-ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-ai-%EC%9E%A5%EC%95%A0-%EB%B6%84%EC%84%9D%EC%9D%B4-%EB%86%93%EC%B9%98%EA%B8%B0-%EC%89%AC%EC%9A%B4-3%EA%B0%80%EC%A7%80-%EB%A6%AC%EC%8A%A4%ED%81%AC-cf33918825d7?source=rss-faeb0df33c15------2)
+- 회사: 파수 AI
+- 본문 요약: 긴급 복구 중심의 장애 대응에서 분석 과정이 개인 생성형 AI 대화창에 흩어져 팀 자산으로 남지 않고, AI 답변을 조직 검증 기준과 대조하기 어려우며, 시스템 구성 정보·사용자 식별자·내부 통신 내역이 외부 AI로 노출될 수 있다는 세 가지 리스크를 짚습니다. 해결책으로 Fix ACE가 조직 대응 규칙에 따라 로그 분석과 원인 추적을 수행하고 판단 근거와 결론을 팀이 조회 가능한 기록으로 축적합니다.
+- 주목할 point: Ellm 기반 Private 환경으로 장애 로그와 구성 정보의 외부 전송을 막고, 분석·조치 이력을 재활용해 반복 로그 확인을 줄입니다.
+- keyword: #장애대응 #AI에이전트 #PrivateAI #로그분석
 
-## [해커톤에서 탄생한 AI 회의 비서 ‘아임타임’](https://tech.imweb.me/posts/slack-meeting-scheduler-bot/)
-- 회사: 아임웹
-- 본문 요약: Slack 요청을 Amazon Bedrock의 Claude가 참석자·날짜·시간·회의실 조건으로 해석하고, Google Calendar API 조회와 결합해 공통 빈 시간과 회의실을 함께 제안하는 봇입니다. 후보 카드를 사용자가 확정하면 예약 코드가 재검증 후 일정을 생성하며, 사용 사례를 분석해 팀명·스레드 맥락 해석, 예약자 전용 취소·변경, 웹 기반 회의실 현황 선택 기능을 추가했습니다.
-- 주목할 point: 모델에 캘린더 변경 권한을 직접 주지 않고 사용자 확정 뒤 코드가 생성·수정·삭제를 처리하며, 일정 제목·내용 대신 바쁨 여부만 조회해 개인정보 범위를 제한했습니다. 일정 변경 시 삭제·재생성 대신 시간 수정으로 참석자 응답을 유지합니다.
-- keyword: #Slack #Claude #AmazonBedrock #GoogleCalendar
-
-## [[행사안내] 네이버클라우드, IAMSEC 2026 국제 육군 M&S 전시회 참가](https://blog.naver.com/n_cloudplatform/224454007848)
+## [[보안] 금융 AX 시대, 보안 특화 AI가 필요한 이유](https://blog.naver.com/n_cloudplatform/224455177819?fromRss=true&trackingCode=rss)
 - 회사: 네이버 클라우드 플랫폼
-- 본문 요약: 대전에서 열리는 IAMSEC 2026 국제 육군 모델링·시뮬레이션 학술 컨퍼런스 및 전시회에 네이버클라우드가 참가한다는 행사 안내입니다. 국방 AI 모델, 국방 AI 플랫폼, 국방 특화 클라우드로 구성된 AI 풀스택 기술을 선보일 예정입니다.
-- 주목할 point: 기술 심층 글이라기보다 행사 안내이며, 첨단기술 기반 전력증강과 과학화훈련체계의 미래를 논의하는 자리라는 점이 핵심입니다.
-- keyword: #컨퍼런스 #국방AI #cloud
+- 본문 요약: 금융 서비스·업무 전반으로 AI 도입이 확대되는 가운데 AI 기반 공격 자동화로 취약점 분석, 공격 코드 제작, 실제 공격까지의 시간이 단축되고 있다는 문제를 다룹니다. 금융 AX 환경에 맞는 보안 특화 AI와 대응 체계의 필요성을 제시합니다.
+- 주목할 point: 취약점 확인과 패치 적용 대응 체계를 점검하라는 제안이 핵심이며, 확인 가능한 범위는 요약 수준이라 세부 기술 내용은 확인하지 못했습니다.
+- keyword: #금융AX #보안AI #AI공격 #취약점
+
+## [제조 지원사업 담당자라면 필독, 제조 AX 시작을 더 쉽게: NAVER Cloud Visionary Forum](https://blog.naver.com/n_cloudplatform/224455192910?fromRss=true&trackingCode=rss)
+- 회사: 네이버 클라우드 플랫폼
+- 본문 요약: 네이버클라우드가 산업진흥원 관계자를 대상으로 'VISIONARY FORUM : 제조 AX'를 개최한 소식입니다. 제조 현장 방문과 스마트팩토리 구축 지원, 수요·공급 매칭데이 운영 경험을 공유했습니다.
+- 주목할 point: 지역 산업진흥원·제조 솔루션사·제조사 간 협력 모델이 제조 AX 확산의 참고 사례입니다. 행사 소개 성격이라 기술적 세부 내용은 확인하지 못했습니다.
+- keyword: #제조AX #스마트팩토리 #산업진흥원
+
+## [럭키의 축하 방문…어피닛 주인공들과 함께 한 북토크 현장](https://blog.afinit.com/392806)
+- 회사: 밸런스히어로
+- 본문 요약: 어피닛의 기업사 『매스니치 서바이벌』 사내 북토크에서 방송인 럭키와 이기문 작가가 인도 시장과 채식 문화, 책의 문체와 취재 과정, 조직의 역사에 대해 직원 질의응답을 나눈 현장을 소개합니다. 인도 서민의 금융 접근성과 서비스의 사회적 필요성을 드러내는 서술 방식을 설명합니다.
+- 주목할 point: 고객의 삶, 구성원의 애정, 퇴사자의 경험까지 폭넓게 취재하고, 기억과 평가가 충돌하는 사건은 단일 결론 대신 복수 관점으로 제시한 기업사 제작 방식이 참고할 만합니다. 기술 글이라기보다 기업 문화 콘텐츠입니다.
+- keyword: #북토크 #기업사 #기업문화
