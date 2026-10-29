@@ -1,80 +1,68 @@
-<!-- 이 파일은 posts/2026-10-28.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-28 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-29.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-29 기술 블로그 모음
 
-## [Amazon MSK Express Broker에서 Kafka 트랜잭션 워크로드를 최적화하는 방법](https://aws.amazon.com/ko/blogs/tech/optimizing-kafka-transactional-workloads-on-msk-express-broker/)
+## [사이드카의 선언적 관리: OpenKruise SidecarSet 도입과 운영](https://d2.naver.com/helloworld/2983631)
+- 회사: 네이버 D2
+- 본문 요약: OpenKruise SidecarSet으로 DB Pod를 유지한 채 사이드카를 선언적으로 갱신하는 방식을 설명한다. 웹훅·컨트롤러·kubelet의 역할과 롤아웃 및 상태 모니터링 방법을 다룬다.
+- 주목할 point: Pod 재생성 없이 사이드카만 안전하게 교체·롤아웃할 수 있어 상태를 가진 워크로드 운영에 유용하다.
+- keyword: #Kubernetes #OpenKruise #SidecarSet
+
+## [Product Engineer 도전: 업무 영역의 확장](https://techblog.yogiyo.co.kr/product-engineer-%EB%8F%84%EC%A0%84-%EC%97%85%EB%AC%B4-%EC%98%81%EC%97%AD%EC%9D%98-%ED%99%95%EC%9E%A5-0f3185b021b6?source=rss----c1b33ccbbc42---4)
+- 회사: 요기요
+- 본문 요약: Product Engineer 파일럿으로 문제 정의부터 다중 플랫폼 구현·배포까지 맡으며 병목을 분석했다. AI 시대에는 코드 생성보다 맥락 문서화, 검증 자동화, 프로세스 개선이 중요함을 확인했다.
+- 주목할 point: 역할 경계를 넘나드는 업무에서 병목은 코드 작성이 아니라 맥락 공유와 검증에 있다.
+- keyword: #ProductEngineer #AI #업무프로세스
+
+## [AWS Lambda Web Functions 실전 가이드 2부: Amazon Bedrock AgentCore Runtime V2 에이전트를 위한 BFF 구성](https://aws.amazon.com/ko/blogs/tech/lambda-web-functions-2/)
 - 회사: AWS
-- 본문 요약: MSK Express 브로커에서 Kafka 트랜잭션을 쓸 때 네트워크 기준선만으로 사이징하면 맞지 않는 이유를 분석했습니다. 3대 클러스터에서 10건 묶음 트랜잭션이 네트워크 기준선의 64%(120.5 MB/s)에서 멈췄고 이때 브로커 CPU는 44%였습니다. 병목은 네트워크, 코디네이터 커밋 처리량, 클라이언트 한도 중 하나입니다.
-- 주목할 point: 프로듀서를 두 배로 늘려도 처리량이 같다면 코디네이터 한도가 원인입니다. 묶음 크기 확대 → 프로듀서 수 최적화 → 클러스터 확장 순으로 대응하고, 초기 용량은 세 한도 중 최소값의 약 80%로 잡으며 커밋 지연과 초당 커밋 수를 직접 계측하라고 권합니다.
-- keyword: #AWS #Kafka #MSK #트랜잭션
+- 본문 요약: Web Functions BFF로 브라우저와 AgentCore Runtime V2 사이의 인증·세션·SSE 중계를 구성했다. 타임아웃·하트비트·세션 비용을 고려하고 두 에이전트 프레임워크를 비교했다.
+- 주목할 point: 장시간 SSE 스트리밍을 서버리스 BFF로 중계할 때 타임아웃과 하트비트 설계가 핵심이다.
+- keyword: #AWSLambda #AmazonBedrock #AgentCore #BFF
 
-## [채팅으로 디자인하는 AI, 실제로 쓸까? — A/B 테스트와 사용자 행동 분석기](https://medium.com/miridih/%EC%B1%84%ED%8C%85%EC%9C%BC%EB%A1%9C-%EB%94%94%EC%9E%90%EC%9D%B8%ED%95%98%EB%8A%94-ai-%EC%8B%A4%EC%A0%9C%EB%A1%9C-%EC%93%B8%EA%B9%8C-a-b-%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%99%80-%EC%82%AC%EC%9A%A9%EC%9E%90-%ED%96%89%EB%8F%99-%EB%B6%84%EC%84%9D%EA%B8%B0-4eeac2fd985e?source=rss----79ed61a9dcb1---4)
-- 회사: 미리디
-- 본문 요약: AI 디자이너 MVP에 대해 A/B 테스트와 사용자 발화 분석을 진행해 이탈 원인을 기능 미지원과 응답 지연으로 구분했습니다. 도구별 우선순위와 캔버스 맥락 활용 가설을 도출했습니다.
-- 주목할 point: 이탈 원인을 정성(발화) 분석으로 분류해 응답시간 개선과 제품 방향 논의에 직접 반영했습니다. 원문 본문은 직접 확인하지 못해 velopers.kr 요약 기준으로 정리했습니다.
-- keyword: #LLM #AI에이전트 #A/B테스트 #사용자행동분석
+## [AWS Lambda Web Functions 실전 가이드 1부: 실행 모델, 과금, Amazon CloudFront 오리진 구성](https://aws.amazon.com/ko/blogs/tech/lambda-web-functions-1/)
+- 회사: AWS
+- 본문 요약: AWS Lambda Web Functions의 HTTP 서버 실행 모델, 동시성·과금·배포 방식을 정리했다. CloudFront OAC 구성과 Event Functions 대비 워크로드별 비용 판단 기준을 제시한다.
+- 주목할 point: 워크로드 특성에 따라 Web Functions와 Event Functions의 비용 우위가 달라지므로 판단 기준이 유용하다.
+- keyword: #AWS #Lambda #CloudFront
 
-## [팀이 신뢰할 수 있는 AI 분석 환경 만들기: 추천팀의 컨텍스트 설계](https://tech.kakao.com/posts/844)
-- 회사: 카카오
-- 본문 요약: 추천팀이 AI 에이전트가 지침 문서를 바탕으로 SQL을 작성하고 Hadoop에서 분석하도록 구성한 사례입니다. 로그 접근 방법과 분석 기준을 컨텍스트로 설계해 신뢰할 수 있는 분석 환경을 만들고자 했습니다.
-- 주목할 point: 에이전트 성능보다 팀이 결과를 믿을 수 있게 하는 컨텍스트(지침·기준) 설계에 초점을 둡니다. 원문 본문이 페이지 조회에서 확인되지 않아 velopers.kr 요약 기준으로 정리했습니다.
-- keyword: #AI에이전트 #SQL #Hadoop #컨텍스트설계
+## [이벤트 로그 저장 구조와 적재 실패 데이터 확인하기: 이벤트 로그 전송 4편](https://on.com2us.com/tech/event-log-storage-rescue-data/)
+- 회사: 게임빌컴투스플랫폼
+- 본문 요약: Hive 애널리틱스로 전송된 이벤트 중 수집 기준을 충족한 것은 `t_raw_event_log`에, 그렇지 않은 것은 원본 JSON과 격리 사유와 함께 `t_raw_event_log_rescue`에 저장된다. 정상 테이블에 이벤트가 안 보이면 rescue 테이블의 `errorReason`, `errorStackTrace`, `rawData`로 원인을 확인한다. 예를 들어 `eventTime`이 RFC 3339 형식이 아니면 201(DATETIME_INVALID)로 격리된다.
+- 주목할 point: 이벤트가 안 보일 때 수집 지연으로 넘기지 말고 먼저 rescue 테이블에서 격리 여부와 원인을 확인한다.
+- keyword: #HiveAnalytics #이벤트로그 #rescue테이블
 
-## [프론트엔드 시점에서 정리한 SSE 도입과 메시지 유실 해결 과정](https://www.nextree.io/peuronteuendeu-sijeomeseo-jeongrihan-sse-doibgwa-mesiji-yusil-haegyeol-gwajeong/)
-- 회사: 넥스트리
-- 본문 요약: AI 챗봇 SSE에서 완료 메시지가 오지 않아 5분 뒤 heartbeat 타임아웃으로 연결이 끊기던 문제를 다뤘습니다. 원인은 AI 처리가 SSE 연결보다 먼저 끝나면 채널이 없어 완료 메시지가 로그 없이 버려지는 경쟁 조건이었습니다. 작업 등록 시 채널을 미리 만들고 채널 삭제를 구독 완료 시점으로 옮겨 해결했습니다.
-- 주목할 point: API 도구로 같은 요청을 직접 보내 프론트엔드 문제를 먼저 배제한 것이 원인 범위를 좁히는 데 효과적이었습니다.
-- keyword: #SSE #React #경쟁조건 #챗봇
+## [게임 데이터를 이벤트 로그로 전송하기: 이벤트 로그 전송 3편](https://on.com2us.com/tech/event-game-data-transmission/)
+- 회사: 게임빌컴투스플랫폼
+- 본문 요약: 테스트로 검증한 이벤트 구조를 실제 게임에 옮기려면 행동이 결정된 직후 실제 게임 데이터를 붙여 전송해야 한다. Hive 애널리틱스는 클라이언트·서버 양쪽 전송을 지원하며 필수 속성 오류 로그는 격리 테이블에 저장된다. `contents_success` 이벤트를 예로 전송 시점, 중복 전송 방지, 사용자 정의 속성 연결을 설명한다.
+- 주목할 point: 전송 시점이 너무 이르면 미완료 행동이 집계되고, 너무 늦으면 화면 전환·앱 종료로 로그가 누락된다.
+- keyword: #이벤트전송 #필수속성 #격리테이블
 
-## [성능 테스트 결과를 보고 N+1을 걷어내다](https://www.nextree.io/seongneung-teseuteu-gyeolgwareul-bogo-n-1eul-geodeonaeda/)
-- 회사: 넥스트리
-- 본문 요약: 약 270만 건·110 req/s 부하 테스트에서 평균 80ms, p95 331ms였고 공통으로 쓰이는 '내 지원 목록 조회'가 평균 345ms로 가장 느렸습니다. 반복되던 건수·지원서 조회를 group by와 IN 쿼리로 묶고, 응답에 필요한 정보를 포함해 추가 호출을 없앴으며, 큰 JSON 컬럼을 제외한 요약 조회와 limit+1 페이지 판단을 도입했습니다.
-- 주목할 point: 재측정이 로컬 환경·다른 시나리오라 직접 비교가 어렵고 개선 배수를 단정할 수 없다고 스스로 밝힌 점이 솔직합니다.
-- keyword: #JPA #N+1 #성능테스트 #쿼리최적화
+## [더 중요한 고민에 집중하는 올리브영 PM이 AI로 일하는 방식](https://oliveyoung.tech/2026-10-29/%EC%98%AC%EB%A6%AC%EB%B8%8C%EC%98%81-pm%EC%9D%B4-ai%EC%99%80-%ED%95%A8%EA%BB%98-%EC%9D%BC%ED%95%98%EB%8A%94-%EB%B0%A9%EC%8B%9D/)
+- 회사: 올리브영
+- 본문 요약: 올리브영 PM이 AI로 정보 수집·지표 집계·회의록·티켓 작성 등 반복 업무를 자동화했다. 프로토타입과 기획서를 연결해 문서 정합성과 협업 속도를 높이고 판단에 집중했다.
+- 주목할 point: 반복 업무를 AI에 맡기고 PM은 판단과 의사결정에 시간을 쓰는 구조를 만든 사례다.
+- keyword: #AI #PM #자동화 #Amplitude
 
-## [엔지니어 1명이 레포 170여 개를 pnpm 11로](https://tech.channel.io/kr/articles/db0bc143)
+## [엔지니어링 팀 유튜브까지 해야했을까?](https://tech.channel.io/kr/articles/ccd02a62)
 - 회사: 채널톡
-- 본문 요약: 2026년 8월 npm 웜 사태 이후 설치 스크립트를 기본 차단하는 pnpm 11로 JS·TS 레포 171개를 전환했습니다. 반복 작업은 검증 하네스를 붙인 AI가 맡았고, 설치 버전·실행 스크립트·빌드 산출물 해시·lint/test 결과를 층별로 비교했습니다.
-- 주목할 point: 실행 AI와 채점 AI를 분리하고 사람은 방향 결정과 리뷰에 집중했습니다. 7주간 234개 PR 중 10월 20일 기준 130개가 머지됐습니다.
-- keyword: #pnpm #npm #보안 #AI자동화
+- 본문 요약: 엔지니어링 팀의 경험과 문화를 영상 자산으로 축적한 소셜 미디어 운영 사례를 공유했다. 플랫폼별 콘텐츠 전략과 채용 접점 지표, Claude·MCP 기반 업무 자동화를 소개한다.
+- 주목할 point: 영상 콘텐츠를 채용 접점 지표와 연결해 운영하고 반복 작업은 Claude·MCP로 자동화했다.
+- keyword: #YouTube #Instagram #엔지니어링브랜딩 #MCP
 
-## [Amazon Quick으로 내 업무와 관련된 Slack 이슈만 모아보기](https://library.gabia.com/contents/15917/)
+## [요즘 뜬다는 FDE, 왜 Voice AI랑 싸우고 있을까?](https://tech.channel.io/kr/articles/e3ec1e4b)
+- 회사: 채널톡
+- 본문 요약: Voice ALF의 반복 전화 QA를 고객 역할 AI와 텍스트 기반 실행기로 자동화했다. 실행 기록 기반 평가로 상담 흐름을 검증하고 직접 통화 부담을 줄였다.
+- 주목할 point: 음성 테스트를 텍스트 기반 실행기로 대체하고 실행 기록으로 평가해 QA 비용을 줄였다.
+- keyword: #음성AI #STT #QA자동화 #FDE
+
+## [DaaS란? 서비스형 데스크톱의 개념·구조·과금 방식 정리](https://library.gabia.com/contents/infrahosting/15952/)
 - 회사: 가비아
-- 본문 요약: Slack 세 채널의 최근 24시간 글과 스레드 댓글을 읽기 전용으로 수집하고, 담당 고객사·지원 범위·작업 이력 문서를 기준으로 판단하는 Agent를 만들었습니다. 이를 매일 오전 7시(KST) Routine으로 등록해 Feed에 우선순위·근거·조치를 게시합니다.
-- 주목할 point: 스레드 댓글까지 수집해야 진행 상황을 놓치지 않고, 업무 관련도와 우선순위를 별도 항목으로 판단해야 한다는 점이 핵심입니다.
-- keyword: #AmazonQuick #Slack #AI에이전트 #업무자동화
+- 본문 요약: DaaS의 가상 데스크톱 구조, 제공자·기업의 책임 범위와 과금 방식을 정리했다. 도입 전 접속 품질, 데이터 반출 통제, 운영체제 관리와 라이선스를 확인해야 한다.
+- 주목할 point: 도입 전 접속 품질·데이터 반출 통제·OS/라이선스 책임 범위를 체크리스트로 확인할 수 있다.
+- keyword: #DaaS #VDI #가상데스크톱
 
-## [AI가 97% 확신한다면, 서버를 격리해도 될까?](https://blog.kyobodts.co.kr/2026/10/28/ai%ea%b0%80-97-%ed%99%95%ec%8b%a0%ed%95%9c%eb%8b%a4%eb%a9%b4-%ec%84%9c%eb%b2%84%eb%a5%bc-%ea%b2%a9%eb%a6%ac%ed%95%b4%eb%8f%84-%eb%90%a0%ea%b9%8c/)
-- 회사: 교보DTS
-- 본문 요약: AI가 내놓는 확률은 실행 권한이 아니라 판단 신호로 다뤄야 한다고 설명합니다. AWS 환경에서 검증, 정책 게이트, 사람 승인, 감사 기록을 분리하는 설계를 제안합니다. (원문 본문은 직접 확인하지 못하고 velopers.kr 요약 기준으로 정리했습니다.)
-- 주목할 point: 자동 대응에서 AI 판단과 실행 권한을 분리하는 거버넌스 구조가 포인트입니다.
-- keyword: #AWS #SecurityHub #AI보안 #자동대응
-
-## [RFP 작성 에이전트 — 아직도 작년 RFP 복사해서 고쳐 쓰고 계신가요?](https://medium.com/@fasoo.marcom/rfp-%EC%9E%91%EC%84%B1-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%95%84%EC%A7%81%EB%8F%84-%EC%9E%91%EB%85%84-rfp-%EB%B3%B5%EC%82%AC%ED%95%B4%EC%84%9C-%EA%B3%A0%EC%B3%90-%EC%93%B0%EA%B3%A0-%EA%B3%84%EC%8B%A0%EA%B0%80%EC%9A%94-96efdbb298c3?source=rss-faeb0df33c15------2)
-- 회사: 파수 AI
-- 본문 요약: AI 기반 제안서 평가에서는 명확하고 빠짐없는 RFP가 공정한 평가의 기준이 된다는 관점에서, 조직 내부 발주 자산을 활용해 초안을 만들고 누락·모호성을 점검하는 RFP 작성 에이전트를 소개합니다. (원문 본문은 직접 확인하지 못하고 velopers.kr 요약 기준입니다.)
-- 주목할 point: 과거 RFP 복사·수정 관행 대신 사내 자산 기반 생성과 누락·모호성 점검을 결합했습니다.
-- keyword: #RFP #AI에이전트 #문서자동화
-
-## [[보안] AI 해킹의 현실화 | 기업이 점검해야 할 5가지 보안 과제](https://blog.naver.com/n_cloudplatform/224456639136?fromRss=true&trackingCode=rss)
-- 회사: 네이버 클라우드 플랫폼
-- 본문 요약: AI 기반 자동화 공격과 침투 테스트 도구 악용 가능성에 따른 보안 위협을 짚고, 기업이 Zero Trust 관점에서 클라우드 보안 과제 5가지를 점검하도록 안내합니다. (원문 본문은 직접 확인하지 못하고 velopers.kr 요약 기준입니다.)
-- 주목할 point: 공격 자동화 시대에 Zero Trust 기반 점검 체크리스트로 활용할 수 있습니다.
-- keyword: #보안 #cloud #ZeroTrust #AI해킹
-
-## [[데모데이] 2026 네이버클라우드 그린하우스: MARKET CONNECT](https://blog.naver.com/n_cloudplatform/224456509803?fromRss=true&trackingCode=rss)
-- 회사: 네이버 클라우드 플랫폼
-- 본문 요약: 그린하우스 시장 검증 캠페인에 참여한 6개 스타트업의 데모데이를 소개합니다. 시장 반응, 시행착오, 리스크와 향후 사업 전략을 공유합니다. (원문 본문은 직접 확인하지 못하고 velopers.kr 요약 기준입니다.)
-- 주목할 point: 기술 글이라기보다 스타트업 시장 검증 사례 소개 성격입니다.
-- keyword: #데모데이 #스타트업 #시장검증 #네이버클라우드
-
-## [케클s피드 10월호｜기술 경쟁력, 보이지 않는 곳에서 결정된다](https://tech.ktcloud.com/entry/202610-ktcloud-newsletter)
-- 회사: KT 클라우드
-- 본문 요약: AI 데이터센터의 GPU·네트워크·전력·냉각 인프라와 운영 기술을 소개하고, DR, AIOps, BIM 기반으로 서비스 연속성과 구축·운영 효율을 높이는 방안을 다룹니다. (원문 본문은 직접 확인하지 못하고 velopers.kr 요약 기준입니다.)
-- 주목할 point: AI 데이터센터 운영에서 인프라와 운영 자동화가 경쟁력이 된다는 뉴스레터입니다.
-- keyword: #데이터센터 #GPU #AIOps #DR
-
-## [[케클러 인터뷰 시리즈] #6 - 백업만으로는 부족하다, 공공 DR의 새로운 기준](https://tech.ktcloud.com/entry/2026-10-ktcloud-gov-DR)
-- 회사: KT 클라우드
-- 본문 요약: 공공 DR을 데이터 백업이 아닌 서비스 전체의 복구 역량으로 설명하고, 등급별 아키텍처와 훈련, AI 워크로드 복구 전략을 다룹니다. (원문 본문은 직접 확인하지 못하고 velopers.kr 요약 기준입니다.)
-- 주목할 point: DR을 백업이 아닌 서비스 단위 복구 역량으로 정의하는 관점이 핵심입니다.
-- keyword: #DR #공공클라우드 #재해복구 #AI워크로드
+## [오늘의집 Self-Service Data Analytics 구축기](https://www.bucketplace.com/post/2026-10-29-%EC%98%A4%EB%8A%98%EC%9D%98%EC%A7%91-self-service-data-analytics-%EA%B5%AC%EC%B6%95%EA%B8%B0/)
+- 회사: 오늘의집
+- 본문 요약: 데이터 거버넌스와 업무 맥락을 기반으로 AI 셀프서비스 분석 환경을 구축했다. 라우팅·역질문·평가 체계로 신뢰성을 높이고 데이터 요청 문의를 약 95% 줄였다.
+- 주목할 point: 거버넌스·맥락 정리와 평가 체계가 AI 분석의 신뢰성을 좌우하며 실제 문의량을 크게 줄였다.
+- keyword: #LLM #RAG #셀프서비스분석 #데이터거버넌스
