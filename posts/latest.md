@@ -1,68 +1,50 @@
-<!-- 이 파일은 posts/2026-10-29.md의 사본입니다. 자동 생성됨. -->
-# 2026-10-29 기술 블로그 모음
+<!-- 이 파일은 posts/2026-10-30.md의 사본입니다. 자동 생성됨. -->
+# 2026-10-30 기술 블로그 모음
 
-## [사이드카의 선언적 관리: OpenKruise SidecarSet 도입과 운영](https://d2.naver.com/helloworld/2983631)
+## [전문가의 절반을 내보냈습니다](https://blog.scatterlab.co.kr/expert-395401)
+- 회사: 스캐터랩 핑퐁
+- 본문 요약: MoE 모델 서빙 시 전체 전문가 파라미터가 GPU 메모리에 상주해야 하는 비용 문제를 다룬다. 상위 10% 전문가에 라우팅의 70.4%가 몰리고 하위 50%는 4.8%만 처리한다는 편중 분석을 근거로 REAP 기반 전문가 절반 프루닝을 적용했다. 실제 유저 A/B 테스트에서 유저당 이용 시간 차이가 없었고, GPU당 KV 캐시를 1.6배 확보해 대화 처리량을 높였다.
+- 주목할 point: 1/4, 1/8 프루닝은 이용 시간이 2.6%, 5.1% 하락해 조기 종료했고, 단계적 프루닝은 일괄 프루닝 대비 이점을 확인하지 못했다. 내부 평가뿐 아니라 실제 유저 지표로 프루닝 수준을 결정한 점이 인상적이다.
+- keyword: #LLM #MoE #프루닝 #REAP #서빙최적화
+
+## [개인정보 접속기록 안전하게 남기기](https://www.nextree.io/gaeinjeongbo-jeobsoggirog-anjeonhage-namgigi/)
+- 회사: 넥스트리
+- 본문 요약: 300개 이상 API에서 개인정보 접속기록을 수동 적용할 때의 누락 위험, 동기 DB 저장에 따른 조회 지연, 감사 로그 자체의 개인정보 2차 유출 문제를 다룬다. 전체 @RestController 엔드포인트와 감사 대상 레지스트리를 대조하는 아키텍처 테스트, 인터셉터 정보와 서비스 계층 정보주체 식별자를 합치는 ThreadLocal 컨텍스트, 개인정보 원문 대신 항목 메타데이터만 기록하는 방식을 적용했다. 로그는 메모리 버퍼에 쌓아 200건 또는 1초 주기로 JDBC 배치 INSERT 한다.
+- 주목할 point: 버퍼 적재 구간에만 짧은 락을 걸고 DB I/O는 락 밖에서 별도 트랜잭션으로 처리하며, @PreDestroy로 종료 시 잔여 버퍼를 플러시한다. 신규·삭제 API의 감사 대상 등록 검증을 CI 회귀테스트에 넣는 방식이 바로 적용해볼 만하다.
+- keyword: #Spring Boot #개인정보 #감사로그 #ThreadLocal #배치INSERT
+
+## [AI Coding Agent를 활용한 레거시 시스템 마이그레이션](https://www.nextree.io/ai-coding-agentreul-hwalyonghan-regeosi-siseutem-maigeureisyeon/)
+- 회사: 넥스트리
+- 본문 요약: ThingWorx와 Java 기반의 방대한 레거시 시스템을 Spring Boot와 Vue 구조로 옮기는 프로젝트에서 AI 코딩 에이전트를 활용한 사례다. Claude로 레거시 코드·처리 흐름을 분석하고 구현 계획과 공수를 산정했으며, 분석 결과와 의사결정 맥락은 Markdown 문서로 관리했다. 구현은 Claude, 검토는 Codex가 맡도록 역할을 분리하고 리뷰 항목을 수락·거부·개발자 판단으로 분류했다.
+- 주목할 point: 주요 레거시 분석을 약 일주일 내에 진행해 일정 여유를 확보했고, 고객사의 일정 단축 요청에도 9월 말 기준 약 90%를 완료했다. 다만 데이터의 의미 기반 매핑과 AI 리뷰 결과의 최종 판단은 도메인 지식을 가진 개발자의 몫이라고 강조한다.
+- keyword: #Claude #Codex #레거시마이그레이션 #교차검증 #Spring Boot
+
+## [CJ대한통운 해외 IDC의 AWS 전환기 2편: 컷오버와 안정화](https://aws.amazon.com/ko/blogs/tech/cj-logistics-aws-migration-cutover-stabilization-2/)
+- 회사: AWS
+- 본문 요약: 해외 IDC의 Windows·SQL Server·Active Directory 워크로드를 서비스 중단 최소화 조건에서 AWS로 이전한 과정을 다룬다. ADS 기반 의존성 분석과 위험도에 따른 3단계 Wave 이전, EC2 도메인 컨트롤러 구축과 AD 복제 후 FSMO 역할 이전, DB 컷오버·내부 연결 검증·DNS 전환 및 UAT·D+1 모니터링의 4단계 컷오버 체계를 운영했다. 150분 내 컷오버 제약 아래 5회 리허설과 단계별 Go/No-Go, 롤백 기준으로 의사결정을 통제했다.
+- 주목할 point: IDC에 남은 시스템과 Linked Server로 연계된 배치를 원격 실행 방식으로 바꿔 약 12시간 걸리던 배치를 6~7분으로 줄였다. DB 이전 인벤토리에 배치 작업, 로그인·권한, 연계 정의 같은 인스턴스 수준 객체까지 포함해야 한다는 교훈이 실용적이다.
+- keyword: #AWS #migration #컷오버 #ActiveDirectory #SQLServer
+
+## [CJ대한통운 해외 IDC의 AWS 전환기 1편: 의존성 분석과 랜딩존 설계](https://aws.amazon.com/ko/blogs/tech/cj-logistics-aws-migration-dependency-landing-zone/)
+- 회사: AWS
+- 본문 요약: 수십 년간 쌓인 방화벽 예외와 문서화되지 않은 통신 경로, 월말 배치 같은 비정기 의존성이 있는 해외 IDC를 AWS로 옮기기 위한 준비 단계를 다룬다. AWS EBA와 AWS Transform MGN으로 분석·설계·복제·전환 절차를 표준화하고, 30일 이상의 통신 로그를 ADS로 수집해 LLM 기반 질의로 의존성과 Wave 기준을 도출했다. Control Tower 기반 Global OU, Transit Gateway·VPN, Terraform 네트워크 IaC로 글로벌 거버넌스를 구성했다.
+- 주목할 point: BYOL 제약 때문에 라이선스 포함 AWS AMI로 Windows·SQL Server를 운영했고, GWLB 공통 방화벽 계층과 CloudFront·WAF·TGW 연계로 보안 정책을 중앙 집중화했다. WorkSpaces, AD 연동, CloudTrail 감사 이력으로 운영자 접속을 통제한 점도 참고할 만하다.
+- keyword: #AWS #migration #랜딩존 #Terraform #ControlTower
+
+## [모두가 함께 성장하는 기술 축제, NAVER Engineering Day 10년의 여정](https://d2.naver.com/news/0907869)
 - 회사: 네이버 D2
-- 본문 요약: OpenKruise SidecarSet으로 DB Pod를 유지한 채 사이드카를 선언적으로 갱신하는 방식을 설명한다. 웹훅·컨트롤러·kubelet의 역할과 롤아웃 및 상태 모니터링 방법을 다룬다.
-- 주목할 point: Pod 재생성 없이 사이드카만 안전하게 교체·롤아웃할 수 있어 상태를 가진 워크로드 운영에 유용하다.
-- keyword: #Kubernetes #OpenKruise #SidecarSet
+- 본문 요약: 2016년에 시작해 10주년을 맞은 사내 개발자 기술 공유 행사 NAVER Engineering Day의 여정을 소개한다. 실무 문제와 선택, 시행착오를 공유하고 동료가 이를 재시도하며 조직 지식으로 쌓는 문화를 강조한다. 온라인 세션, 예제·과제를 다루는 오프라인 워크숍, 참가자의 고민을 동료 코치와 구체화하는 AI 오픈 코칭데이로 구성된다.
+- 주목할 point: 성공 사례만이 아니라 문제 정의, 선택지, 기대와 달랐던 결과까지 공유하고, 발표·실습·코칭을 연결해 콘텐츠 소비를 실제 업무 경험으로 전환한다는 점이 핵심이다.
+- keyword: #Engineering Day #워크숍 #개발문화 #지식공유 #AI코칭
 
-## [Product Engineer 도전: 업무 영역의 확장](https://techblog.yogiyo.co.kr/product-engineer-%EB%8F%84%EC%A0%84-%EC%97%85%EB%AC%B4-%EC%98%81%EC%97%AD%EC%9D%98-%ED%99%95%EC%9E%A5-0f3185b021b6?source=rss----c1b33ccbbc42---4)
-- 회사: 요기요
-- 본문 요약: Product Engineer 파일럿으로 문제 정의부터 다중 플랫폼 구현·배포까지 맡으며 병목을 분석했다. AI 시대에는 코드 생성보다 맥락 문서화, 검증 자동화, 프로세스 개선이 중요함을 확인했다.
-- 주목할 point: 역할 경계를 넘나드는 업무에서 병목은 코드 작성이 아니라 맥락 공유와 검증에 있다.
-- keyword: #ProductEngineer #AI #업무프로세스
-
-## [AWS Lambda Web Functions 실전 가이드 2부: Amazon Bedrock AgentCore Runtime V2 에이전트를 위한 BFF 구성](https://aws.amazon.com/ko/blogs/tech/lambda-web-functions-2/)
-- 회사: AWS
-- 본문 요약: Web Functions BFF로 브라우저와 AgentCore Runtime V2 사이의 인증·세션·SSE 중계를 구성했다. 타임아웃·하트비트·세션 비용을 고려하고 두 에이전트 프레임워크를 비교했다.
-- 주목할 point: 장시간 SSE 스트리밍을 서버리스 BFF로 중계할 때 타임아웃과 하트비트 설계가 핵심이다.
-- keyword: #AWSLambda #AmazonBedrock #AgentCore #BFF
-
-## [AWS Lambda Web Functions 실전 가이드 1부: 실행 모델, 과금, Amazon CloudFront 오리진 구성](https://aws.amazon.com/ko/blogs/tech/lambda-web-functions-1/)
-- 회사: AWS
-- 본문 요약: AWS Lambda Web Functions의 HTTP 서버 실행 모델, 동시성·과금·배포 방식을 정리했다. CloudFront OAC 구성과 Event Functions 대비 워크로드별 비용 판단 기준을 제시한다.
-- 주목할 point: 워크로드 특성에 따라 Web Functions와 Event Functions의 비용 우위가 달라지므로 판단 기준이 유용하다.
-- keyword: #AWS #Lambda #CloudFront
-
-## [이벤트 로그 저장 구조와 적재 실패 데이터 확인하기: 이벤트 로그 전송 4편](https://on.com2us.com/tech/event-log-storage-rescue-data/)
-- 회사: 게임빌컴투스플랫폼
-- 본문 요약: Hive 애널리틱스로 전송된 이벤트 중 수집 기준을 충족한 것은 `t_raw_event_log`에, 그렇지 않은 것은 원본 JSON과 격리 사유와 함께 `t_raw_event_log_rescue`에 저장된다. 정상 테이블에 이벤트가 안 보이면 rescue 테이블의 `errorReason`, `errorStackTrace`, `rawData`로 원인을 확인한다. 예를 들어 `eventTime`이 RFC 3339 형식이 아니면 201(DATETIME_INVALID)로 격리된다.
-- 주목할 point: 이벤트가 안 보일 때 수집 지연으로 넘기지 말고 먼저 rescue 테이블에서 격리 여부와 원인을 확인한다.
-- keyword: #HiveAnalytics #이벤트로그 #rescue테이블
-
-## [게임 데이터를 이벤트 로그로 전송하기: 이벤트 로그 전송 3편](https://on.com2us.com/tech/event-game-data-transmission/)
-- 회사: 게임빌컴투스플랫폼
-- 본문 요약: 테스트로 검증한 이벤트 구조를 실제 게임에 옮기려면 행동이 결정된 직후 실제 게임 데이터를 붙여 전송해야 한다. Hive 애널리틱스는 클라이언트·서버 양쪽 전송을 지원하며 필수 속성 오류 로그는 격리 테이블에 저장된다. `contents_success` 이벤트를 예로 전송 시점, 중복 전송 방지, 사용자 정의 속성 연결을 설명한다.
-- 주목할 point: 전송 시점이 너무 이르면 미완료 행동이 집계되고, 너무 늦으면 화면 전환·앱 종료로 로그가 누락된다.
-- keyword: #이벤트전송 #필수속성 #격리테이블
-
-## [더 중요한 고민에 집중하는 올리브영 PM이 AI로 일하는 방식](https://oliveyoung.tech/2026-10-29/%EC%98%AC%EB%A6%AC%EB%B8%8C%EC%98%81-pm%EC%9D%B4-ai%EC%99%80-%ED%95%A8%EA%BB%98-%EC%9D%BC%ED%95%98%EB%8A%94-%EB%B0%A9%EC%8B%9D/)
-- 회사: 올리브영
-- 본문 요약: 올리브영 PM이 AI로 정보 수집·지표 집계·회의록·티켓 작성 등 반복 업무를 자동화했다. 프로토타입과 기획서를 연결해 문서 정합성과 협업 속도를 높이고 판단에 집중했다.
-- 주목할 point: 반복 업무를 AI에 맡기고 PM은 판단과 의사결정에 시간을 쓰는 구조를 만든 사례다.
-- keyword: #AI #PM #자동화 #Amplitude
-
-## [엔지니어링 팀 유튜브까지 해야했을까?](https://tech.channel.io/kr/articles/ccd02a62)
-- 회사: 채널톡
-- 본문 요약: 엔지니어링 팀의 경험과 문화를 영상 자산으로 축적한 소셜 미디어 운영 사례를 공유했다. 플랫폼별 콘텐츠 전략과 채용 접점 지표, Claude·MCP 기반 업무 자동화를 소개한다.
-- 주목할 point: 영상 콘텐츠를 채용 접점 지표와 연결해 운영하고 반복 작업은 Claude·MCP로 자동화했다.
-- keyword: #YouTube #Instagram #엔지니어링브랜딩 #MCP
-
-## [요즘 뜬다는 FDE, 왜 Voice AI랑 싸우고 있을까?](https://tech.channel.io/kr/articles/e3ec1e4b)
-- 회사: 채널톡
-- 본문 요약: Voice ALF의 반복 전화 QA를 고객 역할 AI와 텍스트 기반 실행기로 자동화했다. 실행 기록 기반 평가로 상담 흐름을 검증하고 직접 통화 부담을 줄였다.
-- 주목할 point: 음성 테스트를 텍스트 기반 실행기로 대체하고 실행 기록으로 평가해 QA 비용을 줄였다.
-- keyword: #음성AI #STT #QA자동화 #FDE
-
-## [DaaS란? 서비스형 데스크톱의 개념·구조·과금 방식 정리](https://library.gabia.com/contents/infrahosting/15952/)
+## [AI-뉴스룸을 통해 취재 리서치를 1시간으로 단축했습니다.](https://library.gabia.com/contents/15963/)
 - 회사: 가비아
-- 본문 요약: DaaS의 가상 데스크톱 구조, 제공자·기업의 책임 범위와 과금 방식을 정리했다. 도입 전 접속 품질, 데이터 반출 통제, 운영체제 관리와 라이선스를 확인해야 한다.
-- 주목할 point: 도입 전 접속 품질·데이터 반출 통제·OS/라이선스 책임 범위를 체크리스트로 확인할 수 있다.
-- keyword: #DaaS #VDI #가상데스크톱
+- 본문 요약: 블로터앤미디어가 AWS 기반 AI-뉴스룸을 구축해 기사 초안, 교열, 실시간 뉴스 스크래핑, 취재 리서치, 사내 문서 보관, 시각물 생성 등을 자동화한 사례다. 취재 리서치 시간이 1~2일에서 1~2시간으로 줄었고, 교열 기자 3~4명이 맡던 교열·교정·윤문 업무를 AI가 수행한다. AWS 인프라 구성과 AI 서비스 개발을 통합 지원받는 방식으로 구축했다.
+- 주목할 point: 비개발 직군도 사내 문서 보관 프로그램을 직접 만들고 즉시 수정할 수 있게 되어 비용과 운영 부담이 줄었다. 향후 CMS와 기사 발행 프로그램, 데이터 정확성이 중요한 재무 분석까지 AI 적용을 확장할 계획이다.
+- keyword: #AWS #Claude #AI뉴스룸 #자동화 #AX
 
-## [오늘의집 Self-Service Data Analytics 구축기](https://www.bucketplace.com/post/2026-10-29-%EC%98%A4%EB%8A%98%EC%9D%98%EC%A7%91-self-service-data-analytics-%EA%B5%AC%EC%B6%95%EA%B8%B0/)
-- 회사: 오늘의집
-- 본문 요약: 데이터 거버넌스와 업무 맥락을 기반으로 AI 셀프서비스 분석 환경을 구축했다. 라우팅·역질문·평가 체계로 신뢰성을 높이고 데이터 요청 문의를 약 95% 줄였다.
-- 주목할 point: 거버넌스·맥락 정리와 평가 체계가 AI 분석의 신뢰성을 좌우하며 실제 문의량을 크게 줄였다.
-- keyword: #LLM #RAG #셀프서비스분석 #데이터거버넌스
+## [블로그 발행 MCP를 직접 만들며 확인한 AI 에이전트 실무 원칙 - 구성요소부터 사람 승인까지](http://devocean.sk.com/blog/techBoardDetail.do?id=168583&boardType=techBlog&isShared=Y)
+- 회사: 데보션 (SK)
+- 본문 요약: 블로그 발행 자동화 MCP를 직접 구현하며 정리한 AI 에이전트 실무 원칙이다. 에이전트를 LLM, tool calling, 실행 루프, 메모리·상태의 결합으로 정의하고, Claude Code 실행 루프와 FastMCP 기반 도구를 분리해 구성했다. 마크다운 변환, 이미지 업로드, 썸네일 생성은 일반 코드로 처리하고 도구 선택과 카테고리 판단만 모델에 맡기는 결정론적 자동화 중심의 단계적 도입을 권한다.
+- 주목할 point: 최대 반복 수와 요청당·일별 비용 한도로 무한 루프와 토큰 비용을 통제하고, 초기부터 로그·트레이싱·eval을 갖춰야 한다고 강조한다. 발행처럼 되돌릴 수 없는 작업은 confirm 기반 사람 승인과 기본 사내 공개로 설계하고, 최소 권한 도구와 세션 쿠키 파일 권한 관리를 권고한다.
+- keyword: #MCP #LLM #AI에이전트 #FastMCP #휴먼인더루프
