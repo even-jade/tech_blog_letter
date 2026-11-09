@@ -1,98 +1,74 @@
-<!-- 이 파일은 posts/2026-11-06.md의 사본입니다. 자동 생성됨. -->
-# 2026-11-06 기술 블로그 모음
+<!-- 이 파일은 posts/2026-11-09.md의 사본입니다. 자동 생성됨. -->
+# 2026-11-09 기술 블로그 모음
 
-## [Gemini Omni 1.2 Flash 출시 등 11월 첫째 주 Google for Developers 위클리 업데이트를 지금 확인하세요!](http://developers-kr.googleblog.com/2026/11/weeklyupdate-week1.html)
-- 회사: Google for Developers Korea
-- 본문 요약: 11월 첫째 주에 발표된 Google 개발자 블로그 글을 제품별로 모은 주간 소식입니다. AI에서는 Gemini Omni 1.2 Flash 출시(긴 영상을 빠르고 저렴하게 처리), Android에서는 인앱 에이전트·Android 인텔리전스·Jetpack Compose 업데이트, Firebase에서는 FCM AndroidConfigV2 소식이 실렸습니다.
-- 주목할 point: 본문은 각 원문 링크 목록 성격이라 세부 내용은 원문(영문 링크)을 따로 확인해야 합니다.
-- keyword: #Gemini #Android #JetpackCompose #Firebase
+## [스마일게이트의 MS SQL 데이터베이스 현대화 – AWS Transform for SQL Server와 Claude Code의 하이브리드 전략](https://aws.amazon.com/ko/blogs/tech/smilegate-sql-server-modernization-aws-transform/)
+- 회사: AWS (스마일게이트 사례)
+- 본문 요약: AWS Transform과 Claude Code를 조합해 SQL Server 기반 .NET 시스템 두 개를 Aurora PostgreSQL로 전환한 사례입니다. AWS Transform이 스키마·프로시저와 데이터 접근 계층의 대량 변환 초안을 만들고, 원본·타깃에 동일 입력을 넣는 동등성 검증으로 수정 DDL을 동결한 뒤 Claude Code가 동결 스키마의 프로시저 시그니처를 계약 삼아 코드를 교차 검증·일괄 수정했습니다. DapperHelper 공통 래퍼를 재작성해 256개 호출부의 개별 수정을 최소화했습니다.
+- 주목할 point: 빌드가 성공해도 OUTER APPLY, SELECT INTO, 시간 함수, XML 처리 등은 경고 없이 오변환될 수 있어 원본 비교 검증이 필수입니다. DB 트랙 약 87%, 애플리케이션 트랙 약 69%의 공수 절감을 보고했습니다.
+- keyword: #AWSTransform #ClaudeCode #SQLServer #AuroraPostgreSQL #마이그레이션
 
-## [인코어드의 AWS HPC 환경에서 WRF 실행하기 [2부: MPI/OpenMP 하이브리드 병렬화 튜닝 심층 분석]](https://aws.amazon.com/ko/blogs/tech/encored-wrf-2/)
-- 회사: AWS (인코어드 사례)
-- 본문 요약: 재생에너지 발전량 예측용 WRF 기상 시뮬레이션을 AWS HPC 인스턴스에서 운영한 경험 2부작 중 2부입니다. hpc8a 기준 MPI 프로세스와 OpenMP 스레드 비율에 따른 실행 시간과 EFA 패킷을 분석했고, 3노드 24:8 구성이 97.25분으로 가장 빨랐으며 2노드 96:2는 CPU 사용률은 가장 높았지만 더 느렸습니다.
-- 주목할 point: CPU 사용률이 높다고 효율이 좋은 것은 아니므로 tightly-coupled MPI 워크로드는 EFA tx_pkts 같은 통신 지표를 함께 봐야 합니다.
-- keyword: #WRF #HPC #MPI #OpenMP #EFA
-
-## [Claude Code Skill을 활용한 레거시 백오피스 툴 개선기: 엑셀 한 행 붙여넣기로 16개 언어 완성](https://on.com2us.com/tech/claude-code-skill-backoffice-tool/)
-- 회사: 게임빌컴투스플랫폼
-- 본문 요약: CKEditor 기반 레거시 이벤트 운영 툴을 Claude Code와 플러그인(superpowers, frontend-design)으로 하루 만에 새로 만든 과정입니다. 엑셀에서 복사한 한 행을 붙여넣으면 16개 언어 입력 칸이 채워지며, AI가 맡은 부분과 사람이 개입해야 했던 UX·도메인 판단 지점을 함께 정리했습니다.
-- 주목할 point: 기계적으로 판단 가능한 체크는 정적 분석에 맡기고 맥락 판단이 필요한 곳에만 AI를 쓰는 역할 분담 기준을 제시합니다.
-- keyword: #ClaudeCode #AgentSkills #레거시리팩토링 #다국어
-
-## [BigQuery에서 애널리틱스 원본 데이터 조회하기](https://on.com2us.com/tech/event-bigquery-raw-data-query/)
-- 회사: 게임빌컴투스플랫폼
-- 본문 요약: Hive 애널리틱스 이벤트 원본 데이터를 BigQuery(habq-storage)에서 SQL로 직접 조회하는 절차입니다. 환경별 조회 권한을 신청한 뒤 본인 프로젝트에서 쿼리하며, 예시 SQL은 dateTime을 UTC에서 KST로 변환하고 checksum으로 중복을 제거하며 날짜 조건으로 파티션을 제한합니다.
-- 주목할 point: 원본 이벤트를 직접 확인하면 수집 누락·중복 전송·정산 집계 차이의 원인을 추적할 수 있습니다.
-- keyword: #BigQuery #Hive애널리틱스 #원본데이터 #중복제거
-
-## [마켓 정산 전에 구글·애플 예상 수익금 확인하기](https://on.com2us.com/tech/market-estimated-proceeds/)
-- 회사: 게임빌컴투스플랫폼
-- 본문 요약: 결제액에는 판매세가 포함될 수 있고 수수료·국가별 세금이 반영되기 전이라 실제 수익을 알기 어렵다는 문제에서 출발합니다. Hive 애널리틱스의 '예상 수익금' 메트릭이 구글 플레이·애플 앱스토어별 계산 기준으로 일 단위 추정 수익을 보여주며, 환불은 차감하지 않는 추정값입니다.
-- 주목할 point: 구글은 판매세를 제외한 뒤 수수료를 적용하고 애플은 가격표의 Proceeds 비율을 쓰는 등 마켓별 계산 방식이 다릅니다.
-- keyword: #예상수익금 #마켓수수료 #판매세 #정산
-
-## [[torch.compile() 알아보기 - Part 03] PyTorch Conference 2026 참관기](https://hyper-accel.github.io/posts/torch-compile-anatomy-3/)
-- 회사: 하이퍼엑셀
-- 본문 요약: 2026년 10월 PyTorch Conference 참관기로 Agent, Acceleration, Ecosystem 세 키워드로 정리했습니다. 에이전트로 늘어난 PR 검증 방식, C++로 재구현한 FakeTensor, Huawei·IBM Spyre의 NPU 통합 사례(Spyre 컴파일러 스택 약 27만 줄이 Inductor 재사용으로 약 3만 8천 줄로 감소)를 소개합니다.
-- 주목할 point: FakeTensor 22.3배 가속은 연산 단위 측정이며 torchbench 전체 컴파일 지표 개선은 3.7~11.6% 수준이라고 구분해 적었습니다.
-- keyword: #PyTorch #torch.compile #FakeTensor #NPU
-
-## [2026년과 이후 JavaScript의 동향 - 라이브러리와 프레임워크](https://d2.naver.com/helloworld/0627744)
+## [로그인 화면, 이제 만들지 마세요 - n3r OIDC](https://d2.naver.com/helloworld/4293206)
 - 회사: 네이버 D2
-- 본문 요약: (원문 사이트 접근이 차단되어 velopers.kr 요약 기준으로 작성) 2020년 이후 React 중심으로 재편된 프런트엔드 프레임워크 생태계를 React·Angular·Vue·Svelte·Preact의 사용률과 유지 의향으로 비교하고, Signals·서버 렌더링·메타 프레임워크·Rust 기반 빌드 도구·웹 표준·AI 도구를 공통 변화 축으로 제시합니다. React 18 동시성 렌더링과 React 19 Actions·use·서버 컴포넌트 변화도 다룹니다.
-- 주목할 point: npm 다운로드 수에는 CI 반복 설치가 포함되는 한계가 있고, 서버 컴포넌트 관련 역직렬화 취약점 패치가 필요하며, 프레임워크 기능보다 JS·브라우저 표준 이해가 중요하다고 짚습니다.
-- keyword: #JavaScript #React #서버컴포넌트 #Signals
+- 본문 요약: 사내 계정 시스템 n3r.iam을 OIDC Provider로 확장해 서비스마다 로그인 화면을 만들지 않고 'n3r 계정으로 로그인' 방식으로 연동하는 구조를 소개합니다. 클라이언트 등록, 연동 설정, 토큰 내 n3r 정보 확인 순으로 이어지며, 토큰에 project·role·group 정보를 담아 Access Token으로 n3r API 호출과 role 기반 인가에 활용합니다.
+- 주목할 point: 표준 OIDC 위에 자체 권한 체계를 결합한 설계이며, role이 바뀌면 Access Token을 재발급해 권한을 반영합니다. 적용 범위는 n3r app의 로그인·권한 연동 대상에 한정됩니다.
+- keyword: #OIDC #Kubernetes #AccessToken #인가 #SSO
 
-## [녹화 버튼 뒤에서 일어나는 일: LINE 프리미엄콜 개발기](https://techblog.lycorp.co.jp/ko/line-premium-call-recording)
-- 회사: 라인
-- 본문 요약: LINE 1:1 통화를 녹음·녹화하는 프리미엄콜의 Android 개발기입니다. 음성 통화가 영상 통화로 바뀌어도 같은 파일·녹화 세션에 이어 붙이고, 영상 입력 해상도가 바뀌어도 최종 프레임 크기를 유지합니다. STT는 서버가 아닌 온디바이스 모델로 처리하며 현재 일본어만 지원합니다.
-- 주목할 point: 재생용 고음질 스트림과 녹음·STT용 최적화 스트림을 분리하고, 녹음엔 침묵을 남기되 STT엔 말소리 구간만 넘기는 등 목적별로 처리합니다.
-- keyword: #VoIP #온디바이스STT #Android #녹화
+## [PennyLane을 활용한 Amazon Braket에서의 Max-Cut 문제의 해결 (2부) – 세 가지 실행 방식 비교](https://aws.amazon.com/ko/blogs/tech/amazon-braket-pennylane-maxcut-qaoa-part2/)
+- 회사: AWS
+- 본문 요약: PennyLane QAOA Max-Cut 코드를 로컬, Braket Hybrid Jobs 임베디드 시뮬레이터, SV1 온디맨드 시뮬레이터의 세 방식으로 실행해 비교했습니다. 디바이스 ARN만 바꿔 lightning.qubit, SV1, 실제 QPU로 전환할 수 있고, 실행 위치에 따라 콘솔 추적, 네트워크 왕복, 과금 방식이 달라집니다.
+- 주목할 point: 임베디드 시뮬레이터는 네트워크 왕복이 없고 인스턴스 시간으로 과금되는 반면 SV1은 반복마다 태스크를 제출해 왕복과 시뮬레이터 사용량 비용이 붙습니다. QAOA의 확률적 특성상 최고 확률 비트열이 항상 최대 컷은 아니므로 상위 후보의 컷 크기를 고전적으로 계산해 최종 해를 고르라고 권합니다.
+- keyword: #AmazonBraket #PennyLane #QAOA #MaxCut #양자컴퓨팅
 
-## [누구나 디자인할 수 있는 세상을 위해 — 미리디 CEO, 창석님](https://medium.com/miridih/%EB%88%84%EA%B5%AC%EB%82%98-%EB%94%94%EC%9E%90%EC%9D%B8%ED%95%A0-%EC%88%98-%EC%9E%88%EB%8A%94-%EC%84%B8%EC%83%81%EC%9D%84-%EC%9C%84%ED%95%B4-%EB%AF%B8%EB%A6%AC%EB%94%94-ceo-%EC%B0%BD%EC%84%9D%EB%8B%98-5985463584d7?source=rss----79ed61a9dcb1---4)
-- 회사: 미리디
-- 본문 요약: 원문 접근이 차단되어 본문을 확인하지 못했습니다. 제목상 미리디 CEO를 소개하는 인터뷰/조직 소개 성격의 글로 보입니다.
-- 주목할 point: 확인 불가 (제목·회사·링크만 기록)
-- keyword: #미리디 #디자인 #인터뷰
+## [매일 아침 AI가 알려주는 앱 크래시 리포트 자동화 개발 기록](https://medium.com/cj-onstyle/ai-%ED%81%AC%EB%9E%98%EC%8B%9C%EB%A6%AC%ED%8F%AC%ED%8A%B8-%EC%9E%90%EB%8F%99%ED%99%94-%EA%B0%9C%EB%B0%9C-%EA%B8%B0%EB%A1%9D-2ab7ba12d606?source=rss----c2837295b0fd---4)
+- 회사: CJ온스타일
+- 본문 요약: Firebase Crashlytics API로 이슈 ID, 스택 트레이스, 발생 횟수, 영향 사용자 수, 앱 버전을 추출하고, Jenkins에서 수집한 데이터를 Claude CLI가 develop 브랜치 소스와 함께 분석해 원인과 수정 방향을 Confluence 리포트로 만든 뒤 Slack·Teams로 알리는 자동화 흐름을 구축했습니다.
+- 주목할 point: BigQuery에서 Crashlytics 데이터를 확인할 수 없어 API로 전환했고, 토큰 비용과 특정 AI 종속 우려로 Firebase MCP는 채택하지 않았습니다. crashed == true 이슈와 신규 크래시를 우선 처리하며, ANR·OOM은 제외해 분석 가능한 이슈를 우선화하고, 공통 코드를 재사용해 iOS에도 적용했습니다.
+- keyword: #Crashlytics #ClaudeCLI #Jenkins #자동화 #Android
 
-## [뱅크샐러드 '저금리 대출 대리조회' 금융위 혁신금융서비스 지정](https://corp.banksalad.com/blog/news/bs1501/)
+## [하나의 플랫폼으로 두 가지 에이전트 런타임 운영하기: 웅진씽크빅의 Amazon Bedrock AgentCore 및 Amazon EKS 기반 플랫폼 구축기](https://aws.amazon.com/ko/blogs/tech/woongjin-thinkbig-agent-platform/)
+- 회사: AWS (웅진씽크빅 사례)
+- 본문 요약: Bedrock AgentCore와 EKS를 함께 지원하는 사내 AI 에이전트 플랫폼 구축 과정을 소개합니다. 모델·지시문·MCP·지식 기반 설정을 Strands Agents 코드와 컨테이너 이미지로 자동 생성하고, CodeBuild·ECR 파이프라인과 AgentCore Control Plane API로 Runtime 배포와 버전 엔드포인트를 관리합니다. EKS 배포 유형은 Helm values·ArgoCD로 기존 GitOps 흐름에 연동했습니다.
+- 주목할 point: ARM64 전용 베이스 이미지를 분리해 exec format error를 해소했고, 설정 저장부터 호출 가능 상태까지 중앙값 약 2분 10초를 달성했습니다. GitOps 상태 판정, outbox 기반 등록 일관성, SQS FIFO 기반 동시 배포 직렬화를 개선 방향으로 검토합니다.
+- keyword: #BedrockAgentCore #EKS #MCP #GitOps #AI에이전트
+
+## [경력 없이 시작해 정규직 2개월 만에 연봉 8천만원, "다음 목표는 1억"](https://corp.banksalad.com/blog/culture/bfs-interview-1/)
 - 회사: 뱅크샐러드
-- 본문 요약: '저금리 대출 대리조회' 서비스가 금융위원회 혁신금융서비스로 지정됐다는 보도자료입니다. 고객을 대신해 대출 가심사를 신청하고 결과를 안내하며, 한 번 위임하면 반복 조회가 필요 없고 언제든 철회할 수 있습니다. 마이데이터 기반 대출 AI 에이전트의 주요 기능으로 활용될 예정입니다.
-- 주목할 point: 회사는 중·저신용자의 '금리 단층' 완화에 도움이 될 것으로 전망했습니다.
-- keyword: #혁신금융서비스 #마이데이터 #대출AI에이전트
+- 본문 요약: 뱅크샐러드 컬처 블로그의 구성원 인터뷰 글로, 제목 기준으로 경력 없이 입사해 정규직 전환 2개월 만에 연봉 8천만 원을 달성한 사례를 다룹니다. 원문 본문은 직접 확인하지 못해 제목·회사 등 확인 가능한 정보만 기록합니다.
+- 주목할 point: 기술 내용보다 조직문화·보상 체계 중심의 글입니다.
+- keyword: #뱅크샐러드 #인터뷰 #조직문화
 
-## [뱅크샐러드, AI 에이전트 판단·실행 제어 기술 특허 출원](https://corp.banksalad.com/blog/news/bs1502/)
+## [망분리 환경에서도 한 달 만에 AX로 생산성을 높인 방법](https://corp.banksalad.com/blog/tech/banksalad-ax-workflow-automation/)
 - 회사: 뱅크샐러드
-- 본문 요약: AI 에이전트의 판단과 실행을 제어하는 기술로 특허 3건을 출원했습니다. 환각 오류를 막기 위해 실행 대상 판단, 수치 검증, 실행 제어 세 축을 설계했으며, DSR·LTV 등 금융 규정 계산식으로 수치를 교차 검증하고 고객에게 불리한 거래는 실행을 보류합니다.
-- 주목할 point: LLM의 판단을 그대로 실행하지 않고 실행 직전 규정 기반 검증·제어 단계를 거치는 구조입니다.
-- keyword: #AI에이전트 #환각 #실행제어 #금융규정
+- 본문 요약: 개인정보·민감 데이터를 다루는 망분리 환경에서 AX 적용 범위를 '개인정보 제외·사내 용도·연구개발망 한정'으로 제한하고, 사내 호스팅이 가능한 오픈소스 n8n 중심으로 재무·CR팀의 반복 업무를 자동화했습니다. 스크래핑, LLM 판정·요약, Slack 알림을 조합해 정부지원과제 후보 선별, 법인카드 잔액 알림, 신규 회사 뉴스 탐지·논조 분석 등을 구현했습니다.
+- 주목할 point: 비개발 직군이 직접 수정할 수 있는 시각적 워크플로 도구를 우선했고, 재무팀 인당 일일 30분~1시간 절감과 CR팀 즉시 대응 체계를 확보했습니다.
+- keyword: #n8n #LLM #AX #자동화 #망분리
 
-## [뱅크샐러드 데이터 기반 카드 추천⋯평균 105만원 혜택 받는다](https://corp.banksalad.com/blog/news/bs1503/)
-- 회사: 뱅크샐러드
-- 본문 요약: 마이데이터 기반 맞춤 카드 추천 이용 고객을 분석한 결과 평균 105만 원의 혜택을 받았다는 발표입니다. 최근 1년 소비 내역으로 카드 한 장을 추천하고 같은 소비 패턴 유지 시 늘어나는 혜택을 원 단위로 보여줍니다.
-- 주목할 point: 공개된 혜택 구간 비중 합이 100%에 못 미치고 일부 구간이 빠져 있어 분포 해석엔 원자료 확인이 필요합니다.
-- keyword: #마이데이터 #카드추천 #소비패턴
+## [TASTE, 토스의 추천 파운데이션 플랫폼](https://toss.tech/article/taste)
+- 회사: 토스
+- 본문 요약: TASTE는 앱이벤트 공동학습(DCN-V2 인코더, Causal Transformer 시퀀스 모듈, PLE 기반 과제별 예측)으로 사용자 표현을 만들고, 예측 확률과 임베딩을 여러 추천·타기팅 모델에 제공하는 플랫폼입니다. 앱이벤트와 소비는 특성과 정답 시점이 달라 목적별로 모델을 분리했고, 서비스 과제를 재현한 TASTE Bench로 임베딩 후보의 전이 성능을 사전 비교합니다.
+- 주목할 point: 공통 앱이벤트 Macro Recall@5k가 상대 35.1% 개선됐고, 임베딩 추가로 CRM·쇼핑·광고 모델의 AUROC와 미니앱 추천 온라인 CTR이 개선됐습니다. 모든 행동을 단일 모델로 학습하면 성능이 상충하고, 모델 갱신에 따른 벡터 분포 변화 대응이 과제로 남습니다.
+- keyword: #추천시스템 #임베딩 #Transformer #ML #A/B테스트
 
-## [AI 에이전트를 위한 멀티모달 의사결정 모델 ‘Kanana-2-v-decide’ 오픈소스 공개](https://tech.kakao.com/posts/846)
-- 회사: 카카오
-- 본문 요약: 고객 문의 분류, 상품 사진 확인, 도구 선택처럼 에이전트 요청 처리 중 반복되는 의사결정에 초점을 맞춘 멀티모달 모델을 오픈소스로 공개했습니다. (원문 본문은 추출하지 못해 요약 정보 기준)
-- 주목할 point: 긴 답변 생성보다 빠른 판단 결과가 필요한 에이전트 단계에 활용할 수 있습니다.
-- keyword: #Kanana #멀티모달 #의사결정모델 #오픈소스
+## [왓챠가 사용자의 취향에 다가가는 방법 (feat. CIKM)](https://medium.com/watcha/%EC%99%93%EC%B1%A0%EA%B0%80-%EC%82%AC%EC%9A%A9%EC%9E%90%EC%9D%98-%EC%B7%A8%ED%96%A5%EC%97%90-%EB%8B%A4%EA%B0%80%EA%B0%80%EB%8A%94-%EB%B0%A9%EB%B2%95-feat-cikm-ba3ce5c7d787?source=rss----bd1678892a27---4)
+- 회사: 왓챠
+- 본문 요약: 코사인 유사도 기반 Sampled Softmax 학습에서도 인기 편향이 남는 원인을 분석했습니다. 학습 중 원본 임베딩 길이가 커지며 인기도별 그래디언트 크기가 달라지고, 인기작이 positive로 자주 등장해 업데이트가 누적 집중되기 때문입니다. 매 업데이트 후 임베딩을 정규화하는 L2 Projection과 시청 수를 로그 스케일로 반영하는 Degree Prior를 결합한 GD-SSM을 제안했습니다.
+- 주목할 point: SSM 대비 전체 Recall@20 7.2%, NDCG@20 9.9% 개선, 롱테일 Recall@20 39.0%, NDCG@20 61.4% 개선과 커버리지 확대를 보였고, 추가 학습 파라미터나 튜닝 하이퍼파라미터가 필요 없습니다.
+- keyword: #추천시스템 #협업필터링 #인기편향 #LightGCN #CIKM
 
-## [php2shell 취약점의 동작 원리와 원격 코드 실행(RCE) 방어 전략: PHP부터 React·Next.js(React2Shell)까지의 대응 방안](https://blog.cslee.co.kr/php2shell-vulnerability-and-rce-defense-strategy/)
+## [[행사스케치] 국방 AI를 위한 풀스택 기술 파트너 : IAMSEC 2026 국제 육군 M&S 전시회](https://blog.naver.com/n_cloudplatform/224470078838)
+- 회사: 네이버 클라우드 플랫폼
+- 본문 요약: 대전컨벤션센터에서 열린 IAMSEC 2026 국제 육군 M&S(모델링·시뮬레이션) 학술 컨퍼런스 및 전시회 참가 현장을 소개합니다. '국방 AI를 위한 풀스택 기술 파트너'를 주제로 한 기조연설과 전시 부스 운영 내용을 다룹니다.
+- 주목할 point: 기술 심층 분석보다는 행사 참가 스케치 성격의 글입니다.
+- keyword: #네이버클라우드 #국방AI #M&S #행사스케치
+
+## [RAG 검색 알고리즘을 바꾸지 않고 검색 품질을 개선한 방법_AIOps](https://blog.cslee.co.kr/improving-rag-search-quality-with-query-centric-data/)
 - 회사: CSLEE
-- 본문 요약: PHP 멀티파트 폼 처리 중 OOM과 Use-After-Free로 RCE에 이르는 PHP2Shell 공격 흐름과, Next-Action 헤더·직렬화 데이터를 노리는 React2Shell 공격 표면을 설명합니다. 패치, Next-Action 차단, Nginx·WAF 필터링과 Rate Limit 등 대응책을 제시합니다.
-- 주목할 point: Next.js 내부에 React가 포함돼 의존성 스캐너가 취약 버전을 놓칠 수 있고, PHP 미사용 서비스에도 무차별 스캐닝이 유입될 수 있습니다.
-- keyword: #PHP2Shell #React2Shell #RCE #WAF
+- 본문 요약: 질문과 상세 답변을 함께 인덱싱한 Q&A RAG에서 부가 설명이 많은 문서가 정답보다 상위에 노출되는 문제를 분석했습니다. BM25와 KNN 양쪽의 잘못된 상위 순위가 RRF 결합에서도 이어지는 구조였고, 검색 알고리즘은 유지한 채 검색 대상을 질문 의도 중심의 Query-Centric 텍스트로 재설계하고 Answer ID로 별도 Answer DB에서 상세 답변을 조회하도록 역할을 분리했습니다.
+- 주목할 point: Top-1 Accuracy, Hit@K, Retrieval Failure Rate@K로 효과를 검증하며, 검색 표현의 과도한 확장 방지, 한국어 토큰화 설정 점검, 중복 Answer ID 처리, 인덱스-답변 DB 정합성 관리가 필요합니다.
+- keyword: #RAG #BM25 #KNN #RRF #AIOps
 
-## [우아한형제들의 AI 거버넌스, 플랫폼에 담다](https://techblog.woowahan.com/27890/)
-- 회사: 우아한형제들
-- 본문 요약: AI Studio와 AI Gateway로 LLM·Agent 사용 신청, 정책 승인, 호출 기록을 프로젝트 단위로 연결했습니다. LiteLLM 기반 공통 호출 경로, Virtual Key 기반 모델·예산·RPM/TPM 제어, Langfuse·Grafana·Slack 기반 관측을 구성했습니다.
-- 주목할 point: 프롬프트 캐싱 최적화로 캐시 비율이 5%에서 97%로 오르고 요청당 비용 84% 절감, 평균 응답 시간은 0.79초에서 1.33초로 증가했습니다.
-- keyword: #AI거버넌스 #AIGateway #LiteLLM #프롬프트캐싱
-
-## [쿠버네티스 Cilium부터 AIOps까지 | Cloud Club 9기 클라우드 스터디 후기](https://library.gabia.com/contents/infrahosting/15975/)
-- 회사: 가비아
-- 본문 요약: Cloud Club 9기의 Cilium(CNI·eBPF·Hubble), 모의 장애 대응(SLI/SLO, Metric·Log·Trace), AIOps 배포(AI 요약·Discord 알림) 스터디 내용을 소개합니다.
-- 주목할 point: iptables 대비 Cilium의 latency·throughput·CPU 사용량을 측정하고 BPF trace로 패킷 경로를 확인하는 학습 방식입니다.
-- keyword: #Kubernetes #Cilium #eBPF #AIOps
+## [코드에서 화면 지도를 그리고, AI와 함께 회귀 테스트의 빈 곳을 채우다](https://helloworld.kurly.com/blog/web-e2e-coverage-map/)
+- 회사: 마켓컬리
+- 본문 요약: 3개 프론트 레포의 라우트 467개를 코드 기준으로 수집하고 Playwright 크롤러 실측과 기존 E2E 분석을 결합해 화면 지도를 만들었습니다. 담당자 검토로 제외·제약·기구현·구현 대상을 분류하고, Claude Code와 서브에이전트로 시나리오 제안과 Jira·Kase 등록을 자동화해 모바일웹 35개·PC 34개 화면에 신규 테스트 114개를 3.5일 만에 추가했습니다.
+- 주목할 point: 고장 주입과 다중 에이전트 리뷰로 항상 통과하는 판정, 잘못된 선택자, 플랫폼 간 누락을 보완했고, 12개 러너 병렬 실행으로 568개 테스트를 13분 44초에 수행합니다. 분기별 라우트 변화 점검으로 지도를 최신화할 계획입니다.
+- keyword: #ClaudeCode #Playwright #E2E #회귀테스트 #QA
