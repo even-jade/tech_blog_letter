@@ -1,80 +1,116 @@
-<!-- 이 파일은 posts/2026-11-10.md의 사본입니다. 자동 생성됨. -->
-# 2026-11-10 기술 블로그 모음
+<!-- 이 파일은 posts/2026-11-11.md의 사본입니다. 자동 생성됨. -->
+# 2026-11-11 기술 블로그 모음
 
-## [AI 스킬 만들기 10계명: Figma→Code 자동화 실전기](https://d2.naver.com/helloworld/8562180)
+## [Chaos Mesh로 Kubernetes 앱의 장애 내구성 검증하기](https://d2.naver.com/helloworld/6523094)
 - 회사: 네이버
-- 본문 요약: Claude Agent Skills(SKILL.md·references·scripts)로 Figma 디자인을 Android UI 코드로 변환하는 맞춤 스킬을 만들며 얻은 설계 원칙을 정리했습니다. Node ID 추출, 디자인 컨텍스트·스크린샷 확보, 에셋 분류·처리, 코드 변환, 검증으로 이어지는 7단계 워크플로를 구성하고, 에셋을 정적 에셋·동적 비주얼·기존 리소스(A/B/C)로 분류해 VectorDrawable·WebP·Canvas 처리 방식을 결정합니다. (원문 사이트가 이번 수집 환경에서 접근 제한되어 velopers.kr 요약 정보를 바탕으로 정리했습니다.)
-- 주목할 point: 결과가 고정된 변환·검증은 스크립트로, 판단이 필요한 분류·스타일은 기준표로 분리하고, 모델이 이미 아는 일반 지식은 SKILL.md에서 빼 토큰 낭비와 규칙 희석을 막습니다. 작성 세션의 대화 맥락·메모리·Git 히스토리로 테스트 결과가 오염되지 않도록 검증 환경을 분리하라는 조언이 인상적입니다.
-- keyword: #Claude #AgentSkills #Figma #Android #자동화
+- 본문 요약: Kubernetes 환경에서 가상의 인프라 장애를 주입해 시스템 내구성을 사전에 검증하는 Chaos Engineering을 소개합니다. Chaos Mesh의 개념과 장애 주입 메커니즘, Workflow 중심의 실험 구성 방식을 설명하고, 실제 서비스에 적용한 장애 제어·테스트 구성 사례를 다룹니다.
+- 주목할 point: 장애 테스트를 일회성 실험이 아니라 Workflow로 자동화하는 방법과, 실제 서비스에 도입할 때의 주의사항을 함께 정리했다는 점이 실무에 유용합니다.
+- keyword: #Kubernetes #ChaosMesh #ChaosEngineering #장애테스트
 
-## [유진그룹의 온톨로지 여정: Amazon Neptune과 Amazon Bedrock으로 건자재 유통 데이터를 지식 그래프로 전환하기](https://aws.amazon.com/ko/blogs/tech/eugene-ontology/)
+## [AI 산출물이 프로덕션이 되기까지-AI와 디자인시스템이 함께 일하는 법](https://d2.naver.com/helloworld/2568242)
+- 회사: 네이버
+- 본문 요약: AI가 만든 산출물이 프로덕션으로 이어지지 못하고 재작업되는 문제를 디자인시스템 확장으로 풀어낸 발표입니다. 스펙·HTML·이미지를 Figma로 모으는 입력 통합, 컴포넌트·디자인 토큰·design.md를 통한 설계 의도 표현, Code Connect로 Figma와 코드 컴포넌트를 연결하는 흐름을 다룹니다.
+- 주목할 point: 접근성·인터랙션·엣지 케이스까지 담긴 코드 컴포넌트를 AI가 재사용하도록 해 기존 역할과 프로세스를 유지하면서 AI 효과를 높이는 접근, 그리고 이미지→Figma, Figma→마크업 비교 데모와 Spec→Code 방향 탐색이 눈여겨볼 부분입니다.
+- keyword: #디자인시스템 #Figma #CodeConnect #디자인토큰 #AI
+
+## [검수도 답변도 호출도 AI가? 커머스API의 2026](https://d2.naver.com/helloworld/7749530)
+- 회사: 네이버
+- 본문 요약: NAVER Engineering Day 10th 발표로, 커머스API 플랫폼이 AI로 API 검수·기술 문의 답변·AI 에이전트 도구 호출까지 운영을 확장한 사례입니다. 라우팅 룰 50개를 데이터화해 판단이 필요한 규칙까지 검수하는 AI 검수 엔진, API 명세를 에이전트용 Tool로 전환하는 MCP 게이트웨이, 분산된 기술 지식을 자산화한 기술지원 운영을 소개합니다.
+- 주목할 point: API 명세 하나를 검수·기술지원·도구 호출의 공통 기반으로 삼고, LLM·MCP 연동에도 게이트웨이를 통해 동일한 검수와 통제를 적용한 설계가 핵심입니다.
+- keyword: #MCP #LLM #API플랫폼 #커머스 #AI에이전트
+
+## [Socket.IO 서버를 여러 Pod에서 운영하기](https://d2.naver.com/helloworld/3517874)
+- 회사: 네이버
+- 본문 요약: Kubernetes 기반 환경에서 Socket.IO 소켓 서버를 여러 Pod로 운영한 설계·검증·운영 경험을 공유한 발표입니다. 연결 인증, Pod 간 이벤트 전달, 자료구조와 사용자 흐름 설계부터 타임아웃, 오토스케일·재분산, 배포 시 연결 종료 처리까지 다룹니다.
+- 주목할 point: 상태를 가진 웹소켓 연결을 수평 확장할 때의 이벤트 전달·연결 유지 문제를 부하 시험과 배포 전략 비교 결과로 보완해 간 과정이 참고할 만합니다.
+- keyword: #SocketIO #Kubernetes #웹소켓 #오토스케일
+
+## [AWS를 활용한 CMMC Level 2 인증 준비: 국내 방산 기업을 위한 안내](https://aws.amazon.com/ko/blogs/tech/cmmc-level-2-on-aws/)
 - 회사: AWS
-- 본문 요약: 온라인몰·POS·WMS·ERP에 분산되고 코드 체계가 제각각인 건자재 유통 데이터를 R2G·GRAD 방법론과 GoodRelations·schema.org·GS1 표준으로 모델링해 Amazon Neptune 지식 그래프로 전환한 PoC입니다. Bedrock(Claude Sonnet 4.5) 기반 Rule-grounded Text-to-Cypher 에이전트가 자연어 질의를 규칙·스키마 컨텍스트와 함께 openCypher로 변환해 재고·납기·대체품을 탐색합니다.
-- 주목할 point: 7개 업무 질의(CQ)의 그래프 질의 성립을 검증했고, 키워드 규칙 매칭·최대 3회 자기교정·별칭 탐색으로 신뢰성을 보완했습니다. 운영 확장의 선결 과제로 데이터 표준화, 용어집, 정답 검증 계층, 도메인 전문가 협업을 꼽았습니다.
-- keyword: #AmazonNeptune #AmazonBedrock #지식그래프 #온톨로지 #TextToCypher
+- 본문 요약: 미국 국방부(DoD) 계약·공급망에 참여하는 국내 방산 기업이 AWS에서 CUI(통제 비밀 정보) 보호 환경을 구성해 CMMC Level 2를 준비하는 방법을 안내합니다. 관리·보안·네트워크·CUI 워크로드를 다중 계정으로 분리한 전용 Enclave, WorkSpaces 기반 통제된 접근, FSx·S3·KMS 데이터 보호, Config·CloudTrail·GuardDuty·Security Hub·Network Firewall 기반 감사·탐지 구성을 설명합니다.
+- 주목할 point: 실제 데이터 흐름과 의존 관계에 따라 평가 범위를 정확히 산정하는 것이 출발점이며, 공동 책임 모델과 AWS Artifact로 증적을 활용하되 정책·절차·교육·사고 대응 같은 비기술 통제도 별도로 준비해야 한다는 점을 강조합니다.
+- keyword: #AWS #CMMC #CUI #방산 #컴플라이언스
 
-## [[데이터센터 입문 시리즈] 6가지 조건이 정하는 입지 선택](https://library.gabia.com/contents/infrahosting/16132/)
-- 회사: 가비아
-- 본문 요약: 데이터센터 입지를 결정하는 조건을 시설 구축·운영 조건(전력·부지·물·지반)과 고객 도달 조건(통신망·고객 거리)으로 나눠 설명합니다. 송전망 여유가 부족하면 계통 접속 대기, 공급 전력 축소, 개소 지연이 생길 수 있어 전력 확보를 최우선 기준으로 둡니다.
-- 주목할 point: 대도시 입지(낮은 지연·우수한 연결성 vs 높은 토지 비용·전력 제약)와 외곽 입지(전력·증설 부지 확보 vs 고객·인력 확보 어려움)의 트레이드오프, 물 절약 냉각과 추가 전력 소비의 교환 관계, AI 학습·추론처럼 지연 민감도가 다른 워크로드별 입지 판단을 정리했습니다.
-- keyword: #데이터센터 #전력 #입지 #인프라
+## [자연어로 게임 지표를 조회하고 변화 확인하기: Hive Axyl Plugin 활용 1편](https://on.com2us.com/tech/hive-axyl-plugin-kpi-analysis/)
+- 회사: 게임빌컴투스플랫폼
+- 본문 요약: ChatGPT에 Hive Axyl Plugin을 설치해 Hive 애널리틱스 지표를 자연어로 조회·분석하는 방법을 소개합니다. 조직에 프로젝트·멤버를 등록하고 계정을 MCP 멤버로 설정한 뒤, "어제 매출이 지난주 대비 얼마나 달라졌나"에서 시작해 국가·마켓·상품 순으로 질문을 이어가며 ARPPU 감소 원인을 좁혀가는 예시를 보여줍니다.
+- 주목할 point: 대화 맥락이 유지되어 분석 조건을 매번 다시 구성할 필요가 없고, 마켓·상품의 원시값 표기가 다를 때 임의로 합산하지 않도록 하는 등 분석 신뢰성을 지키는 가이드가 담겨 있습니다.
+- keyword: #MCP #애널리틱스 #자연어분석 #게임KPI #Hive
 
-## [실행은 격리하고, 세션은 이어간다: 망분리 환경의 Agent Platform 설계기](https://toss.tech/article/agent-platform-foundation)
-- 회사: 토스
-- 본문 요약: 망분리 환경에서 내부 데이터 분석 자동화용 에이전트 코드를 실행하기 위해, 사용자별 Kubernetes Pod를 Workspace로 재사용하고 OpenSandbox로 수명주기를 관리하는 플랫폼을 설계했습니다. Runtime은 bubblewrap 기반 Linux namespace 안에서 하네스와 도구를 실행하고, 작업 파일·하네스 세션 상태는 PV에, 공통 실행 기록은 OpenResponses 형식으로 보관해 Pod 교체 후에도 대화를 이어갑니다.
-- 주목할 point: 인증 프록시로 API 키를 노출하지 않고 Gateway로 모델·도구 호출 경로를 통제합니다. namespace 격리는 VM 운영 부담을 줄이지만 호스트 커널을 공유하는 한계가 있고, 세션 재개는 중단 지점 재실행·외부 작업 롤백을 지원하지 않는다는 트레이드오프를 명시했습니다.
-- keyword: #Kubernetes #OpenSandbox #AIAgent #망분리 #샌드박스
+## [자연어로 차트와 대시보드 구성하기: Hive Axyl Plugin 활용 2편](https://on.com2us.com/tech/hive-axyl-plugin-chart-dashboard/)
+- 회사: 게임빌컴투스플랫폼
+- 본문 요약: 1편에서 찾은 매출·ARPPU 감소 분석 조건을 자연어로 차트로 저장하고 여러 차트를 하나의 대시보드로 구성하는 방법을 다룹니다. 앞선 분석 맥락을 바탕으로 상품별 매출 증감액, 상품별 PU·ARPPU, 결제 건수·건당 매출, 상위 결제자 매출 비중 등 다섯 가지 지표와 권장 차트를 추천받아 대시보드를 생성합니다.
+- 주목할 point: 차트·대시보드를 생성·수정하기 전에 적용할 내용을 먼저 보여주고 사용자 승인 후 실행하며, 중복 콘텐츠 여부도 확인하는 human-in-the-loop 설계가 특징입니다.
+- keyword: #MCP #대시보드 #애널리틱스 #자연어 #Hive
 
-## [비가 오면 사장님이 먼저 압니다: SSE로 만든 실시간 기상악화 알림](https://techblog.woowahan.com/28139/)
-- 회사: 우아한형제들
-- 본문 요약: 기상악화로 라이더가 부족해 주문 취소가 늘어나는 상황을 파트너(사장님)에게 즉시 알리기 위해 SSE 기반 실시간 알림을 설계했습니다. 외부 기상악화 이벤트를 SNS·SQS로 받아 Kafka로 재발행하고, 파드별 고유 groupId로 전체 파드에 fan-out한 뒤 연결된 파트너에게만 선별 전송하며, SSE는 신호만 보내고 최신 상태는 REST API로 재조회하는 zero-payload 방식을 택했습니다.
-- 주목할 point: 폴링·롱 폴링·WebSocket 대비 단방향 요구에 맞는 SSE를 선택한 이유와, Reactor Sink 멀티캐스트·느린 구독자 이벤트 폐기, Nginx 버퍼 비활성화·연결 상한, heartbeat와 재연결 지터·백오프 등 운영 전략을 함께 다룹니다.
-- keyword: #SSE #Kafka #Reactor #실시간알림 #백엔드
+## [Agent Toolkit for AWS를 활용한 바이브코딩 앱 배포 실습](https://tech.cloud.nongshim.co.kr/blog/aws/4631/)
+- 회사: 농심데이터시스템
+- 본문 요약: 로컬 React·Express·SQLite 공지 게시판을 Agent Toolkit for AWS(MCP 서버·스킬·규칙 파일)로 CloudFront·S3·HTTP API·Lambda·DynamoDB·Secrets Manager 기반 서버리스 환경에 배포한 실습기입니다. presigned URL 업로드, CloudFront OAC, 시크릿 ARN 참조 등을 구성하고 CDK synth 오류 자동 수정과 배포 후 multer 누락 진단·재배포까지 진행했습니다.
+- 주목할 point: 규칙 파일 적용 시 S3 공개 차단·암호화, HTTPS 강제, IAM 최소 권한이 자동 반영된 반면 미적용 시 핵심 보안 항목이 누락될 수 있었고, CloudTrail과 aws:ViaAWSMCPService 조건 키로 MCP 경유 쓰기를 제한·추적할 수 있음을 확인했습니다.
+- keyword: #AWS #MCP #바이브코딩 #서버리스 #IAM
 
-## [데이터로 돌아보는 6번의 Channel Dev Meetup](https://tech.channel.io/kr/articles/eda834e2)
-- 회사: 채널톡
-- 본문 요약: 6회 개발자 밋업을 관심도(Demand)·현장 경험(Experience)·행사 후 관계(Engagement) 세 지표로 회고했습니다. 누적 신청 1,303건, 참석 386명, 평균 참석률 74.2%, 세션·네트워킹 만족도 4.42점, 운영 만족도 4.60점을 기록했습니다.
-- 주목할 point: 넓은 주제보다 DynamoDB 운영처럼 실무 문제를 깊게 다룬 회차의 만족도가 높았고, 회차당 2~3주 준비·약 160만 원 예산으로 피드백을 다음 회차에 반영했습니다. 재신청·커피챗 의향을 관계 형성 지표로 활용한 점이 참고할 만합니다.
-- keyword: #밋업 #개발문화 #컨퍼런스 #데이터회고
+## [티빙 미니플레이어(PIP) 도입기](https://medium.com/tving-team/%ED%8B%B0%EB%B9%99-%EB%AF%B8%EB%8B%88%ED%94%8C%EB%A0%88%EC%9D%B4%EC%96%B4-pip-%EB%8F%84%EC%9E%85%EA%B8%B0-fda56efb2991)
+- 회사: TVING
+- 본문 요약: 영상을 보다 탐색·순위·일정을 확인하려면 재생을 닫아야 했던 시청 단절 문제를 해결하기 위해 인앱 PIP 미니플레이어를 도입한 과정입니다. 앱 이탈 시 OS PIP로 이어지는 재생 경험, 스와이프·탭·핀치 중심의 축소·확대·이동·숨김·닫기 제스처, 다른 콘텐츠 재생 시 기존 플레이어를 교체하는 단일 플레이어 원칙을 설명합니다.
+- 주목할 point: 미니플레이어 노출 중에는 자동 미리보기·홈 애니메이션을 멈춰 재생 성능을 우선하고, 광고·크롬캐스트·키보드·웹 화면 상태까지 고려한 세부 설계와 "탐색 후 원래 영상 복귀" 중심의 사용성 측정이 인상적입니다.
+- keyword: #PIP #iOS #Android #동영상플레이어 #UX
 
-## [게임듀오가 Amazon EC2 기반 ClickStack으로 게임 서버 관측성 비용을 절반 이하로 줄인 방법](https://aws.amazon.com/ko/blogs/tech/gameduo-clickstack-on-amazon-ec2/)
-- 회사: AWS
-- 본문 요약: 250대 이상 게임 서버에서 일일 로그 1~2억 건, 스팬 4~6억 건을 수집하던 게임듀오가 SaaS 과금·15일 보존 제한·Loki 검색 타임아웃 문제를 EC2 기반 ClickStack(ClickHouse)으로 해결했습니다. OpenTelemetry Collector를 거쳐 S3에 원문을 먼저 적재하고 SQS 이벤트로 ClickHouse에 비동기 INSERT하며, EBS 핫 티어·S3 콜드 티어·TTL로 보존 정책을 구성했습니다.
-- 주목할 point: S3·SQS 버퍼와 DLQ로 ClickHouse 중단이나 Fargate Spot 회수 시에도 재처리가 가능하고, 카나리·CloudWatch 데드맨으로 유실을 감시합니다. Grafana SQL 알람을 16개에서 170여 개로 늘리며 관측 비용은 절반 이하로 줄였습니다.
-- keyword: #ClickHouse #ClickStack #OpenTelemetry #관측성 #AWS
+## [Hilt Custom Component 활용하기](https://medium.com/naverfinancial/hilt-custom-component-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0-a0452fe2566a)
+- 회사: 네이버페이
+- 본문 요약: Hilt 기본 컴포넌트로 표현하기 어려운 "로그인 사용자" 생명주기를 Custom Component(AuthUserComponent)로 관리하는 방법을 설명합니다. UserAuthSession의 로그인·로그아웃 상태 변경을 구독해 사용자 스코프 컴포넌트를 재생성하고, 사용자별 Repository·데이터 소스를 주입하며 EntryPoint와 브리지로 접근합니다.
+- 주목할 point: 사용자 전환 시 이전 의존성 그래프를 폐기해 메모리를 아끼는 대신 그래프 복잡도·성능·외부 라이브러리 연동 제약이 생기는 트레이드오프, 그리고 SingletonComponent 상속 필요 등 계층 배치 제약을 짚어 꼭 필요한 영역에만 제한적으로 쓰라고 권합니다.
+- keyword: #Android #Hilt #DI #Kotlin
 
-## [RAG 시스템의 재순위화(Reranking): 구조와 발전부터 리랭커 선정까지](https://blog.cslee.co.kr/rag-%ec%8b%9c%ec%8a%a4%ed%85%9c%ec%9d%98-%ec%9e%ac%ec%88%9c%ec%9c%84%ed%99%94reranking-%ea%b5%ac%ec%a1%b0%ec%99%80-%eb%b0%9c%ec%a0%84%eb%b6%80%ed%84%b0-%eb%a6%ac%eb%9e%ad%ec%bb%a4-%ec%84%a0/)
+## [[Atlassian Team ’26 Europe 총정리] AI 에이전트가 팀의 일원이 되는 시대](https://tech.osci.kr/team26europe_keynote/)
+- 회사: 오픈소스컨설팅
+- 본문 요약: Atlassian Team ’26 Europe 키노트의 Context·Collaboration·Confidence 기반 AI 전략을 정리했습니다. 사람·업무·지식·코드·외부 데이터를 연결하는 Teamwork Graph, Jira·Confluence·Loom에서 사람과 AI 에이전트가 작업을 공유하는 AMP, 외부 AI 도구 연동을 위한 Atlassian MCP와 Rovo Work를 소개합니다.
+- 주목할 point: 개인 생산성 중심의 Single-Player AI에서 조직 협업 중심의 Multiplayer AI로의 전환, 그리고 Agent Accounts·NHI 관리, Guard Premium, MCP 접근 제어 등 에이전트 신원·권한 관리 업데이트가 핵심입니다.
+- keyword: #Atlassian #TeamworkGraph #MCP #AI에이전트 #Rovo
+
+## [의료 AX 가속을 위한 안전판](https://techblog.ahnlabcloudmate.com/yiryo-ax-gasogeul-wihan-anjeonpan/)
+- 회사: 클라우드메이트
+- 본문 요약: 병원에서 생성형 AI 활용이 늘면서 커지는 환자 식별정보·민감정보 유출 위험과, 고영향 AI·개인정보 처리·의료기기 해당성 등 다층 규제 점검 항목을 정리했습니다. 의료진과 AI 서비스 사이에 SecureBridge를 두어 입력·응답의 민감정보·유해 내용과 프롬프트 인젝션을 검사하고 세션 단위 기록과 월간 보고서를 생성하는 구성을 소개합니다.
+- 주목할 point: 전면 차단보다 승인된 AI, 식별정보 마스킹, 이용 이력 관리 중심의 운영 기준을 제안하며 서버 위치·학습 여부·국외 이전 조건 등 실무 검토 체크리스트가 유용합니다.
+- keyword: #생성형AI #LLM보안 #의료AI #개인정보보호
+
+## [[활용 사례] AI와 GitOps의 만남: Chkk MCP 기반 쿠버네티스 애드온 업그레이드 실전기](https://tech.ktcloud.com/entry/2026-11-ktcloud-kubernetes-addon-upgrade-chkk-mcp)
+- 회사: KT 클라우드
+- 본문 요약: 멀티 클러스터 Kubernetes 애드온 업그레이드의 릴리스 노트·호환성·values.yaml 수동 검토 부담을 Chkk MCP Server와 AI Agent로 줄인 사례입니다. 디지털 트윈에서 검증한 업그레이드 템플릿·diff·API Deprecation 정보를 에이전트에 주입해 기존 HelmRelease·IaC 패턴에 맞는 GitOps 변경 코드를 생성하고, Argo Workflows·Gitea 업그레이드와 수동 설치 ArgoCD의 GitOps 편입을 수행했습니다.
+- 주목할 point: 확신도가 낮으면 워크플로우를 멈추고 엔지니어 선택을 유도하는 설계, 실행 로그·VDM 히스토리를 남기는 감사 추적이 돋보이며, CI/CD 연동·최소 권한 RBAC·멀티 차트 통합 테스트를 후속 과제로 꼽았습니다.
+- keyword: #Kubernetes #GitOps #MCP #ArgoCD #AI에이전트
+
+## [테스트 실패는 어떻게 운영 데이터가 되는가](https://techblog.pet-friends.co.kr/%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%A4%ED%8C%A8%EB%8A%94-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%9A%B4%EC%98%81-%EB%8D%B0%EC%9D%B4%ED%84%B0%EA%B0%80-%EB%90%98%EB%8A%94%EA%B0%80-3b5acd2bf755)
+- 회사: 펫프렌즈
+- 본문 요약: 모바일 E2E 실패의 원인 분류·담당자 지정·후속 조치를 사람이 반복하던 부담을 줄이기 위해, GitHub Actions 결과를 기반으로 즉시 알림·AI 실패 분류·이력 적재·Daily QA Report로 이어지는 흐름을 구축했습니다. 실행(test_run)과 케이스(test_case/test_history) 이력을 분리 저장하고 Slack·Notion·InfluxDB에 역할을 나눴습니다.
+- 주목할 point: AI를 최종 판정자가 아닌 "원인 후보 생성기"로 제한하고, confidence·허용 파일·변경 근거를 모두 충족할 때만 Appium PR 후보를 만들며 근거가 부족하면 Issue와 사람 검토로 폴백하는 안전장치가 핵심입니다.
+- keyword: #E2E #Appium #QA자동화 #GitHubActions #AI
+
+## [[고객사례] 스트라드비젼 "한 달 넘게 걸리던 검증을 이제는 5일 안에 끝냅니다."](https://blog.naver.com/n_cloudplatform/224472698021)
+- 회사: 네이버 클라우드 플랫폼
+- 본문 요약: 자율주행 비전 AI 기업 스트라드비젼이 네이버클라우드를 활용해 비전 AI 소프트웨어 검증 환경을 운영하며, 한 달 이상 걸리던 검증 기간을 5일 이내로 단축한 고객 사례입니다.
+- 주목할 point: 생명과 직결되는 자율주행 AI에서 검증 리드타임 단축과 운영 부담 감소를 동시에 달성했다는 점이 핵심입니다. (고객 사례 성격의 글로 기술적 세부 구성은 제한적입니다.)
+- keyword: #비전AI #자율주행 #클라우드 #고객사례
+
+## [[기술 소개] 데이터센터 냉방 인프라의 심장: 펌프(Pump)](https://tech.ktcloud.com/entry/2026-11-ktcloud-data-center-cooling-pump-vfd)
+- 회사: KT 클라우드
+- 본문 요약: 데이터센터 냉수·냉각수 순환에 쓰이는 펌프의 종류와 원심펌프의 작동 원리(임펠러 회전, 볼류트 케이싱에서 속도→압력 에너지 변환), 대용량 연속 이송에 원심펌프가 주로 쓰이는 이유를 설명합니다. VFD 기반 RPM 제어로 소비 전력을 줄이고 진동·베어링 온도·누수 센서와 AI 분석으로 예지 보전하는 운용 방안을 정리했습니다.
+- 주목할 point: 성능 곡선과 최고 효율점(BEP)을 고려한 시스템 저항 관리, 축 정렬·배관 하중 차단·유효흡입수두 확보를 통한 공동현상 방지 등 시공·운영 주의사항이 구체적입니다.
+- keyword: #데이터센터 #냉방 #원심펌프 #VFD #예지보전
+
+## [[가이드] 2030년 양자 위협에 대비하는 SSL/TLS 전환 전략](https://tech.ktcloud.com/entry/2026-11-ktcloud-tls-pqc-migration)
+- 회사: KT 클라우드
+- 본문 요약: 지금 수집한 암호화 트래픽을 미래 양자 컴퓨터로 해독하는 HNDL 위협에 대비해, TLS 키 교환을 NIST FIPS 203 ML-KEM과 X25519를 결합한 X25519MLKEM768 하이브리드로 전환하는 전략을 설명합니다. OpenSSL 3.5 이상과 Nginx ssl_curves 설정, s_client 기반 핸드셰이크 검증 등 에지 우선 적용 절차를 제시합니다.
+- 주목할 point: 자산 인벤토리 → 에지 하이브리드 도입 → ML-DSA 인증서 전환의 3단계 로드맵과, KCMVP 필수 영역·글로벌 서비스의 투트랙 대응 및 크립토-애질리티 설계를 강조합니다.
+- keyword: #PQC #MLKEM #TLS #OpenSSL #Nginx
+
+## [AI 에이전트 공격 실험: 프롬프트로 시크릿 유출시키기](https://blog.cslee.co.kr/prompt-injection-agent-secret-leak/)
 - 회사: CSLEE
-- 본문 요약: RAG에서 1차 검색 후보 10~20건의 관련도를 크로스 인코더·LLM 기반 모델로 다시 평가하는 재순위화의 구조와 발전(규칙 기반 → 크로스 인코더 → LLM → 추론형·한국어 특화·경량 모델)을 정리하고, 한국어 기업 문서로 여러 리랭커를 비교했습니다. 모든 모델이 미적용 대비 nDCG@10과 1위 정답률을 높였고, Nemotron-3.5-Rerank-8B가 nDCG@10 0.711, KURE-Reranker-base가 1위 정답률 87.8%로 최고였습니다.
-- 주목할 point: 저지연·소형 GPU 환경엔 bge-reranker-v2-m3-ko나 KURE-Reranker-nano, 균형형으로 KURE-Reranker-base, 정확도 우선이면 Nemotron을 권합니다. 후보 20건 이후엔 정확도 이득이 작고, 1차 검색에서 빠진 정답은 복구할 수 없다는 한계도 짚었습니다.
-- keyword: #RAG #Reranking #리랭커 #LLM #한국어검색
+- 본문 요약: 외부 데이터에 심은 지시문을 에이전트가 명령으로 해석하는 간접 프롬프트 인젝션으로 AI 에이전트가 DB 시크릿을 조회·유출할 수 있는 흐름을 재현했습니다. Supabase MCP에 관리자 권한(service_role)이 연결된 환경에서 고객 문의를 통한 토큰 유출 시나리오를 SQLite 목업·가짜 토큰으로 실험했고, Gemma 4 31B 대상 10회 반복 중 노골적 지시 3건에서 토큰 테이블 조회가 일어났습니다.
+- 주목할 point: 최종 답변 유출은 0회였지만 민감 정보 "접근" 자체는 발생했다는 점에서, 프롬프트 방어에 의존하기보다 권한 최소화·RLS 적용·외부 응답 전 민감 정보 검사·사람 감독이 필요하다고 결론짓습니다.
+- keyword: #프롬프트인젝션 #AI보안 #MCP #Supabase #최소권한
 
-## [우리 팀만의 스펙 주도 개발 정착기](https://d2.naver.com/helloworld/8644274)
-- 회사: 네이버
-- 본문 요약: 팀 개발 정책으로 스펙 주도 개발(SDD)을 채택하고 정착시킨 배경과 시행착오, 팀이 채택한 SDD 구조와 정책 수립 과정의 고민, 남은 과제를 공유하는 NAVER Engineering Day 10th 발표 세션 공개 글입니다. (원문 사이트가 이번 수집 환경에서 접근 제한되어 velopers.kr 요약 정보를 바탕으로 정리했습니다.)
-- 주목할 point: SDD 도입을 검토하는 팀이 정책화 과정에서 겪을 고민과 시행착오를 미리 확인할 수 있는 사례입니다.
-- keyword: #SDD #스펙주도개발 #개발프로세스 #NAVEREngineeringDay
-
-## [프로덕트 디자이너와 개발자를 연결하는 AX 프로젝트, AXPD스쿼드](https://medium.com/miridih/%ED%94%84%EB%A1%9C%EB%8D%95%ED%8A%B8-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%99%80-%EA%B0%9C%EB%B0%9C%EC%9E%90%EB%A5%BC-%EC%97%B0%EA%B2%B0%ED%95%98%EB%8A%94-ax-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-axpd%EC%8A%A4%EC%BF%BC%EB%93%9C-bac79dfe09a3?source=rss----79ed61a9dcb1---4)
-- 회사: 미리디
-- 본문 요약: AI로 빠르게 만든 프로토타입이 개발 단계에서 결국 재작성되고, 화면 동작·상태·예외를 담은 디스크립션과 따로 관리되며 생기는 디자인·개발 협업 병목을 분석했습니다. 도구를 통일하는 대신 디자인 규칙·상태·예외·동작을 확인하는 공통 검증 루트와, 피그마 요소와 코드 컴포넌트를 잇는 AI-Readable Design System, 피그마·Claude Design·Open Design 결과물을 Storybook으로 연결하는 경로별 하네스를 마련했습니다.
-- 주목할 point: 스쿼드가 결과물을 대행하지 않고 각 팀이 하네스를 직접 만들고 고치게 하며, 자립적 적용을 전제로 스쿼드 해체를 목표로 삼았다는 운영 방식이 특징입니다.
-- keyword: #Storybook #디자인시스템 #AX #프로토타입 #하네스
-
-## [캠페인 메타엔진 — 무진장 많은 콘텐츠를 하나의 캠페인 구조로 통합하다](https://techblog.musinsa.com/%EC%BA%A0%ED%8E%98%EC%9D%B8-%EB%A9%94%ED%83%80%EC%97%94%EC%A7%84-%EB%AC%B4%EC%A7%84%EC%9E%A5-%EB%A7%8E%EC%9D%80-%EC%BD%98%ED%85%90%EC%B8%A0%EB%A5%BC-%ED%95%98%EB%82%98%EC%9D%98-%EC%BA%A0%ED%8E%98%EC%9D%B8-%EA%B5%AC%EC%A1%B0%EB%A1%9C-%ED%86%B5%ED%95%A9%ED%95%98%EB%8B%A4-a29ece6ae6d9?source=rss----f107b03c406e---4)
-- 회사: 무신사
-- 본문 요약: 월 1,000건 이상의 CRM 캠페인 수작업 설정과 라이브·기획전·매거진 등 이질적 콘텐츠를 통합하기 위해 5W1H 기반 공통 캠페인 모델과 어댑터 구조를 도입했습니다. Campaign Content·Content Snapshot·Campaign Asset·Campaign Execution Record로 책임을 나누고, 원천 데이터를 어댑터로 변환한 뒤 오디언스 평가·발송·성과 수집 파이프라인을 재사용합니다.
-- 주목할 point: 메타데이터 변경분만 스냅샷으로 축적해 실행 시점 콘텐츠 상태를 복원하고, ML 적합도 계산 전 하드 제약(수신 동의·유효 기간·소재 완결성)으로 필터링합니다. 월 수억 건 메시지 중 절반 이상을 최적화하고 캠페인 세팅 시간을 절반 이하로 줄였으며, 정규화된 메타데이터로 LLM 푸시 문구의 브랜드명 오역도 줄였습니다.
-- keyword: #CRM #캠페인 #메타데이터 #개인화 #아키텍처
-
-## [AI가 바꾼 보험 영업의 방식, AI-Native Sales](https://corp.banksalad.com/blog/culture/bfs-ai-native-sales/)
-- 회사: 뱅크샐러드
-- 본문 요약: 뱅크샐러드금융서비스의 '금융 솔루션 전문가'의 하루를 따라가며 AI 중심으로 재설계한 보험 영업 방식을 소개합니다. AI 상담 시스템이 고객을 상태별로 정리해 두고, 마이데이터로 고객의 보험 계약 전체를 확인해 몇 분 만에 보장 진단을 준비하며, 채팅 상담에서 AI가 지난 대화 요약·다음 메시지 초안·약관 및 특약 페이지 검색, 응답이 끊긴 고객 재접촉을 맡습니다.
-- 주목할 point: 현장 아이디어를 사내 메신저로 공유하면 다음 날 시스템에 반영되고, 실적 대시보드로 당일 계약과 예상 인센티브를 바로 확인합니다. 기술 심층 분석보다는 조직·채용 소개 성격의 컬처 글입니다.
-- keyword: #AINative #보험영업 #마이데이터 #뱅크샐러드 #컬처
-
-## [꿈꾸던 AI가 되었어요 - Anthropic 꿈꾸기(dreaming) 글을 우리 개발 환경에 적용하기](http://devocean.sk.com/blog/techBoardDetail.do?id=168600&boardType=techBlog&isShared=Y)
-- 회사: 데보션(SK)
-- 본문 요약: 에이전트 메모리를 원본 기록과 대조해 정제하는 Anthropic의 '꿈꾸기(dreaming)' 개념을 원본 기록·메모 노트·링크형 메모리·주입 컨텍스트의 4계층으로 정리하고, Claude Code 프로젝트 메모리에 적용하는 방법을 제안합니다. MEMORY.md는 작은 인덱스로 유지하고 세부 규칙은 주제별 메모 파일로 분리하며, Claude Code 스킬과 cron 등 스케줄러로 원본 확인·메모 통합·변경 보고를 주기적으로 수행합니다.
-- 주목할 point: 상위에 주입되는 메모리의 오류는 이후 모든 세션의 반복 실수로 전파되므로, 원본으로 확인한 사실만 반영하고 비밀값·개인정보는 기록하지 않으며 자동 정리 결과는 사람이 검토해야 한다고 강조합니다.
-- keyword: #ClaudeCode #AgentMemory #Anthropic #LLM #메모리관리
+## [[kt cloud 웨비나] 클라우드 운영, 보이는 만큼 달라진다](https://tech.ktcloud.com/entry/2026-12-ktcloud-webinar)
+- 회사: KT 클라우드
+- 본문 요약: kt cloud PLATFORM의 기술 내재화와 코드 변경 단계의 자동 검증·운영 체계를 소개하는 온라인 웨비나 안내 글입니다. Observability 플랫폼 기반 고객용 모니터링 서비스와 향후 확장 방향을 공유합니다.
+- 주목할 point: OpenStack을 직접 개발·관리하는 클라우드 사업자의 운영 현황 파악·장애 원인 추적·운영 데이터 활용 사례를 들어볼 수 있는 행사 안내입니다.
+- keyword: #Observability #OpenStack #클라우드운영 #웨비나
