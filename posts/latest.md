@@ -1,62 +1,32 @@
-<!-- 이 파일은 posts/2026-11-12.md의 사본입니다. 자동 생성됨. -->
-# 2026-11-12 기술 블로그 모음
+<!-- 이 파일은 posts/2026-11-13.md의 사본입니다. 자동 생성됨. -->
+# 2026-11-13 기술 블로그 모음
 
-## [QA는 어떻게 추측을 확신으로 바꾸었나](https://techblog.woowahan.com/28182/)
+## [아이폰 듀오, 일주일만에 대응 완료한 이야기](https://tech.channel.io/kr/articles/734f3b31)
+- 회사: 채널톡
+- 본문 요약: 애플의 첫 폴더블 폰 아이폰 듀오가 공개되자, 구형 SDK로 빌드한 앱은 화면 일부만 보이거나 측면 Safe Area까지 확장되지 않는 문제가 생겨 채널웍스 iOS 앱을 일주일 만에 대응한 기록입니다. 환경변수와 더미 데이터로 약 300개 화면을 순차 실행해 스크린샷을 확보하고, 여러 AI 에이전트에 동일 지침으로 레이아웃 오류 판정을 분산한 뒤 메인 에이전트가 보고서로 취합했습니다. 이를 바탕으로 좌우 Safe Area 적용과 커스텀 내비게이션바·탭바의 Vertical Controls(세로 배치) 대응을 우선 처리했습니다.
+- 주목할 point: 시뮬레이터로는 패널 이동 같은 조작감 검증에 성능 한계가 있어 실기기를 확보해 직접 확인했고, 다크 모드 버튼 색상·바 아이템 간격·애니메이션 등 디테일과 iOS 26 이상/미만 기종 회귀까지 점검했습니다. AI는 전수 조사·유형화에, 사람은 자연스러움 판단에 쓰는 분업이 인상적입니다.
+- keyword: #iOS #iPhoneDuo #SafeArea #VerticalControls #AI에이전트
+
+## [AI 테스트의 허수를 걸러내기](https://medium.com/naverfinancial/ai-%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%9D%98-%ED%97%88%EC%88%98%EB%A5%BC-%EA%B1%B8%EB%9F%AC%EB%82%B4%EA%B8%B0-588b724a6002)
+- 회사: 네이버페이
+- 본문 요약: AI가 짠 테스트 중 통과는 하지만 실제로 아무것도 검증하지 않는 '허수' 테스트를 8가지 패턴(await 누락, 조건부 건너뛰기, 검증문 누락, '없음'만 확인, 실패 시 기대값을 구현에 맞춤, 기대값을 구현과 같은 식으로 계산, 판정을 목에 맡김 등)으로 정리했습니다. 탐지는 비용이 싼 순서로 정규식 스캔 → 실행된 expect 개수 0인 테스트 집계(Playwright 리포터) → page.route로 API 응답을 500/빈 객체로 바꾸는 장애 주입 → Stryker 뮤테이션 테스트를 단계적으로 적용합니다.
+- 주목할 point: 진짜 검증인지는 '기대값이 명세에서 왔는가, 코드를 돌려 받아 적었는가'로 판별한다는 기준이 핵심입니다. 예방책으로 AI에게 테스트를 맡길 때 구현이 아닌 명세를 먼저 주라고 제안하며, Stryker는 BlockStatement → 조건 변이 → 나머지 순으로 범위를 넓히길 권합니다.
+- keyword: #테스트 #Playwright #뮤테이션테스트 #Stryker #AI코딩
+
+## [옆자리 동료에게 AI를 알려주지 않기로 했다](https://techblog.woowahan.com/28497/)
 - 회사: 우아한형제들
-- 본문 요약: 오래된 기획서·API 명세에 의존하던 QA 테스트 설계 기준을 운영 기준 브랜치의 코드와 커밋을 단일 출처로 삼는 방식으로 전환한 사례입니다. CLAUDE.md·스킬·세션 훅·산출물 템플릿으로 구성한 하네스로 분석 절차와 판정 형식을 표준화하고, RAG로 관련 코드 후보를 찾은 뒤 파일·라인·호출 흐름으로 최종 검증합니다. 정착 후 테스트 설계 기간이 평균 1.4일 수준으로 줄었습니다.
-- 주목할 point: AI 결과를 정답이 아니라 '코드 근거로 확인할 대상과 질의 목록'으로 다루고, 코드가 답하지 못하는 신규 기능·외부 시스템 영역은 사람이 검증하도록 남겨둔 점이 실무적입니다.
-- keyword: #QA #RAG #테스트설계 #AI하네스 #ClaudeCode
+- 본문 요약: (원문 접속이 403으로 차단되어 velopers.kr 요약을 기반으로 작성) AI 도구를 대신 만들어 제공하기보다 동료가 직접 문제를 풀도록 돕는 코칭 사례를 소개합니다. 관계 형성, 문제 세분화, 변화대화 기법을 통해 동료가 스스로 AI를 활용하도록 지원했습니다.
+- 주목할 point: AI 전환을 '도구 보급'이 아닌 '사람의 자율적 변화'로 접근한 조직문화 관점의 글입니다. 원문 미확인으로 세부 내용은 원문을 참고하세요.
+- keyword: #AI활용 #코칭 #조직문화 #Gemini
 
-## [데이터 사이언티스트 없이 수요 예측 자동화, 다이닝브랜즈그룹의 Amazon SageMaker Canvas 활용기](https://aws.amazon.com/ko/blogs/tech/diningbrandsgroup-demand-forecasting-with-sagemaker-canvas/)
-- 회사: AWS
-- 본문 요약: Excel과 구매팀 경험에 의존하던 식자재(신선계육) 수요예측을 SageMaker Canvas와 Lambda·EventBridge Scheduler·S3로 자동화해 발주 시스템 반영까지 연결한 사례입니다. 프로모션·신메뉴·매장 이벤트를 정형화해 베이스라인·마케팅·신메뉴 모델을 학습·등록하고, 정기 예측 워크플로를 자동 실행합니다.
-- 주목할 point: 실행별 입력 스냅샷과 모델 버전 관리로 재현성을 확보하고, 예측 후 엔드포인트·Canvas를 종료해 유휴 비용을 줄였습니다. 준비부터 결과 확인까지 약 30분, 주요 3종 일평균 예측 정확도 약 90% 수준을 달성했습니다.
-- keyword: #SageMakerCanvas #수요예측 #AWSLambda #MLOps #노코드ML
+## [DEF CON CTF 2026 본선 참가기](https://techblog.lycorp.co.jp/ko/defcon-ctf-2026-finals)
+- 회사: 라인
+- 본문 요약: LY Corporation 보안 엔지니어 3명이 연합팀 SuperDiceCodeLovers로 DEF CON CTF 2026에 참가해 예선 1위(673팀 중), 본선 3위를 기록한 경험을 공유합니다. LLM·AI 에이전트 사용이 공식 허용된 올해 본선(Attack & Defense 5개 서비스, KOTH 2개)에서 AI 기반 취약점 분석·익스플로잇 갱신, 경쟁 팀 패치 관측, SLA 검사와 활성 이미지 롤백 추적, PCAP 기반 Rebate 대응을 하나의 반복 가능한 운영 흐름으로 묶었습니다. 예선 문제 gitvfs-revenge에서는 동시성 버그와 객체 수명 주기 문제를 연결해 root 권한 FUSE 데몬을 공격했습니다.
+- 주목할 point: AI는 탐색 범위를 넓혔지만 성과를 가른 것은 도달 가능성·익스플로잇 가능성·영향·재현 신뢰도로 후보를 좁히고 검증된 익스플로잇과 안전한 패치로 전환한 비율이었습니다. 공격 쪽 익스플로잇을 방어의 회귀 검사로 재사용하고, 분석 결과의 기본 단위를 재현 가능한 PoC 코드로 삼자는 교훈이 실무에 바로 적용할 만합니다.
+- keyword: #CTF #DEFCON #보안 #LLM #취약점분석
 
-## [KB증권 AI 에이전트는 어떻게 최적의 모델을 선택할까? – Amazon Bedrock 기반 Context Tier-Routing](https://aws.amazon.com/ko/blogs/tech/kb-securities-ai-agent-optimal-model-selection/)
-- 회사: AWS
-- 본문 요약: 다단계 Tool 호출과 누적 컨텍스트로 호출마다 난이도가 달라지는 AI 에이전트에서, 현재 질의·최근 대화 맥락·Tool 실행 상태를 결합해 LLM 호출 단위로 모델을 고르는 Context Tier-Routing을 설계했습니다. e5-large 임베딩과 구조적 Feature 4개를 결합한 XGBoost 분류기를 라우터로 쓰고, 장애 시 직전 모델을 유지하는 fail-open 처리를 적용했습니다.
-- 주목할 point: 상위 Tier로만 전환하는 Elevate-only 정책으로 모델 변경에 따른 Prompt Cache 무효화를 최소화했고, 품질 차이 0.4점 이내에서 토큰 사용량 35.9%, API 비용 15.8%를 절감했습니다. Hard 구간 품질 하락은 개선 과제로 남겼습니다.
-- keyword: #AmazonBedrock #LLM라우팅 #AI에이전트 #PromptCache #XGBoost
-
-## [라이브러리만 붙이면 동시편집은 끝일까요?](https://tech.channel.io/kr/articles/4a41f407)
-- 회사: 채널톡
-- 본문 요약: ProseMirror와 Yjs를 y-prosemirror 바인딩으로 연결한 동시편집에서 변경이 전파·반영되는 흐름(트랜잭션↔Yjs update 양방향 동기화, mutex·origin을 이용한 재진입 방지)을 설명합니다. 이어 툴킷 번들 내부와 호스트 앱에 ProseMirror·orderedmap이 중복 로딩되어 instanceof 판별이 실패하던 런타임 오류의 원인과 해결 과정을 다룹니다.
-- 주목할 point: peer dependency 선언만으로는 번들 내부 의존성이 제거되지 않으며, 빌드 external 설정까지 함께 적용해 모든 참조 경로를 하나의 모듈 인스턴스로 통일해야 한다는 교훈이 핵심입니다.
-- keyword: #ProseMirror #Yjs #동시편집 #peerDependency #번들링
-
-## [동시편집 중 서버에서 일어나는 일](https://tech.channel.io/kr/articles/92aef2a0)
-- 회사: 채널톡
-- 본문 요약: 비개발자도 쉽게 협업할 수 있도록 Yjs 기반 CRDT 동시편집 서버를 설계한 과정입니다. 클라이언트와 서버가 Y.Doc을 유지하며 웹소켓 room으로 update를 전파하고, 재연결 시 state vector와 sync 프로토콜로 누락분을 동기화하며, Yjs↔ProseMirror↔blocks 변환으로 기존 문서 형식·배포·RAG 기능과의 호환을 유지합니다.
-- 주목할 point: 검증을 통과한 update만 DB에 append해 이력을 영속화하고 mergeUpdates로 누적 증가에 대응하며, Yjs 데이터를 편집 SSOT로 두고 blocks 변환 결과는 주기적으로 저장하는 구조가 참고할 만합니다.
-- keyword: #CRDT #Yjs #웹소켓 #동시편집 #실시간협업
-
-## [AV 3.0과 데이터 플라이휠: 자율주행의 승부처가 모델에서 데이터 파이프라인의 회전 속도로 옮겨 가는 이유 (1부)](https://aws.amazon.com/ko/blogs/tech/av3-0-blueprint-lab-part1/)
-- 회사: AWS
-- 본문 요약: AV 3.0 자율주행에서 경쟁력이 모델 성능보다 자사 데이터로 재학습·폐루프 검증을 반복하는 속도로 옮겨 가고 있다고 설명합니다. 수집·처리·큐레이션·검색·증강·장면 재구성·학습·SiL 검증의 8단계 파이프라인과, 검증 실패 사례를 재학습에 반영하는 안쪽 루프·차량 배포 후 재수집하는 바깥 루프를 AWS와 NVIDIA 도구로 구성하는 방법을 정리했습니다.
-- 주목할 point: 사이클 시간·비용, 롱테일 적중률, 폐루프 성능 변화를 지표로 삼고, VLA 판단 모델·월드 모델 기반 합성 데이터·차량용 소형 모델의 역할을 분리한 점이 눈에 띕니다. 합성 데이터의 실제 도로 반영 여부 검증 등 주의점도 함께 다룹니다.
-- keyword: #자율주행 #PhysicalAI #데이터플라이휠 #VLA #SageMakerHyperPod
-
-## [게임은 앞으로 누가, 몇 명이 만들게 될까? ‘유니코드27’에서 만난 AI 시대의 게임 개발](https://on.com2us.com/tech/unicode27-ai-game-development/)
-- 회사: 컴투스(게임빌컴투스플랫폼)
-- 본문 요약: 전국 대학생 게임개발 동아리 연합 컨퍼런스 '유니코드27'에서 컴투스 AX HUB 박상준 이사가 발표한 'Build for One. Built by One.' 강연 후기입니다. 소비의 개인화를 넘어 팬과 개인이 직접 만드는 '창작의 개인화'로의 흐름, 2인 개발 게임 사례, 개발자 1명이 AI 코딩 도구와 에디터 자동화로 66개 게임 시스템·425개 애니메이션을 구현한 R&D 사례, '요청 한 줄'에서 영상까지 이어지는 AI 비디오 파이프라인을 소개합니다.
-- 주목할 point: 누구나 같은 AI 도구를 쓰게 될수록 '취향은 깊게', '가장 개인적인 게임이 가장 멀리 간다'는 메시지처럼 개발자 자신의 취향과 아이디어가 경쟁력이 된다는 관점이 핵심입니다.
-- keyword: #AI게임개발 #1인개발 #생성형AI #유니코드27 #AX
-
-## [LLM은 꼭 한 토큰씩 답해야 할까](https://blog.kyobodts.co.kr/2026/11/12/llm%ec%9d%80-%ea%bc%ad-%ed%95%9c-%ed%86%a0%ed%81%b0%ec%94%a9-%eb%8b%b5%ed%95%b4%ec%95%bc-%ed%95%a0%ea%b9%8c/)
-- 회사: 교보DTS
-- 본문 요약: 이전 토큰 기반으로 순차 생성하는 자기회귀 모델과 달리, 여러 위치를 병렬로 예측하고 반복 정제하는 확산형 언어모델(Diffusion LM)을 설명합니다. LLaDA의 마스킹 영역 채우기, 블록 간 순차·블록 내 병렬을 결합한 Block Diffusion, 빈 위치 채우기(M2T)와 기존 토큰 수정(T2T)을 결합한 LLaDA2.1 방식을 다룹니다.
-- 주목할 point: 반복 횟수·토큰 선택 정책으로 속도와 품질을 조절하는 트레이드오프가 있으며, 도입 시 TPS만이 아니라 첫 응답 지연·전체 완료 시간·품질·비용을 동일 조건에서 비교해야 한다는 실무 가이드가 유용합니다.
-- keyword: #LLM #DiffusionLM #LLaDA #BlockDiffusion #추론최적화
-
-## [Rovo·Teamwork Graph로 달라지는 팀의 AI 활용법: Team ’26 Europe 리캡 웨비나](https://tech.osci.kr/atlassian-team-26-europe-recap/)
-- 회사: 오픈소스컨설팅
-- 본문 요약: Atlassian Team ’26 Europe 리캡 웨비나 내용으로, 지식·업무·사람·코드·데이터를 연결하는 AI 컨텍스트 계층인 Teamwork Graph와 Rovo의 검색·채팅·에이전트, Atlassian MCP를 통한 Jira·Confluence 활용을 소개합니다. 긴 작업은 에이전트에 위임하고 계획 승인·결과 검토는 사람이 맡는 팀 단위 협업 구조를 설명합니다.
-- 주목할 point: 에이전트별 계정·권한, Insights 기반 사용량 확인, UBP 사용량 한도와 80%·100% 알림으로 비용을 통제하고, Artifacts 공개 범위 기본값과 MCP·CLI 권한을 사전에 점검해야 한다는 운영 체크리스트가 실용적입니다.
-- keyword: #Atlassian #Rovo #TeamworkGraph #MCP #AI에이전트
-
-## [뱅크샐러드금융서비스, AI OS 인재 찾는다…BFS 2기 공개 채용](https://corp.banksalad.com/blog/news/bs1504/)
-- 회사: 뱅크샐러드
-- 본문 요약: 뱅크샐러드 자회사 뱅크샐러드금융서비스(BFS)가 AI OS 기반 영업 모델 'AI-Native Sales'를 이끌 금융 솔루션 전문가 2기를 공개 채용한다는 소식입니다. 금융·건강 데이터 기반 보험 분석과 AI 상담 플랫폼 고도화를 맡으며, 1인 1AI 에이전트가 상담 준비·데이터 분석·자료 생성을 지원하고 전문가는 최종 판단과 맞춤형 솔루션에 집중합니다.
-- 주목할 point: 보험 약관 해석·심사 사례가 축적된 사내 지식베이스와, 개인 상담 노하우가 시스템 개선으로 이어져 조직 자산이 되는 구조를 강조한 점이 AI 내재화 조직 운영 사례로 볼 만합니다(기술 아티클이 아닌 채용 보도자료).
-- keyword: #뱅크샐러드 #AINativeSales #AI에이전트 #AIOS #채용
+## [자동화 테스트부터 Perfetto 분석, 코드 개선안 도출까지 한 번에: 갤럭시 워치 성능 분석 AI 에이전트 개발기](https://techblog.samsung.com/blog/article/106)
+- 회사: 삼성전자
+- 본문 요약: (원문 접속이 520 오류로 실패하여 velopers.kr 요약을 기반으로 작성) 갤럭시 워치 홈 앱에서 간헐적으로 발생하는 Jank(프레임 끊김)의 원인을 찾기 위한 AI 에이전트 개발 사례입니다. 자동 재현 테스트, Perfetto 트레이스의 SQL 전처리, 소스코드 매칭을 연결해 성능 문제 분석부터 코드 개선안 도출까지 시도했습니다.
+- 주목할 point: 재현이 어려운 간헐적 성능 이슈를 자동화 테스트와 트레이스 분석 파이프라인으로 묶어 AI가 코드 수준 개선안까지 제시하도록 한 접근입니다. 원문 미확인으로 세부 수치·구조는 원문을 참고하세요.
+- keyword: #Perfetto #성능분석 #AI에이전트 #GalaxyWatch #자동화
