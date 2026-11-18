@@ -1,164 +1,92 @@
-<!-- 이 파일은 posts/2026-11-17.md의 사본입니다. 자동 생성됨. -->
-# 2026-11-17 기술 블로그 모음
+<!-- 이 파일은 posts/2026-11-18.md의 사본입니다. 자동 생성됨. -->
+# 2026-11-18 기술 블로그 모음
 
-## [GS에너지의 Amazon Bedrock 기반 전사 Claude 도입 과정에서의 사내 인증, 비용 관리와 업무 시스템 연계](https://aws.amazon.com/ko/blogs/tech/gs-energy-amazon-bedrock-ai-hub/)
+## [컨테이너처럼 쓰고, VM처럼 격리하기 1편 - 컨테이너와 VM의 차이, Kata Containers의 Pod 실행 구조](https://d2.naver.com/helloworld/8055238)
+- 회사: 네이버 D2
+- 본문 요약: 불특정 다수가 B200 8-GPU 서버를 공유하는 Kubernetes 환경에서 사용자별 격리를 위해 Kata Containers(4.1.0)를 도입한 4부작의 첫 편입니다. 컨테이너는 호스트 커널을 공유하므로 runc·NVIDIA Container Toolkit 취약점(CVE-2024-21626, CVE-2024-0132, NVIDIAScape CVE-2025-23266, 2025년 11월 runc CVE 3건)이 곧바로 호스트 침해로 이어질 수 있다는 점을 짚고, VT-x/KVM·QEMU·VM exit·virtio의 동작과 kata shim → QEMU → kata-agent(vsock)로 Pod가 VM 안에서 실행되는 구조를 설명합니다. Cilium이 만든 veth(eth0)는 게스트 커널에 보이지 않으므로 kata가 tap을 만들고 tc 리다이렉트(tcfilter)로 eth0↔tap을 잇고, vhost-net으로 왕복을 줄여 Pod IP·Service·DNS를 그대로 쓰게 합니다.
+- 주목할 point: "알려지지 않은 취약점까지 한 사용자 안에 가두려면 커널을 공유하지 않아야 한다"는 요구에서 출발해, VM 격리와 Pod 운영 편의를 동시에 얻는 선택지로 kata를 고른 근거가 명확합니다. `ip netns`, `tc filter show`, `ethtool -i eth0`로 연결을 직접 확인하는 방법을 제시하고, 이후 편에서 다룰 4가지 이슈(GPU 8장 VM 부팅·크기·NUMA, NVLink 조합, IB·NVMe, vCPU 배치)를 표로 정리했습니다.
+- keyword: #KataContainers #Kubernetes #컨테이너탈출 #KVM #QEMU #Cilium #GPU격리
+
+## [컨테이너처럼 쓰고, VM처럼 격리하기 2편 - GPU 패스스루 계층과 GPU 8장 VM의 부팅·메모리 구성](https://d2.naver.com/helloworld/1376800)
+- 회사: 네이버 D2
+- 본문 요약: GPU가 IOMMU(DMA 주소 변환·격리) → VFIO(vfio-pci로 호스트 드라이버에서 분리해 QEMU에 전달) → CDI(컨테이너 장치 주입) 계층을 거쳐 VM 안 컨테이너에 도달하는 과정과, ACS로 IOMMU 그룹을 245개로 나눠 GPU 한 장씩 할당하는 원리를 설명합니다. GPU 8장 VM은 kubelet 샌드박스 대기 한도(4분) 안에 부팅하지 못했는데, 256GiB BAR를 4KiB 페이지로 매핑하는 비용은 `transparent_hugepage=always`(커널 6.12+ vfio-pci가 BAR도 큰 페이지로 매핑)로, 게스트 메모리 2,688GiB 사전 할당 비용은 1GiB hugepage 2,688개 예약으로 줄여 141~151초에 Ready가 되었습니다.
+- 주목할 point: 업스트림 kata가 `hugepages-1Gi` 요청량을 VM 크기 계산에서 빼 14GiB를 요청해도 10GiB VM이 만들어지던 문제를 KubeVirt 방식을 참고해 수정(업스트림 PR #13853 제안)했고, `enable_numa`·`numa_mapping`으로 게스트를 호스트와 같은 2-NUMA 구성으로 맞추자 GPU→호스트 복사 합산 대역폭이 약 410GB/s에서 459.0GB/s로 올랐습니다.
+- keyword: #GPU패스스루 #IOMMU #VFIO #CDI #Hugepage #THP #NUMA #KataContainers
+
+## [컨테이너처럼 쓰고, VM처럼 격리하기 3편 - Fabric Manager 파티션과 DRA를 이용한 GPU 할당](https://d2.naver.com/helloworld/6180316)
+- 회사: 네이버 D2
+- 본문 요약: B200 서버의 NVSwitch는 Fabric Manager가 정한 파티션(8장 1개, 4장 2개, 2장 4개, 1장 8개 등 15개) 단위로만 NVLink를 연결하기 때문에 "GPU 2장"을 아무 조합으로나 줄 수 없습니다. 개수만 요청하는 장치 플러그인으로는 이 제약을 보장하지 못해 DRA(동적 리소스 할당) 드라이버를 직접 만들어 파티션 디바이스를 발행하고 SharedCounters로 겹치는 파티션의 동시 할당을 막았습니다. 업스트림 kata shim은 PodResources API에서 DRA 디바이스를 읽지 않아 VM이 GPU 없이 부팅되었기에, 클레임 단위로 GPU·NIC를 읽어 정해진 순서로 루트 포트에 콜드 플러그하도록 수정했습니다(PR #13323, #13420).
+- 주목할 point: 서버 한 대를 GPU 1+1+2+4장 VM 4개로 나눠 동시에 돌린 상태에서 NCCL all_reduce 버스 대역폭이 2장 623.5GB/s, 4장 680.7GB/s, 8장 단독 835.9GB/s로 베어메탈 대비 1% 이내였습니다. `kubectl get resourceslices`/`resourceclaims`와 게스트 안 `all_reduce_perf`로 할당 결과를 검증하는 절차도 함께 보여줍니다.
+- keyword: #DRA #NVLink #FabricManager #NVSwitch #NCCL #Kubernetes #GPU할당
+
+## [컨테이너처럼 쓰고, VM처럼 격리하기 4편 - IB 네트워크와 로컬 NVMe, vCPU 배치, 베어메탈 대비 성능](https://d2.naver.com/helloworld/5896967)
+- 회사: 네이버 D2
+- 본문 요약: VM 안 분산 학습을 위해 GPU와 같은 PCIe 스위치의 컴퓨트 IB NIC(PF·레일셋)와 스토리지 VF를 연결하고, NCCL 토폴로지 파일과 ACS DT 비트로 GPUDirect RDMA 경로를 확보했으며, 로컬 NVMe는 SPDK vhost-user-blk와 논리 볼륨으로 여러 VM에 나눠 줬습니다. vCPU 배치 오류로 생긴 성능 저하·게스트 멈춤은 kubelet static CPU 정책과 strict-cpu-reservation, vCPU 1:1 고정, 예약 CPU 제외로 해결해 CPU steal을 0으로 만들었습니다. 사용자는 runtimeClassName·resourceClaims·`hugepages-1Gi`만 더한 Pod YAML 하나로 VM을 씁니다.
+- 주목할 point: 베어메탈 대비 성능 비교가 솔직합니다 — vLLM 추론 출력 처리량은 0.4~7% 낮고 TPOT는 차이가 없었지만, TTFT 142.1→181.4ms, 스텝당 16k 토큰 학습 514→716ms(131k 토큰은 956→998ms), 콜드 스타트 537→980초로 차이가 컸고, 원인은 CUDA 커널 제출 경로(3.96µs→5.83µs)와 VM 부팅·워밍업이었습니다. 격리 경계가 하이퍼바이저로 옮겨간 만큼 하이퍼바이저 취약점 패치가 새 숙제라는 점도 짚습니다.
+- keyword: #InfiniBand #GPUDirectRDMA #SPDK #NVMe #vCPU #CPU고정 #KataContainers #성능비교
+
+## [[현장 스케치] AI 인프라의 경쟁력, 이제는 '통합'이다! - 2026 OCP Global Summit](https://tech.ktcloud.com/entry/2026-11-ktcloud-ocp-2026-ai-infrastructure-integration)
+- 회사: KT 클라우드
+- 본문 요약: 2026년 10월 12~15일 산호세에서 열린 OCP Global Summit(참가 약 1만 5천 명, 578개 세션) 참관기입니다. AMD의 랙 스케일 플랫폼 Helios와 에이전틱 AI용 개방형 랙 설계 Helion, NVIDIA의 Vera Rubin 랙·컴퓨트 트레이 설계 OCP 기여와 MGX 1.2, SK하이닉스의 CXL 메모리 풀링·KV 캐시 공유(MARS), ABB·Eaton의 800V DC 배전과 SST, Delta의 사이드카 기반 단계적 800V DC 전환과 2.5MW급 In-row CDU, NPO·CPO 광통신과 Lumentum의 레이저 광원(ILS/ELS), Meta의 ESUN·OSPA 개방형 네트워킹을 소개합니다.
+- 주목할 point: 경쟁의 축이 개별 GPU 성능에서 전력·냉각·메모리·네트워크를 랙 단위로 통합하는 쪽으로 옮겨갔다는 관찰이 핵심입니다. 800V DC의 아크 차단(SSCB)·상호운용성 과제, CDU 펌프·필터·센서 이중화와 핫스왑, 광원 배치에 따른 유지보수성처럼 "운영 안정성"을 함께 다룬 점이 데이터센터 운영사 관점에서 의미 있습니다.
+- keyword: #OCPGlobalSummit #랙스케일 #800VDC #액체냉각 #CXL #CPO #AI데이터센터
+
+## [[사례연구] Harbor와 Gitea를 멀티 AZ Active-Active로 바꾸기](https://tech.ktcloud.com/entry/2026-11-ktcloud-harbor-gitea-multi-az-active-active)
+- 회사: KT 클라우드
+- 본문 요약: 단일 AZ에 기대던 레지스트리(Harbor)와 git(Gitea)을 두 AZ를 묶은 단일(Federated) 클러스터 위 Active-Active로 전환한 사례입니다. 진입점을 공통 externalURL과 두 AZ 파드를 묶는 스패닝 Service로 합치고, Harbor A·B 인스턴스가 토큰 서명 키를 공유하게 해(core.secretName) AZ를 넘나들 때 생기던 간헐적 401을 없앴습니다. 트래픽은 zone-aware(preferLocal) + 헬스체크 failover로 평소엔 로컬 AZ를, 장애 시엔 다른 AZ를 쓰게 했고, 운영 라우트 backendRef를 2단계로 옮겨 무중단 컷오버했습니다.
+- 주목할 point: "상태의 종류가 처방을 정한다"는 정리가 핵심입니다 — 토큰 서명 키는 공유(PKCS#8이 아닌 PKCS#1 PEM이어야 했던 함정 포함), Gitea OIDC 로그인 세션은 sticky 또는 세션 저장소 공유, 파일 볼륨은 Multi-Attach를 피하려 인스턴스별로 분리. 반면 Raft로 스스로 복제하는 Vault와 상태 없는 ArgoCD는 replica를 AZ에 분산하는 것만으로 충분했다는 대비가 실무적입니다.
+- keyword: #Harbor #Gitea #멀티AZ #ActiveActive #EnvoyGateway #고가용성 #OIDC
+
+## [[기술 트렌드] 2026 아태지역 데이터센터 지형도: AI 수요 폭발과 전력망의 한계](https://tech.ktcloud.com/entry/2026-11-ktcloud-apac-ai-data-centers-power-grid)
+- 회사: KT 클라우드
+- 본문 요약: 아태 데이터센터 수요의 동력이 클라우드 마이그레이션에서 AI 연산으로 바뀌고, GPUaaS에 특화된 네오클라우드가 수십 MW 단위 블록 딜로 초기 물량을 선점하고 있다고 분석합니다. 랙당 100kW 이상 고밀도 가속기로 100MW~GW급 캠퍼스가 필요해졌지만 전력망 확충이 따라가지 못해 건설 단가가 치솟았고(도쿄·싱가포르 최고 수준), 수요는 싱가포르 모라토리엄의 스필오버를 흡수한 말레이시아 조호르(2025년 가동 용량 50% 이상 증가)와 인도·태국·인도네시아로 남하하고 있습니다.
+- 주목할 point: 한국(수도권)은 공실률 5% 미만으로 사실상 완전 임대 상태이고 수전 제약 때문에 100MW 이상 캠퍼스가 어려워 부산 등 남부권 메가 캠퍼스로 수요가 이동 중이라는 진단과, 도심형은 저지연 엣지로·대규모 학습 클러스터는 지방 100MW급 캠퍼스로 나누는 '투 트랙' 전략 제안이 눈에 띕니다. 투자 측면에서도 토지·용도 변경 등 밸류애드와 플랫폼 M&A가 늘었다는 흐름을 짚습니다.
+- keyword: #APAC데이터센터 #네오클라우드 #GPUaaS #전력망 #하이퍼스케일 #조호르 #AI데이터센터
+
+## [[기술 분석] 고조파가 역률개선용 커패시터에 미치는 영향과 대책](https://tech.ktcloud.com/entry/2026-11-ktcloud-harmonics-capacitor-resonance)
+- 회사: KT 클라우드
+- 본문 요약: 역률개선용 콘덴서는 용량성 리액턴스가 주파수에 반비례해 고조파 전류가 집중 유입되고, 계통 인덕턴스와 병렬공진 조건(nX₀ = nXL − Xc/n)이 맞으면 특정 차수 고조파가 수십 배 증폭된다는 원리를 등가회로와 수식으로 설명합니다. 계통 측 대책으로 6% 직렬리액터를 넣어 5차(300Hz) 이상에서 회로를 유도성으로 만들어 공진을 막고, 콘덴서 자체의 과전류·단자전압 상승·실효용량 증가에 따른 소손·열화에는 KS/IEC 허용전류·과전압 기준에 맞춘 정격 여유 설계로 대응합니다.
+- 주목할 point: 리액터 비율별(4%·6%·13%) 유도성 전환 차수 비교와, AIDC 수전설비 콘덴서 선정 시 "6% 리액터 병용, 정격전류 기본파 × 1.3 이상, THD가 높으면 능동필터(APF) 병용"이라는 실무 체크리스트가 유용합니다. 국내 계통에서 5차 고조파가 지배적이기 때문에 6%가 표준이라는 근거도 함께 제시합니다.
+- keyword: #고조파 #역률개선 #병렬공진 #직렬리액터 #전력품질 #AI데이터센터
+
+## [Claude에서 사내 데이터를 안전하게: 한국일보의 Amazon Bedrock AgentCore Gateway 기반 사내 MCP 게이트웨이 구축기](https://aws.amazon.com/ko/blogs/tech/hankookilbo-agentcore-gateway-rbac/)
 - 회사: AWS
-- 본문 요약: GS에너지가 2026년 7월부터 임직원이 회사 계정으로 Claude(Claude Desktop, Office 추가 기능, Claude Code)를 쓰도록 구축한 Amazon Bedrock 기반 AI Hub의 구조를 소개합니다. 모든 호출은 Internal ALB 단일 진입점과 Amazon ECS 위 LiteLLM 게이트웨이를 거쳐 VPC 엔드포인트(PrivateLink)로 Bedrock에 전달되며, Okta 로그인 → 이용 자격 확인 → 사용자가 보지도 입력하지도 않는 Virtual Key 자동 발급, Okta 비활성화·퇴사 이벤트와 매일 받는 인사 정보로 키 회수·팀 매핑을 갱신합니다. 업무 데이터는 VPC 밖 Lambda 기반 MCP 커넥터로 그룹웨어·협업시스템에 연결하되 각 시스템의 인증·권한을 그대로 따릅니다.
-- 주목할 point: 팀 예산 소진율 70%·90%에서 메일 알림, 90%부터 상위 모델 요청을 한 단계 아래 모델로 전환, 100%에서 차단하는 단계적 대응이 실무적입니다. 본문 없는 사용 원장(DynamoDB, 3년)과 입출력 원문 로그(S3, 전용 KMS·90일, 조회 전용 역할 하나로만 열람)를 분리했고, 모델 목록은 게이트웨이가 내려줘 클라이언트 재배포 없이 교체하며, VPC 엔드포인트가 추론 리전을 서울로 한정하지는 않는다는 점도 짚습니다.
-- keyword: #AmazonBedrock #Claude #LiteLLM #LLM게이트웨이 #MCP #Okta #비용관리
+- 본문 요약: 한국일보가 2026년 10월 27일부터 운영 중인 사내 MCP 게이트웨이 HAI Connector를 소개합니다. Amazon Bedrock AgentCore Gateway 위에 타깃 9개(기사 검색, 행동 로그, 클라우드 비용, GA·Search Console 등)를 하나의 MCP 엔드포인트로 묶고, 구성원이 Microsoft 365(Entra ID) 계정으로 claude.ai·Claude Code에서 로그인하게 했습니다. 인바운드 JWT 인증 위에 요청 인터셉터(tools/call 거부)와 응답 인터셉터(tools/list에서 권한 밖 도구 제거)가 같은 권한표(S3의 permissions.json)를 공유하고, 행동 로그 조회는 역할별 IAM role을 수임해 Athena에서 테이블 단위로 한 번 더 제한합니다.
+- 주목할 point: 권한별로 도구를 복제하거나 권한 조합마다(2ⁿ−1) DB 계정을 만드는 대신, 도구는 시스템 단위로 하나만 두고 "보이는 목록"을 역할로 바꾸는 설계가 깔끔합니다. 클라이언트가 보낸 신원·role 인자를 인터셉터가 항상 덮어쓰도록 단위 테스트로 고정했고, 권한표는 60초 ETag 폴링으로 재배포 없이 반영되며, AgentCore Policy(Cedar)는 배열 클레임을 정확히 비교하지 못해(like만 동작) 채택하지 않았다는 검토 결과도 공유합니다. 도메인 지식은 RAG 대신 목차를 먼저 주고 모델이 필요한 문서를 고르게 했습니다.
+- keyword: #AmazonBedrock #AgentCoreGateway #MCP #Claude #RBAC #EntraID #Athena #인터셉터
 
-## [Closing the GitHub Actions Monitoring Gap: Observing ARC Runners with an Exporter](https://medium.com/daangn/closing-the-github-actions-monitoring-gap-observing-arc-runners-with-an-exporter-0a8f39c3b70b?source=rss----4505f82a2dbd---4)
-- 회사: 당근마켓
-- 본문 요약: 같은 날 올라온 한국어 글 「GitHub Actions 모니터링의 빈칸」의 영문판입니다. 당근 SRE팀이 Kubernetes의 ARC(Actions Runner Controller) self-hosted Runner를 운영하며 대기 중인 Job과 각 Runner가 실행 중인 Job을 파악하기 위해 만든 action-runner-job-exporter(Collector·Webhook·StateStore)와, 운영 중 개선한 과정을 다룹니다.
-- 주목할 point: 내용은 한국어판과 같습니다 — 스냅샷 크기 상한 초과 → OOMKilled → 오래된 스냅샷 복원으로 완료된 Job 72개가 대기로 집계된 사고, 데이터별 보관 기간 분리와 Actions API 리컨사일로 이를 바로잡은 경험이 핵심입니다. 해외 독자용으로 같은 글을 영어로도 공개했다는 점이 특징입니다.
-- keyword: #GitHubActions #ARC #Kubernetes #Exporter #SRE #모니터링
+## [AI Infra Summit 2026: 늘어나는 AI 추론 비용, LPU가 제시하는 새로운 해법](https://hyper-accel.github.io/posts/ai-infra-summit-review/)
+- 회사: 하이퍼엑셀
+- 본문 요약: 2026년 9월 15~17일 산타클라라에서 열린 AI Infra Summit(등록 9,200명, 파트너사 250여 곳) 참관기입니다. 현장에서 본 4가지 흐름으로 병목이 모델이 아니라 용량·전력·토큰당 비용으로 이동(FuriosaAI: 1년 새 토큰 수요 20배), 칩을 넘어선 랙 스케일 경쟁과 Sovereign AI(리벨리온의 RebelServer·Rack·POD), NVIDIA DSX MaxLPS 등 전력 최적화와 Extreme Co-design, Prefill/Decode 분리와 저지연 표준화(d-Matrix)를 꼽습니다. 하이퍼엑셀은 골드 스폰서로 첫 단독 부스를 운영하며 LPU BERTHA 실시간 데모를 선보였습니다.
+- 주목할 point: 김주영 대표 발표의 문제의식 — 토큰 단가는 내려가는데 추론·에이전틱 토큰과 긴 컨텍스트로 작업 1건당 토큰 수가 폭증해 총비용은 늘어난다 — 이 핵심이며, LPU가 LLM 추론에서 메모리 대역폭 활용률 평균 83%(최대 90% 이상)를 달성했다는 수치를 제시합니다. 와트·달러당 성능 최대 3~5배 향상은 워크로드와 비교 대상에 따라 다르다는 단서가 붙어 있고, 행사 리뷰 겸 자사 홍보 성격의 글입니다.
+- keyword: #AIInfraSummit #LPU #AI추론 #토큰효율 #PD분리 #랙스케일 #AI반도체
 
-## [GitHub Actions 모니터링의 빈칸: Exporter로 ARC Runner 관측하기](https://medium.com/daangn/github-actions-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81%EC%9D%98-%EB%B9%88%EC%B9%B8-exporter%EB%A1%9C-arc-runner-%EA%B4%80%EC%B8%A1%ED%95%98%EA%B8%B0-cbe1a46a9e71?source=rss----4505f82a2dbd---4)
-- 회사: 당근마켓
-- 본문 요약: 당근 SRE팀 딜리버리 파트가 "GitHub Action이 Queued 상태로 실행되지 않아요" 문의에 답하기 위해 만든 action-runner-job-exporter를 소개합니다. ARC 기본 메트릭으로는 대기 중인 Job 수·대기 시간, 어떤 Job이 어느 Runner Pod에서 도는지 알 수 없어서, EphemeralRunner와 Runner Pod 이름이 같다는 점을 이용해 Pod에 Job 정보를 붙이는 Collector(arc_runner_job_info 메트릭), GitHub 웹훅으로 대기 Job을 추적하는 Webhook, S3 스냅샷을 저장하는 StateStore 세 바이너리로 구성했습니다. 인터넷에 노출된 Webhook에는 S3 권한을 주지 않고 사내망 StateStore에만 부여했으며, 롤아웃 중 덮어쓰기는 S3 조건부 쓰기(ETag/If-Match)로 막습니다.
-- 주목할 point: 하나의 TTL(6시간)로 모든 상태를 관리하다 스냅샷이 8MiB 상한을 넘어 저장이 멈추고, Webhook이 메모리 0.2GB 한도로 OOMKilled된 뒤 2시간 44분 전 스냅샷(Job 16,097개)을 복원해 이미 끝난 Job 72개가 '오래 대기'로 알림이 울린 사고 분석이 인상적입니다. 데이터별 보관 기간 분리, 10분 넘게 이벤트 없는 Job을 1분마다 최대 50개씩(시간당 3,000회 이하) Actions API로 확인하는 리컨사일, tombstone TTL 1→3시간 상향으로 해결했고(배포 5분 만에 완료 Job 244개 정리, 장기 대기 30→4개), Job별 실제 CPU·메모리로 권장 Runner를 보여 주는 대시보드도 운영합니다.
-- keyword: #GitHubActions #ARC #Kubernetes #Exporter #Webhook #리컨사일 #SRE
-
-## [지표 뒤에 숨은 맥락을 한눈에: New20 Timeline Hub 만들기](https://toss.tech/article/new20-timeline-hub)
-- 회사: 토스
-- 본문 요약: 페이스페이 반복 결제 프로모션 New20의 지표가 움직였을 때 "그날 제품에서 무슨 일이 있었나"를 빠르게 답하기 위해 만든 New20 Timeline Hub를 소개합니다. 회의록·GitHub PR·정책 문서·디자인 보드·세그먼트 정의에 흩어진 기록을 정책·혜택, 세그먼트, 노출 지면, 실험, 데이터·대시보드 다섯 갈래의 하나의 시간축에 올리고, 개발 반영이 확인된 변경(채운 점)과 논의만 된 항목(빈 점)을 구분합니다. 여러 PR·회의록을 하나의 '변경'으로 묶되 근거 원문을 함께 연결하며(예: '현장참여 사후적립 출시'에 PR 9건·회의록 5건), 히스토리·노출 현황·세그먼트·관계 보기 등 질문별 화면을 제공합니다.
-- 주목할 point: 매일 아침 스크립트(5~10분)로 자료를 모으면서 '노트 적재일'이 아닌 '실제 결정 시점'으로 날짜를 바로잡고(5월 논의가 9월에 적재된 사례), PR 키워드 의존 등 수집 한계를 '출처·범위' 화면에 명시해 "없으니 없었던 일"로 오해하지 않게 한 점이 핵심입니다. 시점이 겹친다고 인과가 증명되지 않으며 맥락은 검증할 가설을 찾는 출발점이라는 태도, 작게 시작하는 5단계 가이드도 제시합니다.
-- keyword: #데이터분석 #타임라인 #제품맥락 #대시보드 #GitHubPR #분석인프라
-
-## [[클로바 시선 #60] NAVER Cloud Defense AI Day: 국방 소버린 AI 전략 인사이트](https://blog.naver.com/n_cloudplatform/224480877955)
-- 회사: 네이버 클라우드 플랫폼
-- 본문 요약: 9월 18일 서울신라호텔에서 열린 네이버클라우드 'Defense AI Day'의 다섯 세션을 정리한 행사 후기입니다. 전 국방차관은 AI가 정보 분석을 넘어 지휘관의 '결심' 영역까지 들어오고 있으며 민간기술 우선(Commercial First)의 민군융합 생태계가 국방 AX의 핵심이라고 했고, 네이버클라우드는 전면전 데이터·검증 환경·예산이 부족한 한국 여건에 맞춰 임계 임무 중심으로 역량을 '결집·전개·실증·진화'하는 소버린 AI 전략을 제시했습니다. 이어 중앙–작전 거점–전술 엣지–플랫폼 계층별로 여러 모델을 배치하는 하이브리드 지능화, Data Fabric–Defense Ontology–Decision Agent 3단계의 지휘결심 지원 플랫폼, 데이터 통제권을 지키는 국방 특화 클라우드 전략을 다뤘습니다.
-- 주목할 point: 현장 배치 엔지니어(FDE)가 군과 함께 기술을 완성하고, 한 번 구축·납품하는 방식에서 사용·피드백·개선이 반복되는 '구독형 협력 구조'로 가야 한다는 제언이 눈에 띕니다. 국방 AI의 관건이 더 좋은 모델보다 AI가 쓸 수 있는 데이터 기반(연결·관계·맥락 구조화)을 먼저 만드는 것이라는 메시지(미 JADC2·GIDE 사례 인용)와, 서로 다른 체계가 같은 대상을 같은 의미로 이해하게 하는 '공동 의미 체계'도 강조합니다.
-- keyword: #소버린AI #국방AX #온톨로지 #지휘결심지원 #국방클라우드 #네이버클라우드
-
-## [[보안] AI 시대의 클라우드 보안 전략 | Zero Trust부터 AI 에이전트 보안까지](https://blog.naver.com/n_cloudplatform/224480782785)
-- 회사: 네이버 클라우드 플랫폼
-- 본문 요약: AI가 정보 조회를 넘어 업무 시스템에 연결돼 작업까지 수행하게 되면서 필요한 클라우드 보안 전략을 입문자 눈높이로 정리한 글입니다. 외부에서 접근 가능한 서버·API·업무지원 시스템을 파악하는 공격 표면(Attack Surface) 관리 체크리스트, 최초 인증만으로 신뢰하지 않고 주체·자원·상황별로 검증하는 Zero Trust(인증과 인가의 구분), 정기 점검에 더해 변경 시점마다 확인하는 지속적인 보안 검증, 로그 가시성 확보를 차례로 설명합니다.
-- 주목할 point: AI 에이전트 보안 5원칙 — 에이전트 신원 식별, 최소 권한과 위임 시 실제 요청자 권한 범위 고려, 단기 자격 증명 활용, 도구 호출·실행 이력 관리, 데이터 반출·권한 변경·결제 같은 고위험 작업의 사람 승인(Human-in-the-loop) — 을 제시하며, 핵심은 "AI가 무엇을 아는지"뿐 아니라 "무엇을 할 수 있는지"를 관리하는 것이라고 정리합니다. 구체 구현보다는 개념·체크리스트 중심의 글입니다.
-- keyword: #클라우드보안 #ZeroTrust #AI에이전트보안 #공격표면관리 #최소권한 #HumanInTheLoop
-
-## [판단에만 집중하세요: 토스 타겟팅 모델 개발 자동화](https://toss.tech/article/targeting-model-automation)
-- 회사: 토스
-- 본문 요약: 고객 타겟팅 모델 개발 프레임워크 TASTE(학습 시간 2주→1일)에 "이 모델을 써도 되나?"를 판단하기 위한 네 가지 비교 — 피쳐 수, 모델 구조, 기존 모델 대비 성능, 입력 데이터 신뢰성 — 를 자동화한 이야기입니다. 피쳐 수는 중요도 곡선의 Elbow 대신 K=10~150별로 다시 학습해 최고점과 통계적으로 구별되지 않는 최소 K를 고르는 auto_k로 정하고(458개→75개, 84% 감소에도 성능 차이 없음), 단계별 트리 여러 개의 점수를 곱하던 퍼널 모델은 전체 퍼널을 한 번에 배우는 딥러닝 AITM을 트리와 같은 평가셋으로 나란히 비교합니다. 학습이 끝나면 OOT 평가 보고서와 기존 모델 비교표가 자동으로 나와 평가 시간이 모델당 30분→1분으로 줄었습니다.
-- 주목할 point: 매일 재학습하면 회수율은 같아도 상위 10% 명단의 이틀 연속 겹침이 71%(고정 모델 95%)에 그쳐, 피쳐 목록·해시를 고정(Pinned)해 추론하고, 원천 테이블 생산 중단으로 피쳐가 에러 없이 NULL로 채워지는 문제(13~21% 결손 가능)는 결손 피쳐 10% 초과 시 배치를 실패시켜 막습니다. 보고서의 '상위 5%'를 마케터 발송 기준과 같게 자르고, 라벨 있는 고객만 세며, KS 부호를 유지하는 등 숫자를 그대로 판단에 쓰게 한 규칙과, 한 날짜에서만 튄 성능을 추적해 피쳐 속 미래 정보를 찾아낸 사례도 실무적입니다.
-- keyword: #MLOps #타겟팅모델 #피쳐선택 #AITM #모델평가자동화 #데이터품질 #TASTE
-
-## [[AI Agent] 검색부터 상담 기록까지 이어지는 서비스 구조 설계](https://blog.bespinglobal.com/post/ai-agent-service-architecture-from-search-to-consultation-history/)
+## [Claude Code Skills, MCP, Hooks를 팀 표준으로 묶어보기](https://blog.bespinglobal.com/post/bundling-claude-code-skills-mcp-hooks-into-team-standards/)
 - 회사: 베스핀글로벌
-- 본문 요약: 같은 날 공개된 베스핀글로벌 Developer팀의 고객 상담 AI Agent 시리즈 첫 글로, "이벤트를 찾고 → 선택한 자료로 질문하고 → 다시 볼 내용을 저장하는" 상담 흐름을 FastAPI·서비스 컨테이너·공통 Agent 구성요소로 연결하는 설계를 다룹니다. 후보를 빠르게 찾는 검색 API(기본 경로에 모델 불필요)와 선택한 묶음(bundle_id: 대표 문서+첨부) 근거로 답하는 상세 질의 API를 나누고, 앱 구성·API·업무 서비스·검색 서비스·저장 계층·공통 어댑터·평가의 책임 경계를 표로 정리합니다.
-- 주목할 point: 연결을 앱 수명과 지연 초기화 기준으로 언제 만들고 닫을지, 라우터에는 HTTP 계약만 두고 업무 규칙은 서비스로 보내는 경계, 검색 때 접근할 수 있었어도 상세 질의에서 권한 검사를 생략하지 않는 원칙, 같은 answer 필드라도 검색(건수 안내)과 상세(모델 답변)의 의미를 구분해야 한다는 점, 부분 실패와 운영 관측까지 다룹니다. 코드는 구조 확인용 축약 예제라고 밝히고 있습니다.
-- keyword: #AIAgent #FastAPI #RAG #서비스설계 #DependencyInjection #상담AI
+- 본문 요약: AI플랫폼엔지니어링팀이 Claude Code를 개인 생산성 도구가 아니라 팀 표준 워크플로우로 쓰기 위해 기능별 역할을 정리한 글입니다. 상시 규칙은 CLAUDE.md, 반복 절차는 Skills(`.claude/skills/`, 사용할 때만 로드), 이슈·PR·모니터링·문서 같은 외부 컨텍스트는 MCP, 포맷·린트·위험 명령 차단 같은 자동 검증은 Hooks(PreToolUse·PostToolUse·Stop 등)로 나누고, 설정 범위(Managed/User/Project/Local)로 공유 범위를 정하자고 제안합니다.
+- 주목할 point: skill 이름 충돌 시 Enterprise > Personal > Project 우선순위라 개인 skill이 팀 skill을 덮어쓸 수 있다는 점, MCP로 가져온 로그·이슈·댓글이 프롬프트 인젝션 경로가 될 수 있어 읽기 전용·마스킹 기준이 필요하다는 점, 팀 공통은 project에 두되 개인 토큰은 절대 project 설정에 넣지 말라는 점 등 운영상 함정을 짚습니다. 데이터 플랫폼의 pipeline 변경 검토 워크플로우 하나부터 작게 시작하는 예시를 듭니다.
+- keyword: #ClaudeCode #Skills #MCP #Hooks #CLAUDEmd #팀표준 #AI코딩
 
-## [[AI Agent] 대화 맥락을 이어 주는 상담 이력 저장과 관리](https://blog.bespinglobal.com/post/ai-agent-conversation-history-storage-and-management/)
+## [Anthropic Prompt Engineering을 Claude 업무 활용 기준으로 정리](https://blog.bespinglobal.com/post/anthropic-prompt-engineering-for-claude-work-guidelines/)
 - 회사: 베스핀글로벌
-- 본문 요약: "그 행사에서 제외되는 경우는요?" 같은 후속 질문을 이해하려면 앞선 대화가 필요하다는 데서 출발해, 상담 AI Agent의 대화 이력을 저장·조회·재사용하는 구조를 설명합니다. 이력의 세 용도(화면 복원, 후속 질문 맥락, 운영 점검)에 필요한 데이터가 다르다고 보고, 상담 처리(대화 객체 구성)–미들웨어(기록 시점·공통 마스킹·저장 호출)–이력 관리 계층(트랜잭션·중복·순서)–조회 API(소유권 확인)–맥락 구성기(관련 이력 선택·길이 제한)로 책임을 나눕니다.
-- 주목할 point: "저장한 이력"과 "모델의 기억"을 구분하고 기록과 맥락 구성을 따로 설계하는 것이 출발점이라는 메시지가 핵심입니다. 미들웨어가 모든 HTTP 본문을 읽어 대화를 추측하지 않도록 상담 처리가 검증한 대화 객체를 요청 상태에 넣어 넘기는 방식, 세션 소유권·중복 요청·스트리밍 중단·저장 실패 시의 정책을 함께 다룹니다.
-- keyword: #AIAgent #대화이력 #FastAPI #Middleware #PostgreSQL #맥락관리
+- 본문 요약: Anthropic의 Prompt Engineering 인터랙티브 튜토리얼과 공식 문서를 데이터 플랫폼 업무 관점에서 다시 정리한 글입니다. 프롬프트를 고치기 전에 성공 기준과 테스트 방법부터 세우라는 원칙, Claude를 "맥락 없는 똑똑한 신입"처럼 보고 목적·입력·처리 기준·출력 형식·금지 사항을 명확히 쓰기, 긴 문서는 위에 두고 질문은 뒤에 두기, XML 태그로 지시·컨텍스트·예시 구분하기, 몇 개의 실제 예시로 결과 형식 고정하기, 역할 설정을 말투가 아닌 판단 기준으로 쓰기를 다룹니다.
+- 주목할 point: "하지 말라"보다 "이렇게 하라"(예: "장황하게 쓰지 마" 대신 "5문장 이내")가 낫다는 점, 확실하지 않으면 추정으로 표시하고 문서에 없는 내용은 쓰지 않게 하는 제약으로 환각을 줄이는 방법 등을 장애 메모·기술 검토 프롬프트 예시와 함께 보여줍니다. Console의 평가 도구로 테스트 세트 기반 비교를 하자는 제안도 담았습니다.
+- keyword: #PromptEngineering #Claude #XML태그 #FewShot #프롬프트평가 #LLM활용
 
-## [[AI Agent] 모델 인증과 문서 보관을 함께 지키는 보안 설계](https://blog.bespinglobal.com/post/ai-agent-secure-design-for-model-authentication-and-document-retention/)
+## [Codex GitHub Actions로 PR 리뷰 자동화를 보는 관점](https://blog.bespinglobal.com/post/a-perspective-on-automating-pr-reviews-with-codex-github-actions-2/)
 - 회사: 베스핀글로벌
-- 본문 요약: 상담 AI Agent가 답변 이후에도 모델 인증을 유지하고 생성한 상담 보고서를 필요한 사람에게만 전달하도록, 모델 API 키는 AWS Secrets Manager에서 읽고 문서는 Amazon S3에 보관하는 공통화 설계를 설명합니다. 모델 API 키·DB 비밀번호(비밀정보), 버킷 이름·리전·로그 수준(일반 설정), 내부 서비스 주소(민감할 수 있는 설정)처럼 값의 성격을 먼저 나누고, 개발·검증·운영 환경별로 시크릿과 저장 공간을 분리합니다.
-- 주목할 point: 서비스는 "보고서를 저장한다"는 의도와 열람 권한 판단만 맡고, 공통 계층이 S3 호출·암호화·정해진 객체 버전 서명·시크릿 조회와 연결 초기화를 처리하는 역할 분담이 핵심입니다. 다운로드는 사용자 권한 확인 후 짧은 서명 URL로 제한하고, 키 교체 시 조회–연결 갱신–실제 호출까지 함께 확인해야 한다고 강조합니다. 공통화했다고 업무 권한이 자동으로 해결되지 않는다는 점도 짚습니다.
-- keyword: #AWSSecretsManager #AmazonS3 #AIAgent #시크릿관리 #PresignedURL #보안설계
+- 본문 요약: OpenAI Codex로 PR 리뷰를 자동화하는 두 흐름 — PR에서 `@codex review`나 자동 리뷰로 리뷰어처럼 호출하는 방식과, `openai/codex-action@v1`을 GitHub Actions에 넣어 CI 작업으로 `codex exec`를 실행하는 방식 — 을 구분하고 운영 기준을 정리합니다. Action 방식은 PR 이벤트 → checkout(base/head ref 준비) → prompt-file 기반 리뷰 → final-message를 PR 코멘트로 게시하는 구조이며, 리뷰 기준을 `.github/codex/prompts/` 파일로 코드처럼 관리할 수 있습니다.
+- 주목할 point: Codex 실행 job은 `contents: read`, 코멘트 게시 job만 `pull-requests: write`로 권한을 분리하고 `persist-credentials: false`를 쓰는 최소 권한 원칙과, P0/P1 수준 이슈만 짚고 스타일 지적은 빼도록 범위를 좁혀야 리뷰 피로가 줄어든다는 조언이 핵심입니다. AGENTS.md(지속 규칙)와 prompt-file(이번 작업 지시)의 역할 구분, comment-only부터 도입하자는 단계적 접근도 제안합니다.
+- keyword: #Codex #GitHubActions #PR리뷰 #코드리뷰자동화 #최소권한 #AGENTSmd
 
-## [[AI Agent] 상담 흐름과 오류를 검증하는 API 테스트 설계](https://blog.bespinglobal.com/post/ai-agent-api-test-design-to-validate-consultation-flow-and-errors/)
+## [Databricks Lakehouse 아키텍처를 다시 정리하며 배운 점(손재홍_AI플랫폼엔지니어링)](https://blog.bespinglobal.com/post/lessons-learned-from-revisiting-databricks-lakehouse-architecture/)
 - 회사: 베스핀글로벌
-- 본문 요약: "API는 성공했는데 상담은 이어지지 않는" 상황을 막기 위해, 이벤트 검색·묶음 기반 상세 질의·사용자 기록(즐겨찾기, 최근 본 이벤트, 검색 이력)을 제공하는 고객 컨택 AI Agent의 테스트를 상담사 행동 기준 시나리오로 설계하는 방법을 정리했습니다. 검색 응답의 bundle_id가 상세 질의로 넘어가지 않는 것처럼 API 사이 연결이 끊기는 문제까지 보도록 질문을 "호출이 됐는가"에서 "업무를 이어갈 수 있는가"로 넓힙니다.
-- 주목할 point: 날짜 해석·묶음 구성 같은 작은 규칙은 테스트 더블로 빠르게, API 계약과 실제 DB 연결은 통합 테스트로, 모델 교체 영향은 검색·답변 품질 회귀 평가로 나눠 확인하고 CI 배포 기준과 함께 운영합니다. 상태 확인도 단순 기동과 필수 의존성 준비 상태를 구분하되 매번 실제 모델을 호출할 필요는 없다는 점, 사용자별 저장 격리 검증을 강조합니다.
-- keyword: #AIAgent #pytest #API테스트 #통합테스트 #품질회귀 #RAG
+- 본문 요약: Lakehouse를 단순히 Data Lake와 Warehouse를 합친 개념이 아니라 "데이터를 저장하는 방식과 믿고 운영하는 방식을 잇는 구조"로 다시 이해한 학습 정리입니다. Data Lake의 저비용·다양성과 Warehouse의 안정성·거버넌스를 오브젝트 스토리지 위에서 함께 가져가는 핵심이 Delta Lake의 트랜잭션 로그와 메타데이터(ACID, 스키마 강제, Time Travel)이며, 이 덕분에 배치 실패 시 버전·커밋 단위로 상태를 추적할 수 있다고 설명합니다.
+- 주목할 point: 운영 관점의 체크포인트로 테이블 변경 이력 확인, 배치 실패 시점 추적, 데이터 품질·스키마 변경 사전 감지를 꼽고, Lakehouse를 써도 파티션·권한·비용·Job 모니터링 기준은 오히려 더 명확해야 한다고 강조합니다. 개념 정리 위주의 짧은 글로, 후속으로 Unity Catalog·Lakeflow·DLT를 다룰 예정입니다.
+- keyword: #Databricks #Lakehouse #DeltaLake #데이터플랫폼 #TimeTravel #데이터거버넌스
 
-## [[AI Agent] 혜택과 제외 조건을 함께 확인하는 프로모션 검색](https://blog.bespinglobal.com/post/ai-agent-promotion-search-with-benefits-and-exclusions/)
-- 회사: 베스핀글로벌
-- 본문 요약: 상담사가 "이번 달 온라인 쇼핑 혜택이 있나요?"에 답하려면 행사 기간·대상 카드·이용 조건·첨부의 제외 업종까지 확인해야 한다는 점에서 출발해, 자연어 검색으로 후보를 찾고 → 상담사가 이벤트를 고르면 → 대표 문서와 첨부를 한 묶음으로 읽어 상세 질문에 답하는 프로모션 검색 흐름을 설계합니다. 비슷한 이벤트·흩어진 조건·종료된 행사 노출·반복 검색 같은 불편마다 기간/핵심 혜택 카드 표시, 묶음 조회, 기간 필터와 상태 표시, 즐겨찾기·최근 본 목록으로 대응합니다.
-- 주목할 point: AI의 역할을 "긴 답변"이 아니라 찾아야 할 자료를 줄이고 흩어진 조건을 정리해 상담사가 근거를 보고 판단하게 돕는 것으로 한정한 점, 답변 문장과 근거 위치를 연결하고 문서 개정·권한·기간 검증과 업무 지표·품질 평가를 함께 기록해 오안내를 줄이려는 점이 핵심입니다.
-- keyword: #AIAgent #RAG #프로모션검색 #상담지원 #근거제시 #검색품질
-
-## [[AI Ready Data] 문서 게시부터 검색 반영까지 확인하는 운영 흐름](https://blog.bespinglobal.com/post/ai-ready-data-operations-flow-from-document-publication-to-search-index-verification/)
-- 회사: 베스핀글로벌
-- 본문 요약: 처리 화면엔 '완료'인데 검색에는 이전 신청 기한이 나오는 문제를 출발점으로, Databricks 기반 AI Ready Data에서 결과 저장–게시 완료–검색 인덱스 갱신–검색 반영 확인을 별개 단계로 나누는 운영 흐름을 설명합니다. Gold 계층에 데이터가 있다는 것만으로 현재 제공할 결과라 보지 않고, 문서 개정·게시 식별자·검색 동기화 식별자를 각각 관리해 어떤 게시가 실제 검색에 반영됐는지 연결합니다.
-- 주목할 point: 빈 결과와 철회도 이전 검색 결과를 바꾸는 '변경'으로 다뤄야 한다는 관점, Delta Sync 상태·행 수·대표 질의를 함께 확인해 최신성을 검증하는 방법이 핵심입니다. 여러 단계를 하나의 '완료' 상태로 합치면 다음에 무엇을 해야 할지 알 수 없다는 지적이 실무적이며, 예제 코드는 교육용입니다.
-- keyword: #Databricks #AIReadyData #RAG #DeltaSync #데이터최신성 #검색인덱스
-
-## [[AI Ready Data] 업무 질문과 정답 근거로 확인하는 검색 품질 평가](https://blog.bespinglobal.com/post/ai-ready-data-search-quality-evaluation-with-business-questions-and-grounded-answers/)
-- 회사: 베스핀글로벌
-- 본문 요약: 답변이 자연스러워도 업무에 써도 되는지 판단하려면 검색과 답변 생성을 나눠 평가해야 한다며, 업무 질문 기반 골든셋(정답 평가셋)으로 Databricks 문서 검색 품질을 평가하는 방법을 설명합니다. 평가 항목 하나에 질문뿐 아니라 참조 답변, 근거 문장, 문서 ID, 원문 개정(revision), 질문 유형(예: exception), 중요도(critical), 검토 상태를 함께 담아 "필요한 사실을 찾았는가(충족도)"와 "유용한 근거가 앞에 나왔는가(순서 품질)"를 분리 측정합니다.
-- 주목할 point: 평균 점수 옆에 실패·누락 문항과 핵심 예외 문항을 함께 기록해 변경 전후를 같은 질문으로 비교하고, 자동 평가의 마지막에는 중요한 예외를 확인하는 업무 담당자 검토를 남겨야 한다는 점이 핵심입니다. 문서·점수·규정은 가상 데이터입니다.
-- keyword: #Databricks #RAG평가 #골든셋 #검색품질 #AIReadyData #LLM
-
-## [[AI Ready Data] 질문에 맞게 나누고 문맥을 보존하는 문서 분할](https://blog.bespinglobal.com/post/ai-ready-data-document-splitting-that-preserves-context/)
-- 회사: 베스핀글로벌
-- 본문 요약: '접수일 다음 날부터 30일 이내'라는 문장은 찾았지만 바로 다음 문단의 예외를 놓쳐 모두에게 같은 기한을 안내하는 문제처럼, 문서 분할(청킹)이 질문에 필요한 근거의 경계를 정한다는 관점에서 제목·표·예외·출처를 보존하는 분할 방법을 설명합니다. 글자 수를 먼저 정하기보다 앞 단계 변환 결과에서 제목(Markdown #~###)이 제대로 인식됐는지, 표가 문장으로 풀리지 않았는지부터 확인하고, 검색용 조각과 계층 문맥을 분리해 관리합니다.
-- 주목할 point: 입력(변환)에서 사라진 예외는 뒤의 분할 단계가 복원해 주지 못한다는 점, 너무 작게 자르면 조건이 끊기고 장 전체를 가져오면 다른 대상의 조건이 섞인다는 균형 문제, 그리고 검색 점수가 아니라 질문별 근거 완전성으로 분할 품질을 평가해야 한다는 점이 핵심입니다. 수치는 가상 예시입니다.
-- keyword: #Databricks #문서분할 #청킹 #RAG #벡터검색 #AIReadyData
-
-## [[AI Ready Data] 표와 예외 조건을 지키는 문서 변환 결과 검증](https://blog.bespinglobal.com/post/ai-ready-data-validate-document-conversion-results-preserving-tables-and-exceptions/)
-- 회사: 베스핀글로벌
-- 본문 요약: AI가 원문의 "100"은 맞게 읽었지만 표 단위 '만원'이나 "별도 심사 대상은 제외" 단서를 놓쳐 틀린 답을 하는 사례로 시작해, 문서 변환 결과에서 항목–값, 값–단위, 일반 조건–예외, 본문–출처(페이지·절)의 연결을 보존하고 검증하는 방법을 설명합니다. 규정·약관은 조항과 예외, 표 중심 안내는 행·열 제목과 단위처럼 확장자가 아니라 문서 유형별로 보존할 의미를 먼저 정하고, 공통 결과 규약으로 서로 다른 파서 결과를 같은 기준으로 읽게 합니다.
-- 주목할 point: 답변 오류의 원인이 검색 모델보다 앞 단계(변환)에 있을 수 있고, 변환에서 빠진 정보는 분할·임베딩이 복원하지 못하므로 오류 조사를 변환 결과부터 시작해야 한다는 점, 대체 변환 기록과 프로세스 격리로 파서 실행 장애의 경계를 만드는 설계가 핵심입니다. 특정 도구의 정확도를 측정한 자료는 아니라고 밝힙니다.
-- keyword: #Databricks #문서변환 #파서 #표추출 #프로세스격리 #AIReadyData
-
-## [[Databricks] 문서를 신뢰할 수 있는 검색 근거로 준비하는 과정](https://blog.bespinglobal.com/post/databricks-preparing-documents-as-trustworthy-search-evidence/)
-- 회사: 베스핀글로벌
-- 본문 요약: AI Ready Data(AI 활용 준비 데이터)를 원문에 최신성·문맥·출처를 연결한 데이터로 정의하고, Databricks로 문서를 수집(Auto Loader)·정리·임베딩·게시해 AI Search에 반영하는 전체 흐름을 설명하는 시리즈 개요 글입니다. "지금 적용할 자료인가(문서 식별·개정·유효 상태)", "문장만 읽어도 뜻이 맞는가(제목·표·조건·예외 연결)", "원문에서 확인할 수 있는가(출처·근거 위치)" 세 질문을 축으로 삼습니다.
-- 주목할 point: 최신 문서인데 예전 답이 나오는 문제(개정과 검색 반영 상태), 저장 완료와 검색 완료의 차이, 실패한 문서를 처음부터 다시 처리하지 않도록 결과와 상태를 확인하는 복구 기준을 다룹니다. Databricks는 흐름을 연결하는 기반일 뿐 어느 개정이 유효한지·어떤 예외를 보여줄지는 업무 담당자와 합의해야 한다는 점을 분명히 합니다.
-- keyword: #Databricks #AIReadyData #AISearch #AutoLoader #임베딩 #데이터파이프라인
-
-## [매월 수천만 명이 쓰는 대국민서비스 성능테스트, Amazon EC2 기반 JMeter 분산 부하 환경 설계와 운영](https://tech.cloud.nongshim.co.kr/blog/aws/4647/)
-- 회사: 농심데이터시스템
-- 본문 요약: 2026년 10월 매월 수천만 명이 쓰는 대국민서비스(K기관)의 성능테스트를 위해, 기관 내부에서는 재현할 수 없는 실제 사용자 경로(인터넷·CDN 경유)로 부하를 거는 Amazon EC2 기반 JMeter 분산 환경(Controller 1 + Worker 4, c5.4xlarge·Amazon Linux 2023)을 구성한 사례입니다. DDoS 차단 장비에 걸리지 않도록 부하기를 Private Subnet에 두고 NAT Gateway 하나로 출발지 IP를 고정해 허용 목록에 IP 1개만 등록했으며, SSH 없이 Session Manager로 접속하고 스크립트·결과는 S3 Gateway Endpoint로 주고받았습니다. 테스트 결과 자체는 다루지 않습니다.
-- 주목할 point: NAT Gateway는 IP 하나당 같은 목적지로 동시 55,000 연결이 한도라 CloudWatch ErrorPortAllocation을 확인해야 한다는 점, 이틀간(본 테스트 18회, 약 3시간 10분) 비용이 EC2+JMeter 약 $128 vs Distributed Load Testing on AWS 약 $126~130으로 비슷했고 그중 약 82%($105, 1,780.65GB)가 NAT Gateway 데이터 처리 요금이었다는 비교가 실무적입니다. 집계 결과만 필요하면 DLT, 요청 건별 Raw(jtl) 분석과 부하기 nmon 모니터링이 필요하면 EC2 직접 구성이 낫다는 선택 기준을 제시합니다.
-- keyword: #성능테스트 #JMeter #AmazonEC2 #NATGateway #부하테스트 #DistributedLoadTesting
-
-## [AWS AI-DLC Reverse Engineering: I/O 매트릭스로 모놀리스 공유 변수를 분해하여 spec 및 검증 기준으로 활용하기](https://aws.amazon.com/ko/blogs/tech/aws-ai-dlc-reverse-engineering-io-matrix-for-spec-and-verification/)
-- 회사: AWS
-- 본문 요약: 레거시 모놀리스를 AI 코딩 도구로 현대화할 때 문법 변환보다 오래 걸리는 '공유 변수 분해'를 다룹니다. AWS의 오픈소스 방법론 AI-DLC(Kiro·Claude Code에서 Reverse Engineering→Requirements→…→Build and Test 스테이지와 사람 승인 게이트)의 Reverse Engineering 산출물은 아키텍처·API·의존성 구조만 담아, 단계별로 어떤 변수를 읽고 쓰는지는 빠져 있습니다. 이를 처리 단계×변수별 접근 방식(R/W/RW/WR, 조건부는 *)을 정리한 'I/O 매트릭스'로 채우고, 가상의 10단계 주문 접수 C 프로그램에서 쿠폰 할인 전 금액으로 결제되는 결함을 예로 숨은 흐름을 찾아 요구사항·API 계약·검증 기준으로 잇습니다.
-- 주목할 point: DTO 분리 시 생기는 결함을 숨은 입력 유실·끊어진 흐름·낡은 값·순서 역전·의도치 않은 부수효과 5가지로 분류하고, 이들은 "어느 단계가 어떤 변수를 언제 읽고 쓰는가"만 알면 기계적으로 찾을 수 있다고 봅니다. 문자열 검색이나 매번 답이 달라질 수 있는 LLM 대신 AST로 읽기·쓰기를 판정하는 분석기(CI 커밋마다), 코드 그래프를 조회하는 MCP 서버, 승인 게이트에 sensor를 붙이는 io-matrix plugin, 계약·검증 테스트 생성기로 구성하며, 규모가 커지면 그래프를 Aurora PostgreSQL 또는 Neptune Analytics로 옮기라고 제안합니다.
-- keyword: #AIDLC #레거시현대화 #IOMatrix #AST #MCP #NeptuneAnalytics #Kiro
-
-## [이래라저래라 하지 마라: 주니어를 성장시키는 파트너십 대화법](https://techblog.woowahan.com/28524/)
-- 회사: 우아한형제들
-- 본문 요약: 주니어 개발자에게 "이래라저래라" 정답을 지시하는 대신, 동기면담(Motivational Interviewing)의 공감·반영 기법을 활용해 원온원에서 주니어가 스스로 답을 찾도록 돕는 파트너십 대화법을 소개합니다. AI(Gemini)를 활용해 대화를 연습하고 기록을 평가한 과정도 함께 공유합니다. (원문 사이트가 자동 수집을 차단해 본문을 직접 확인하지 못했으며, velopers 요약을 바탕으로 작성했습니다.)
-- 주목할 point: 기술이나 화법보다 진심을 우선해야 한다는 점을 강조합니다. 리더·시니어의 코칭 대화를 AI로 연습하고 기록으로 되돌아보는 시도가 특징입니다. (원문 미확인으로 세부 내용은 원문 참고 필요)
-- keyword: #동기면담 #원온원 #주니어성장 #코칭 #개발문화 #Gemini
-
-## [월간 AI 보안 소식 11월호](https://techblog.ahnlabcloudmate.com/weolgan-ai-boan-sosig-11weolho/)
-- 회사: 클라우드메이트
-- 본문 요약: 10월 중순~11월 중순 AI 보안 소식을 '일하는 AI'를 주제로 정리한 월간 뉴스레터입니다. 메인 스토리는 Notion AI 대화 기록이 외부 추론 공급사 Fireworks AI의 사고로 노출된 사건(전체 워크스페이스 1% 미만)으로, 10월 23일 Fireworks 연구개발 장비를 호스팅하던 클라우드 업체 사고 → 10월 24일 Fireworks 개발 시스템 무단 접근 → 11월 3일 Notion 연결 차단, 4일 데이터 삭제로 이어진 타임라인을 분석합니다. 이 밖에 보이지 않는 유니코드로 AI 비서에게 지시를 숨긴 청구서 사기 메일(Sublime Security), 훔친 인증정보로 기업 AI를 무단 사용하는 LLMJacking(Google·Mandiant), 금융위의 약 580개사 전수점검과 망분리 규제 개편, Meta AI 에이전트 Muse 버그바운티 결과, 행안부의 공공 AI 코딩 도입 소식을 다룹니다.
-- 주목할 point: 기존 소프트웨어 공급망 사고(SolarWinds·Log4j)가 '오염된 코드가 들어오는' 구조라면 AI 서비스 공급망 사고는 '고객 데이터가 공급사로 나가는' 구조라 우리 환경 밖에서 일어나 탐지가 어렵다는 비교가 핵심입니다. 관리자용 Insights 분석을 위해 보낸 AI 요청·응답이 데이터를 보존하지 않는다고 알려진 공급사 엔드포인트에 실제로는 남아 있었다는 점, 계약 관계도 없는 '공급사의 공급사'까지 봐야 한다는 점, AI 대화에 붙여 넣은 인증정보 즉시 교체 권고 등 데이터 보존·입력 통제·사고 대응 점검 포인트를 제시합니다.
-- keyword: #AI보안 #공급망보안 #Notion #FireworksAI #LLMJacking #프롬프트인젝션
-
-## [법규정 AI 상담서비스 구축을 위한 지식그래프 및 GraphRAG 설계](https://blog.cslee.co.kr/graphrag-legal-regulation-ai-consulting-knowledge-graph/)
-- 회사: CSLEE
-- 본문 요약: 공공SW사업 담당자가 소프트웨어 관련 법령·전자정부법·시행령·행정규칙·업무지침을 함께 검토해야 하는 문제를 풀기 위해 설계한 지식그래프 기반 법규정 AI 상담 시범서비스를 소개합니다. 일반 벡터 RAG는 '의미적으로 유사한 조문'은 찾아도 위임·예외·준용으로 '법적으로 연결된 조문'은 놓친다고 보고, 법령을 조·항·호·목 단위 노드(시행일·개정 정보 포함)로 구조화한 뒤 REFERS_TO, DELEGATES_TO, EXCEPTION_OF, SPECIAL_CASE_OF, APPLIES_MUTATIS_MUTANDIS 등 관계로 연결합니다. 질문과 유사한 조문을 출발점으로 검색한 뒤 그래프 관계를 따라 근거를 넓히는 하이브리드 GraphRAG 구조입니다.
-- 주목할 point: LLM 기반 추출(Microsoft GraphRAG) 대신 규칙 기반 관계 추출을 우선하고 자동 확정이 어려운 관계는 검토 대상으로 분류한 판단 — "관계를 많이 확보하는 것보다 잘못된 관계를 최소화하는 것이 더 중요" — 이 핵심입니다. "다만"이라는 표현만으로 예외 관계를 확정하지 않으며, 탐색 관계 유형·깊이(hop)·우선순위를 질문 유형별로 제한하고, Leiden 군집 기반 커뮤니티 보고서는 연결 밀도 기준이라 법 체계 분류와 다를 수 있고 LLM 요약이므로 적용 여부는 원문으로 확인해야 한다고 짚습니다.
-- keyword: #GraphRAG #지식그래프 #법규정AI #RAG #관계추출 #공공SW
-
-## [SGLang을 활용한 다국어 및 Multimodal Decision Model 구성하기](https://aws.amazon.com/ko/blogs/tech/decision-model-with-sglang/)
-- 회사: AWS
-- 본문 요약: 프로덕션 LLM 호출의 상당수는 생성이 아니라 닫힌 선택지 중 하나를 고르는 '판단'이라는 관찰에서 출발해, SGLang으로 Open Weight VLM Qwen3-VL-8B를 Decision Model로 서빙하고 Amazon Bedrock AgentCore에 호스팅된 Agent의 판단 계층으로 연결하는 방법을 다룹니다. 선택지마다 단일 토큰 Label(A, B, C…)을 붙이면 Prefill이 끝난 시점의 Logits에 답이 들어 있어, Label 확률만 Softmax하면 Decode 없이(output_tokens=0) 답과 Confidence를 함께 얻습니다(SGLang v0.5.21+ /v1/systemone). 사전학습된 Vocabulary Projection(W_vocab)을 재사용하므로 분류 헤드 학습 없이 한국어 등 다국어·이미지 판단도 Zero-shot으로 처리합니다.
-- 주목할 point: 한국어 실측에서 KorQuAD 기반 RAG 관련성 필터는 Frontier Model과 동급 정확도(0.980 vs 0.977)를 약 1/20 지연(p50 35ms vs 687ms)으로 냈지만, KLUE-YNAT 7지선다(0.663 vs Claude Sonnet 5.5 0.833)는 Frontier 경로 유지가 낫다고 Task 단위 적합성 판단을 강조합니다. 이미지보다 텍스트 추출 경로가 약 14%p 더 정확했고, Confidence가 과신(ECE 0.175~0.317)되는 문제는 홀드아웃 300건 이상의 Reliability Table로 운영 Threshold를 역산하고 Temperature Scaling으로 보정한 뒤, 고신뢰는 직접 종결·저신뢰는 Frontier Model이나 사람에게 넘기는 Hybrid Escalation으로 운영합니다.
-- keyword: #SGLang #DecisionModel #Qwen3VL #Multimodal #Calibration #AgentCore #LLM비용최적화
-
-## [Claude 토큰 사용량을 줄이고 효율적으로 사용하는 방법](https://blog.cslee.co.kr/claude-token-usage-optimization-guide/)
-- 회사: CSLEE
-- 본문 요약: Claude의 토큰 비용은 방금 입력한 프롬프트 길이가 아니라 매 턴 다시 전송되는 컨텍스트(대화 기록·지침·도구 정의·파일 내용) 크기가 만든다는 점을 Anthropic 공식 자료 중심으로 설명하고, 웹·앱 사용자, API 개발자, Claude Code 사용자별 절감 방법을 정리했습니다. 토큰 종류별 단가 배수(일반 입력 1배, 5분 캐시 쓰기 1.25배, 1시간 캐시 쓰기 2배, 캐시 읽기 0.1배, 출력 약 5배, 확장 사고 토큰도 출력으로 계산)를 표로 제시합니다.
-- 주목할 point: 핵심 습관은 주제가 바뀌면 새 대화 열기, 반복되는 앞부분은 프롬프트 캐시로 처리, 지침 파일·도구 정의·커넥터처럼 상시 로드되는 항목 다이어트, 긴 작업은 오래된 도구 결과 정리·외부 메모 파일·서브에이전트로 본 대화를 가볍게 유지, 모델·사고량(effort)·배치 처리를 작업에 맞추고 사용량 명령으로 먼저 측정하기입니다. 컨텍스트가 커지면 비용뿐 아니라 품질도 떨어지므로(context rot) 토큰 절감은 곧 품질 관리라는 관점이 눈에 띕니다.
-- keyword: #Claude #토큰최적화 #프롬프트캐싱 #컨텍스트관리 #ClaudeCode #LLM비용
-
-## [봇이 사는 집 — 사내 AI 봇 인프라 이야기](https://techblog.pet-friends.co.kr/%EB%B4%87%EC%9D%B4-%EC%82%AC%EB%8A%94-%EC%A7%91-%EC%82%AC%EB%82%B4-ai-%EB%B4%87-%EC%9D%B8%ED%94%84%EB%9D%BC-%EC%9D%B4%EC%95%BC%EA%B8%B0-6834d642f9cc?source=rss----99a55ecc4c52---4)
-- 회사: 펫프렌즈
-- 본문 요약: 팀원 노트북·개인 서버에 흩어져 돌던 Slack용 Claude Code 기반 사내 AI 봇(코드리뷰·장애 1차 진단 봇 '프렌디' 등)을 EC2 한 대(arm64 4vCPU·32GB)에 봇별 컨테이너로 모은 경험입니다. 봇이 상태(로컬 파일)를 갖고 부하가 순간적으로 몰린다는 이유로 ECS 대신 EC2 단일 인스턴스를 택했고, GitHub Actions(OIDC)→ECR/S3→CodeDeploy로 봇별 독립 배포와 헬스체크 실패 시 자동 롤백을 구성했습니다. 실행 중 스스로 메모리·지식·로그를 고치는 LLM 봇 특성상 이미지에는 도구만 넣고 봇 코드는 마운트해, 롤백 시 코드는 되돌리되 봇이 배운 것은 남깁니다.
-- 주목할 point: 봇이 프롬프트 인젝션에 속을 수 있다고 가정하고 권한 경계를 프롬프트가 아닌 인프라에 둔 점("하지 마"보다 "할 수 없음"), Claude Code OpenTelemetry 지표를 CloudWatch에서 사내 Prometheus로 옮기며 여러 프로세스가 delta를 보내 비용이 조용히 작게 집계되던 문제를 delta_to_cumulative 프로세서와 CLI 버전 라벨 제거로 고친 경험이 핵심입니다. 이전 첫 주에 633턴·코드리뷰 395건·도구 호출 23,602회를 처리했고, 리뷰 턴이 62%인데 비용은 90%(일반 대화의 약 5배)였습니다.
-- keyword: #ClaudeCode #AI봇 #EC2 #Docker #OpenTelemetry #Prometheus #CodeDeploy
-
-## [같은 모델, 다른 예측](https://toss.tech/article/training-serving-skew)
-- 회사: 토스
-- 본문 요약: 토스코어 ML Platform 팀이 추천 모델에서 겪은 Training-Serving Skew(학습과 서빙에 쓰인 피처 값 차이) 세 가지 원인과 해결을 정리했습니다. ① 테이블마다 온라인 저장소 업로드 완료 시점이 달라 요청 시각 기준으로 파티션을 고르면 서빙과 다른 값을 학습함 → 모든 피처 값을 로그로 남기면 하루 수십 TB가 예상돼, 요청 로그에 실제 서빙한 파티션만 기록하고 과거 파티션을 덮어쓰지 않고 보관. ② 행 단위 덮어쓰기 업로드 중 값과 파티션 정보가 어긋남 → 블루/그린 영역 분리로 데이터와 파티션 정보를 함께 전환. ③ 최근 7일 집계 Cross Feature에서 빠진 조합이 Upsert 탓에 TTL 만료까지 남아 약 2주 전 행동이 서빙됨 → 업로드 시 빠진 행을 삭제.
-- 주목할 point: 피처 값 전체 로깅 대신 '이미 보관 중인 파티션 + 사용한 파티션 기록'으로 비용을 줄인 설계 판단이 핵심입니다. 온라인 실험에서 CTR은 상대 0.86% 감소, CVR은 0.91% 증가(둘 다 유의)했지만 구매자 비율·매출 가드레일 지표는 유의한 변화가 없어, 성능 개선이 아니라 주요 지표 하락 없이 불일치를 줄였다고 솔직하게 해석합니다. 피처 생성 로직만큼 "언제 서빙되고 언제 사라지는지"가 중요하다는 교훈도 남깁니다.
-- keyword: #TrainingServingSkew #추천시스템 #FeatureStore #PITJoin #블루그린 #MLPlatform
-
-## [if(kakao)26 현장 스케치](https://tech.kakao.com/posts/849)
-- 회사: 카카오
-- 본문 요약: 10월 13~14일 카카오 AI 캠퍼스에서 '모든 연결에 지능을'을 주제로 열린 if(kakao)26의 현장 스케치 글로, 행사 하이라이트 영상을 공유합니다. 'AI 방향성'과 'Model & Agent' 트랙에서 AI 서비스와 모델·에이전트 기술을, '신뢰와 안전', '안정성과 인프라', '거버넌스' 트랙에서 기술을 믿고 쓸 수 있게 하는 기반 기술을, 'AI-DLC'와 '상생과 성장' 트랙에서 AI로 달라지는 개발 방식을 다뤘다고 소개합니다.
-- 주목할 point: 발표 이후 'After Session'과 공통 관심사 참가자끼리 모이는 'Keyword Networking'(카카오 자원 퍼실리테이터 진행)으로 교류를 이어간 운영 방식이 특징입니다. 기술 상세보다는 행사 회고 성격이며, 놓친 발표는 if(kakao)26 세션 페이지의 VOD로 볼 수 있습니다.
-- keyword: #ifkakao #ifkakao26 #컨퍼런스 #DevRel #AI #카카오
+## [하루 187건의 테스트 실패, 사람이 보는 건수는 10건 — LLM이 로그를 읽고 담당까지 정하는 파이프라인 구축기](https://techblog.samsung.com/blog/article/109)
+- 회사: 삼성전자
+- 본문 요약: (원문 사이트가 응답 오류(HTTP 520)를 반환해 원문 확인 불가 — velopers 요약 기반) TV 소프트웨어 자동 테스트에서 하루 187건씩 쌓이는 실패 로그를 LLM이 분석하는 파이프라인을 소개한 글입니다. 실제 이슈인지 선별하고 담당자 지정까지 자동화해 사람이 직접 검토하는 건수를 약 10건으로 줄였습니다.
+- 주목할 point: 원문 확인 불가로 세부 구현(모델, 분류 기준, 정확도 등)은 확인하지 못했습니다. 제목 기준으로 일일 실패 187건 중 사람 검토를 10건 수준으로 줄였다는 점이 핵심 성과입니다.
+- keyword: #LLM #테스트자동화 #로그분석 #트리아지 #파이프라인
