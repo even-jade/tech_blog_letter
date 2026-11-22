@@ -1,74 +1,8 @@
-<!-- 이 파일은 posts/2026-11-20.md의 사본입니다. 자동 생성됨. -->
-# 2026-11-20 기술 블로그 모음
+<!-- 이 파일은 posts/2026-11-22.md의 사본입니다. 자동 생성됨. -->
+# 2026-11-22 기술 블로그 모음
 
-## [디자인 시스템 만들던 디자이너가 3D 그래픽을 그린다면](https://toss.tech/article/bankbook_graphic)
-- 회사: 토스
-- 본문 요약: 디자인 시스템(TDS)을 만들던 Platform Designer가 Visual Designer로 직무가 통합된 뒤, 통장 개설을 강조하는 UI를 AI와 함께 만든 과정을 소개합니다. 계좌 카드 아래 한 줄을 붙이는 비슷비슷한 시안에서 벗어나려고 AI로 메타포 아이데이션(플러그, 고리, 봉투, 지갑 등)을 해 봤지만 직관성이 떨어졌고, 결국 '통장 그 자체'를 보여 주되 의외성을 더하는 방향으로 정했습니다. 표현 한계 때문에 코드 기반 3D로 전환해 WebGL 셰이더로 시작했고, 여러 모델·구현 방식을 병렬로 시도한 뒤 iOS Metal 구현을 발전시켰습니다.
-- 주목할 point: AI는 '빠르고 값싼 실패'로 방향을 잡는 데 쓰고, 7점짜리 초안을 10점으로 끌어올리는 단계에서는 그래픽 변수를 슬라이더로 조정하는 작은 커스텀 에디터를 만들어 말로 수정 지시하는 비효율을 줄였습니다. 실제 종이 통장의 물성 위에 셰이더 그라디언트 애니메이션을 얹어 과하지 않은 새로움을 노렸습니다. (원문 일부만 확인됨, 표지 이후 모델링 등 후반부는 velopers 요약 참고)
-- keyword: #3D그래픽 #WebGL #Metal #셰이더 #AI디자인 #디자인시스템
-
-## [어피닛과 함께 인도 도전! 두 스타트업의 이야기를 들어봤습니다](https://blog.afinit.com/%EC%96%B4%ED%94%BC%EB%8B%9B%EA%B3%BC-%ED%95%A8%EA%BB%98-%EC%9D%B8%EB%8F%84-%EB%8F%84%EC%A0%84-%EB%91%90-%EC%8A%A4%ED%83%80%ED%8A%B8%EC%97%85%EC%9D%98-%EC%9D%B4%EC%95%BC%EA%B8%B0%EB%A5%BC-%EB%93%A4%EC%96%B4%EB%B4%A4%EC%8A%B5%EB%8B%88%EB%8B%A4-415333)
-- 회사: 밸런스히어로(어피닛)
-- 본문 요약: 어피닛이 UD IMPACT·UD IMPACT India와 처음 운영한 '스타트업 인디아 프로그램'(10월 22~27일, 4팀 참여, 델리·구루그람 현장 방문) 후기입니다. 립타투를 준비했던 뷰티 예비창업자는 현지 매장의 저렴한 립 제품과 트루밸런스 사전 설문(7명 전원 400루피 미만 응답, 구상가 699~899루피) 결과를 보고 피부 톤업크림으로 방향을 바꿨고, 링크케이는 예비 신부 대상 얼굴 경락 대신 바디 슬리밍 수요와 기존 살롱 협업 모델(SLIMRAK KOREA)로 사업을 재설계했습니다.
-- 주목할 point: 시장 규모 숫자보다 현장 인터뷰·소규모 설문으로 가격·제품·채널 가설을 빠르게 수정한 사례입니다. 어피닛 인도 서비스 트루밸런스의 임직원·사용자 채널을 설문 인프라로 활용한 점이 눈에 띕니다. (기술 글이라기보다 ESG/사업 프로그램 소개)
-- keyword: #인도시장 #시장조사 #스타트업 #트루밸런스 #ESG
-
-## [세 번 그리던 화면을 한 번에: CLAYDesign이 디자인시스템으로 화면을 생성하는 방법](https://techblog.woowahan.com/28538/)
-- 회사: 우아한형제들
-- 본문 요약: 기획·디자인·개발 단계마다 화면을 다시 그리고, 범용 AI 도구가 비표준 컴포넌트·색상·간격을 만들어 재작업이 생기는 문제를 풀기 위해 만든 CLAYDesign을 소개합니다. 한 줄 프롬프트를 표준 질의서 기반 질문·기본값으로 보완하고, Figma 템플릿을 화면 JSON으로 변환한 뒤 부족한 영역은 디자인 레퍼런스 검색으로 보강합니다. 카탈로그·컴포넌트 선택 가이드·디자인 원칙을 시스템 프롬프트에 넣어 화면 JSON을 생성하고, 카탈로그와 대조 검사 후 Figma, React, SwiftUI, Compose, 베타앱으로 내보냅니다.
-- 주목할 point: 추가 학습 대신 생성 시점의 디자인시스템 정보를 주입하고, TypeScript 타입 선언·JSDoc으로 카탈로그를 자동 생성해 시스템 프롬프트·유효성 검사·인스펙터가 같은 카탈로그를 참조(CI로 동기화)합니다. 질문 생성을 표준 질의서로 분리해 질문 판정 프롬프트를 6,288자→1,556자로 줄였습니다. (원문 접근 차단으로 velopers 요약 기반 작성, 원문 확인 불가)
-- keyword: #디자인시스템 #LLM #Figma #화면생성 #카탈로그 #배민
-
-## [DynamoDB Export를 BigQuery CDC로 처리하기까지](https://techblog.samsung.com/blog/article/110)
-- 회사: 삼성전자
-- 본문 요약: AWS DynamoDB Incremental Export로 추출한 증분 데이터를 BigQuery CDC 기능으로 적재하는 방식을 다룹니다. Insert·Update·Delete 변경 데이터를 SQL MERGE 쿼리로 BigQuery 테이블에 반영하는 흐름을 설명합니다.
-- 주목할 point: 클라우드 간(AWS→GCP) 데이터 동기화를 스트림 파이프라인 없이 증분 Export + MERGE 조합으로 구성하는 실무 패턴입니다. (원문 서버 오류(520)로 접근 불가, velopers 요약 기반 작성, 원문 확인 불가)
-- keyword: #DynamoDB #BigQuery #CDC #MERGE #데이터파이프라인
-
-## [Amazon Bedrock 및 Amazon Neptune을 이용한 미래에셋증권의 상품지식 온톨로지 및 상품AI검색 서비스구축기 ( 혁신금융서비스 )](https://aws.amazon.com/ko/blogs/tech/miraeasset-sercurites-knowledgedb-ontology/)
-- 회사: AWS (미래에셋증권)
-- 본문 요약: 사내 시스템 DB·외부 공시·수작업 내부 문서·리서치 자료 4개 영역에 흩어져 LIKE 검색만 가능하던 금융상품 정보를, CQ(역량질문) 정의 → 온톨로지(TBox) → 지식 추출 → 지식그래프(Amazon Neptune) → 시맨틱 레이어로 연결했습니다. 간이투자설명서 등은 VLM 기반 문서 파싱으로 Markdown화하고 표 구조는 파싱 모델, 글자는 PDF 텍스트 레이어에서 가져옵니다. 검색 Agent는 RDB·Vector DB·Graph DB를 오가며 근거와 출처를 반환하고, Planner·Executor·Writer(P-E-W) 세 Agent로 계획·실행·답변 작성을 분리했습니다.
-- 주목할 point: 2026년 8월 미래에셋증권 1호 혁신금융서비스로 운영을 시작해 PB 중심 450명 이상이 2,000건 넘는 복합 질의에 사용 중입니다. 250개 질문을 3회씩 돌려 정적 검사 4개·LLM Judge 26개 항목으로 채점하되 중앙값과 '검색/답변 중 낮은 점수'를 쓰는 엄격한 평가 체계, 근거가 부족하면 지어내지 않고 재질의를 제안하는 설계, 자체 AI Gateway + Bedrock Guardrails로 통제 지점을 일원화한 구성이 참고할 만합니다.
-- keyword: #AmazonBedrock #AmazonNeptune #온톨로지 #지식그래프 #GraphRAG #AI에이전트 #LLM평가
-
-## [Graph 데이터에서 관계 탐색 서비스까지](https://blog.cslee.co.kr/graph-data-relationship-exploration-service/)
-- 회사: CSLEE
-- 본문 요약: 그래프 DB 기반 관계 탐색 서비스를 설계할 때 고려할 세 요소(데이터 모델링, 탐색 기술, 서비스 아키텍처)를 정리합니다. Property Graph의 Node·Relationship·Property 구조를 계좌 송금 예시로 설명하고, 계좌를 노드·송금을 관계로 두는 모델과 거래 자체를 노드로 두는 모델에서 같은 2-hop 탐색이 서로 다른 의미(송금 2건 vs 1건)를 갖는다는 점을 보여 줍니다. SQL self-JOIN과 Cypher 패턴으로 1-hop·2-hop 탐색을 비교하고, BFS·DFS·Dijkstra·A* 경로 탐색 알고리즘을 같은 그래프로 비교합니다.
-- 주목할 point: "그래프 데이터를 조회하는 것"과 "사용자 목적에 맞는 관계 탐색을 제공하는 것"은 다른 문제이며, 어떤 대상을 노드로 정의하느냐가 탐색 깊이의 의미를 바꾼다는 점을 강조합니다. 처리 성능은 데이터 구조·탐색 조건·DBMS 환경에 따라 달라지므로 모델링·목적·깊이·질의 방식을 함께 고려하라고 권합니다.
-- keyword: #GraphDB #Cypher #PropertyGraph #BFS #Dijkstra #관계탐색
-
-## [AI 시대 필수 보안: 외부 가드레일 완벽 가이드](https://techblog.lycorp.co.jp/ko/external-guardrails-for-ai-security)
-- 회사: 라인
-- 본문 요약: LINE Plus가 개발하는 LY 그룹 공통 AI 안전성 플랫폼 LY AI Guardrails의 다섯 가지 외부 가드레일(텍스트 모더레이션, 프롬프트 인젝션 디텍션, PII 필터, 토픽 컨트롤, 할루시네이션 디텍션)의 설계 방향을 소개합니다. 모델이 똑똑해져도 프롬프트 인젝션이 OWASP Top 10 LLM 1위로 남아 있고 안전 학습만으로는 문제를 0으로 만들 수 없으므로, 시스템 프롬프트에 규칙을 넣는 내부 가드레일 대신 주력 LLM 밖에서 입출력을 독립적으로 검사하는 계층이 필요하다고 설명합니다.
-- 주목할 point: 외부 가드레일의 장점으로 경량 모델 선필터링에 따른 비용 절감, 차단 사유·정책/모델 버전을 남기는 운영 통제 계층, 주력 LLM 교체 리스크 감소, 여러 LLM에 일관된 정책 적용을 꼽습니다. 텍스트 모더레이션은 관련성·실행 가능성·문화권별 허용 여부를 단계적으로 판단하도록 데이터를 구성했고, 프롬프트 인젝션은 오탐을 줄이기 위해 메인·서브 에이전트가 공격/정상 예시를 생성해 모델을 반복 개선합니다.
-- keyword: #AI가드레일 #LLM #프롬프트인젝션 #PII #할루시네이션 #AI보안
-
-## [복잡한 앱 URL Scheme, 딸-깍 한 번에 끝내기](https://techblog.gccompany.co.kr/%EB%B3%B5%EC%9E%A1%ED%95%9C-%EC%95%B1-url-scheme-%EB%94%B8-%EA%B9%8D-%ED%95%9C-%EB%B2%88%EC%97%90-%EB%81%9D%EB%82%B4%EA%B8%B0-ac7823e8fb47)
-- 회사: 여기어때
-- 본문 요약: 화면마다 다른 파라미터, 식별값 조회, 날짜 timestamp 변환 때문에 복잡했던 앱 URL Scheme 생성·검증·테스트를 하나로 묶은 내부 웹 도구와 API를 소개합니다. 스킴 목록·입력 폼·식별값 자동 조회·날짜 변환·테스트용 QR 실행을 제공하고, 기존 스킴을 붙여넣으면 형식 오류와 whitelist 등록 여부를 검증합니다. 생성·검증 로직은 독립 API로 분리해 MCP로 Agent가 자연어 요청을 처리하게 했습니다.
-- 주목할 point: 생성·확인 절차를 8단계에서 3단계로 줄였고, 로그 도입 후 3,500건 이상의 요청과 약 400개 신규 링크를 처리했으며 신규 링크 생성의 약 90%가 MCP 자연어 요청으로 이뤄졌습니다. (원문 접근 차단으로 velopers 요약 기반 작성, 원문 확인 불가)
-- keyword: #URLScheme #딥링크 #MCP #내부도구 #API
-
-## [내 인생 첫 바이브코딩](https://techblog.gccompany.co.kr/%EB%82%B4-%EC%9D%B8%EC%83%9D-%EC%B2%AB-%EB%B0%94%EC%9D%B4%EB%B8%8C%EC%BD%94%EB%94%A9-2ecaede5b629)
-- 회사: 여기어때
-- 본문 요약: 비개발 직군 대상 월 1회·4시간 사내 바이브코딩 교육과 파일럿 워크숍 운영 경험을 공유합니다. Codex와 사내 배포 플랫폼을 연결해 채팅 명령만으로 배포하는 실습 환경을 만들고, 85개 주제를 담은 마인드맵형 교재 '바이브맵'을 활용했습니다. AI가 단계별로 질문하며 아이디어·사용자·기능·디자인·데이터·실행 계획을 구체화하는 '기획 인터뷰'로 PRD·화면 정의·컨벤션·작업 목록 문서를 먼저 만들게 했습니다.
-- 주목할 point: 바로 구현을 요청하기보다 AI 인터뷰로 요구사항과 Must·Should·Could 우선순위를 정리하게 하고, 배포·DB 연동·비밀 키 관리가 갖춰진 환경을 제공해 비개발자의 '완성' 장벽을 낮췄습니다. 개발자 관점의 초기 세팅 설명이 오히려 장벽이 된다는 점, 수강생별 환경 차이, AI 코드와 별개로 사람이 관리해야 할 구조·보안도 짚습니다. (원문 접근 차단으로 velopers 요약 기반 작성, 원문 확인 불가)
-- keyword: #바이브코딩 #Codex #사내교육 #비개발자 #PRD
-
-## [60개 컴포넌트를 만들었는데 잘 쓰이고 있는지 모르겠어서 만든 디자인 시스템 디버깅 도구 이야기](https://techblog.gccompany.co.kr/60%EA%B0%9C-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%A5%BC-%EB%A7%8C%EB%93%A4%EC%97%88%EB%8A%94%EB%8D%B0-%EC%9E%98-%EC%93%B0%EC%9D%B4%EA%B3%A0-%EC%9E%88%EB%8A%94%EC%A7%80-%EB%AA%A8%EB%A5%B4%EA%B2%A0%EC%96%B4%EC%84%9C-%EB%A7%8C%EB%93%A0-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%94%94%EB%B2%84%EA%B9%85-%EB%8F%84%EA%B5%AC-%EC%9D%B4%EC%95%BC%EA%B8%B0-ce0949d2c643)
-- 회사: 여기어때
-- 본문 요약: AI 에이전트가 생성한 코드가 디자인 시스템(YDS) 컴포넌트를 실제로 쓰는지 화면에서 바로 확인할 수 있는 하이라이트 도구를 만든 이야기입니다. data-yds-component·data-yds-slot 메타데이터를 querySelectorAll로 찾아, Dynamic CSS의 inset box-shadow와 mouseover·closest()로 레이아웃을 건드리지 않는 윤곽선·툴팁을 표시합니다. 완제품 컴포넌트, YDS 전용 훅, 범용 속성 하이라이트 훅의 3단계 Headless API로 제공합니다.
-- 주목할 point: 호스트 프로젝트 Tailwind 설정과 분리하려고 인라인 스타일 UI를 쓰고, ESM·CJS 듀얼 출력과 Next.js용 use client 배너를 주입했으며, 패키지와 함께 Claude Code 스킬로 맞춤 도구를 생성하는 배포 방식을 택했습니다. 동적 CSS에 들어가는 속성명·색상값을 정규식으로 검증해 CSS Injection을 막은 점도 눈여겨볼 만합니다. (원문 접근 차단으로 velopers 요약 기반 작성, 원문 확인 불가)
-- keyword: #디자인시스템 #React #개발도구 #Headless #ClaudeCode
-
-## [이런건어때 파일 용량을 줄여도 LCP가 줄어들지 않는 이유?](https://techblog.gccompany.co.kr/%EC%9D%B4%EB%9F%B0%EA%B1%B4%EC%96%B4%EB%95%8C-%ED%8C%8C%EC%9D%BC-%EC%9A%A9%EB%9F%89%EC%9D%84-%EC%A4%84%EC%97%AC%EB%8F%84-lcp%EA%B0%80-%EC%A4%84%EC%96%B4%EB%93%A4%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%9D%B4%EC%9C%A0-72410d5b8985)
-- 회사: 여기어때
-- 본문 요약: 상품 상세 페이지 전송량을 26.3MB→10.8MB(59%)로 줄였는데도 LCP는 17.8초→16.0초로 거의 개선되지 않은 원인을 분석했습니다. SSR 이미지 컴포넌트의 isLoading=true 초기값과 opacity: 0 때문에 서버 HTML에서 대표 이미지가 보이지 않았고, onLoad 핸들러가 hydration 이후에 연결돼 LCP가 이미지 도착이 아닌 TTI 부근에서 발생했습니다. 대표 이미지 첫 장에만 disableLoader를 적용해 서버 HTML부터 opacity: 1로 표시하도록 바꿨습니다.
-- 주목할 point: 두 줄 수정으로 상세 페이지 Render Delay가 10.65초→1.13초로 줄었습니다. 이미지 다운로드가 병목인 목록 페이지와 hydration 대기가 병목인 상세 페이지의 특성이 정반대였다는 점, Lighthouse LCP breakdown·TTI 비교·curl로 서버 HTML을 검사해 원인을 좁힌 방법이 실용적입니다. (원문 접근 차단으로 velopers 요약 기반 작성, 원문 확인 불가)
-- keyword: #LCP #SSR #hydration #웹성능 #Lighthouse
-
-## [“AI, 너 내 동료가 되라!” – QA팀의 위대한 항로 도전기](https://www.blog-dreamus.com/post/ai-%EB%84%88-%EB%82%B4-%EB%8F%99%EB%A3%8C%EA%B0%80-%EB%90%98%EB%9D%BC-qa%ED%8C%80%EC%9D%98-%EC%9C%84%EB%8C%80%ED%95%9C-%ED%95%AD%EB%A1%9C-%EB%8F%84%EC%A0%84%EA%B8%B0)
-- 회사: 드림어스컴퍼니
-- 본문 요약: 외주 인력이 3,000개 넘는 회귀 테스트를 수동으로 돌리던 FLO QA팀이 올해 내부 인원 중심으로 전환하며 자동화·AI를 직접 다루는 엔지니어링 팀으로 바뀐 과정을 인터뷰 형식으로 소개합니다. 리더가 직접 자동화 환경을 세팅해 보여 주고, 두 달 뒤 팀 해커톤에서 기획 문서 기반 테스트케이스 생성기, 도메인 스펙 QnA 도구, QA 일정 슬랙 봇 등의 프로토타입이 나왔습니다. 이후 사내 QA 포털(QRS)에 Jira 회귀 에픽·구글 시트·Robot Framework 결과를 모아 보여 주고 Slack으로 공유하는 결과 보고서 자동화, 테스트 데이터 세팅 Helper를 만들었습니다.
-- 주목할 point: Helper는 Swagger만으로 부족한 스펙을 브라우저 네트워크 탭으로 하나씩 뜯어보고 Claude와 필드 의미를 맞춰 가며 만들었고, 계정 세팅 1건이 약 18분→1~2분으로 줄어 통합 6건·회귀 8건 기준 약 11.5시간을 절감했습니다. 지금은 FLO 전체 구성원이 쓰도록 배포됐습니다.
-- keyword: #QA #테스트자동화 #RobotFramework #AI활용 #테스트데이터
+## [AgentCore CLI로 AI 에이전트 개발부터 배포까지 – Kiro CLI, Claude Code와 함께 쓰는 워크 플로우](https://aws.amazon.com/ko/blogs/tech/bedrock-agentcore-cli/)
+- 회사: AWS
+- 본문 요약: 2026년 10월 28일 정식 출시된 npm 기반 AgentCore CLI 1.0(본문 기준 1.1.0)으로 Amazon Bedrock AgentCore 에이전트의 수명 주기 전체를 터미널 하나에서 다루는 방법을 정리한 글입니다. 수명 주기는 create(CDK 코드가 포함된 프로젝트 생성) → dev(8080 포트 로컬 서버, 핫 리로드, 브라우저 인스펙터) → deploy(CodeZip 또는 CodeBuild 컨테이너 빌드 후 CloudFormation 스택 배포) → invoke(CLI, boto3 InvokeAgentRuntime, OAuth Bearer 토큰) 4단계이고, 여기에 status/logs/traces 운영 명령이 붙습니다. 이후 agentcore add로 memory, gateway, evaluator, policy, config-bundle, harness 같은 리소스를 하나씩 붙이고, agentcore eval로 온디맨드·배치 평가와 A/B 테스트를 돌리는 방식까지 다룹니다.
+- 주목할 point: 모든 명령이 비대화형으로 동작하고 --json 출력을 지원해, Kiro CLI나 Claude Code 같은 코딩 에이전트가 '코드 수정 → dev → invoke → 오류 로그 확인' 루프를 스스로 돌릴 수 있습니다. 연결 방법은 CLI 직접 실행, 스킬·플러그인 설치(Kiro 파워, Claude Code aws-agents 플러그인), AgentCore MCP 서버 연결 3가지입니다. 실무 주의점도 짚습니다. 기존 Python Starter Toolkit은 같은 agentcore 명령을 쓰므로 먼저 제거해야 하고, deploy는 배포 전에 확인을 묻지 않으니 cdk diff로 미리 확인해야 하며, --session-id는 33자 이상이어야 하고, 리소스 철거는 remove all 다음에 deploy를 실행해야 실제로 이뤄집니다.
+- keyword: #AmazonBedrock #AgentCore #AI에이전트 #ClaudeCode #KiroCLI #MCP #IaC
