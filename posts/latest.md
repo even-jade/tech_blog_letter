@@ -1,50 +1,80 @@
-<!-- 이 파일은 posts/2026-11-24.md의 사본입니다. 자동 생성됨. -->
-# 2026-11-24 기술 블로그 모음
+<!-- 이 파일은 posts/2026-11-25.md의 사본입니다. 자동 생성됨. -->
+# 2026-11-25 기술 블로그 모음
 
-## [직렬화와 압축 기술 선택으로 Redis 비용 낮추기](https://techblog.woowahan.com/28276/)
-- 회사: 우아한형제들
-- 본문 요약: 대용량·고빈도 Redis 캐시 값이 메모리, 네트워크 대역폭, 단일 스레드 명령 지연, 애플리케이션 CPU에 주는 부담을 줄이기 위해 JSON·Fory·Protocol Buffers 직렬화와 gzip·zstd·snappy 압축 조합의 크기·CPU 시간을 측정했습니다. 객체 목록 기준 Fory가 JSON 대비 바이트 크기 51%, CPU 시간 24% 수준을 보여 서비스 내부 고성능 캐시에 Fory를, 압축에는 zstd를 채택했고, 듀얼 라이트·키 버전·백필로 무중단 전환하는 운영 규칙을 정리했습니다. (원문 페이지 접근이 차단되어 원문 확인 불가 — velopers.kr 요약 기반으로 작성)
-- 주목할 point: JSON 1KB 이상일 때만 압축을 적용해 작은 값의 압축 헤더 비용을 피했고, 새 버전 키 우선 조회 + 기존 키 폴백을 두 번의 배포로 나눠 전환했습니다. 롤백 후 낡은 새 키가 남지 않도록 키 버전을 올리고, TTL 없는 키는 SET NX 기반으로 백필했습니다.
-- keyword: #Redis #Fory #zstd #직렬화 #캐시
+## [뱅크샐러드금융서비스가 보험설계사에게 DB를 '무제한 무상 지원'하는 이유](https://corp.banksalad.com/blog/culture/bfs-interview-2/)
+- 회사: 뱅크샐러드
+- 본문 요약: 뱅크샐러드금융서비스 GA Business Growth Lead 황태연 님 인터뷰입니다. 위촉직 설계사가 가망고객 DB를 사비로 사고 리스크까지 떠안는 전통 보험 영업 구조가 '고아고객'과 계약 유지율 하락, 보험 불신으로 이어진다고 짚고, 정규직 설계사에게 마이데이터로 보유 계약이 연결된 상담 신청 DB를 월 160개 이상 무상으로 제공(성과에 따라 무제한 확대)하는 구조를 소개합니다.
+- 주목할 point: 상담 일정 정리, 지난 대화 요약, 답변 초안·약관 검색까지 맡는 'AI OS'가 반복 업무를 처리하고, 설계사 자격증까지 딴 FDE(Forward Deployed Engineer)와 제품팀이 현장 피드백을 다음 날 시스템에 반영하는 운영 방식이 핵심입니다.
+- keyword: #인슈어테크 #마이데이터 #AIOS #FDE #채용
 
-## [파드는 떴는데 왜 통신이 안 될까? kube-proxy nftables 전환 여정](https://medium.com/daangn/%ED%8C%8C%EB%93%9C%EB%8A%94-%EB%96%B4%EB%8A%94%EB%8D%B0-%EC%99%9C-%ED%86%B5%EC%8B%A0%EC%9D%B4-%EC%95%88-%EB%90%A0%EA%B9%8C-kube-proxy-nftables-%EC%A0%84%ED%99%98-%EC%97%AC%EC%A0%95-545dfd2cfc4f)
-- 회사: 당근마켓
-- 본문 요약: 당근 SRE팀이 Karpenter 도입 후 새 노드에 Pod가 곧바로 스케줄링되면서, kube-proxy의 iptables 규칙 첫 동기화(최대 4분 20초)가 끝나기 전에 통신·DNS가 실패하는 문제를 겪었습니다. 약 1,400개 Service, 27,000개 Pod, 8만 개 NAT 규칙 환경에서 테스트 클러스터로 규모·변경 빈도·배포 패턴별 지연을 측정해 iptables(O(N) 순차 비교, 전체 재작성)와 nftables(map 기반 O(1) 조회, 변경분만 반영)를 비교했고, conntrack 관련 이슈를 고려해 kube-proxy v1.31을 유지한 채 nftables 모드로 전환했습니다. (Medium 원문은 RSS 피드 본문으로 확인)
-- 주목할 point: 한국 프로덕션에서 새 노드 첫 동기화가 피크 시간 70~90초 → 4~5초로 줄고, 매일 수만 건 발생하던 Istio `ca request failed` 로그가 0건이 됐습니다. endpoint changes pending도 피크 약 60,000 → 14,000으로 감소했지만 CPU는 약 2배, 메모리는 약 20% 늘었습니다. 첫 동기화 시간을 로그에서 추출해 `kubeproxy_first_sync_seconds` 메트릭으로 만들고 리전별로 순차 전환했습니다.
-- keyword: #Kubernetes #kube-proxy #nftables #iptables #SRE
+## [Chat DIC 1년, 무엇이 바뀌었나: Basic 개선과 Pro 런칭](https://techtopic.skplanet.com/chatdic-1year-pro/)
+- 회사: SK플래닛
+- 본문 요약: 사내 데이터 AI 에이전트 챗디(Chat DIC)의 1년 회고입니다. Text-to-SQL만 하던 Basic(Supervisor + 메타 검색·SQL 생성 서브에이전트)은 하이브리드 검색(RRF)·코드값 사전·사내 SQL 가이드 검사와 재시도로 품질을 높였고, 개인정보가 없는 데이터 영역에서 사람이 검증한 쿼리만 '안전 쿼리 조회 MCP'를 거쳐 Trino로 실행해 수치와 해석까지 돌려주는 Pro를 새로 런칭했습니다. 104문항 회귀평가와 실제 나간 SQL 감사 배치로 품질을 측정합니다.
+- 주목할 point: 사용자에게 나간 SQL의 문법·파싱 오류가 7월 31.8% → 9월 7%대로 줄었고, 사용자 수는 30명 → 193명으로 늘었습니다. Pro는 LLM이 만든 SQL을 넘기지 않고 MCP가 보관한 원본만 실행하며, 컨텍스트가 80%에 다다르면 이전 조회 결과를 압축(Bedrock CountTokens API로 사전 계산)합니다. ToolMessage를 지우면 tool_use 짝이 깨져 Bedrock 오류가 난다는 실전 팁도 있습니다.
+- keyword: #TextToSQL #LLM에이전트 #MCP #LangGraph #Trino
 
-## [Why Can’t My Running Pods Be Reached? Our Journey to kube-proxy nftables Mode](https://medium.com/daangn/why-cant-my-running-pods-be-reached-our-journey-to-kube-proxy-nftables-mode-6fceb1d2a5f7)
-- 회사: 당근마켓
-- 본문 요약: 위 kube-proxy nftables 전환 글의 영문판입니다. kube-proxy iptables 규칙 동기화 지연으로 신규 Pod 연결이 실패하는 문제를 분석하고, 성능 지표·호환성·버전을 검토해 nftables 모드로 전환한 과정을 다룹니다. (원문 직접 접근 차단 — 한국어판 원문과 velopers.kr 요약 기반으로 작성)
-- 주목할 point: 한국어판과 동일한 실험·전환 결과(첫 동기화 70~90초 → 4~5초 등)를 영어로 공유한 글로, 해외 독자 대상 공유용입니다.
-- keyword: #Kubernetes #kube-proxy #nftables #English
-
-## [AI 에이전트로 AWS 운영 질문에 답하기 – 1부: Amazon Bedrock AgentCore로 조회 도구 연결하기](https://aws.amazon.com/ko/blogs/tech/connecting-operational-queries-to-amazon-bedrock-agentcore-1/)
+## [Amazon EKS로 GPU 없이 Physical AI 영상 큐레이션하기](https://aws.amazon.com/ko/blogs/tech/physical-ai-video-curation-on-amazon-eks-without-gpus/)
 - 회사: AWS
-- 본문 요약: "이 ENI는 어디와 통신할 수 있는가" 같은 운영 질문은 서브넷·보안 그룹·NACL·라우팅 테이블을 차례로 확인해야 하고, 중간에 놓친 항목이 드러나지 않는 문제가 있습니다. 샘플 AWSops는 Strands Agents로 작성한 에이전트를 AgentCore Runtime에서 실행하고, AgentCore Gateway(MCP)로 Lambda 조회 도구를 연결해 실제 구성·관측 자료를 읽고 확인한 사실과 다음 점검 사항을 정리합니다. Memory로 대화 문맥을, Code Interpreter로 격리된 계산을 처리합니다.
-- 주목할 point: 기본 구성(model_provider=mixed)에서 채팅·종합 답변·분류 용도별로 Bedrock 모델을 나눠 쓰고 Terraform 변수로 교체할 수 있습니다. 확인하지 못한 범위를 답변에 그대로 남기고, IAM·SigV4로 조회 도구 접근 범위를 제한하는 설계가 포인트입니다.
-- keyword: #AWS #AmazonBedrock #AgentCore #MCP #AIOps
+- 본문 요약: GPU를 전제로 한 NVIDIA Cosmos Curator의 split 파이프라인(분할·필터·임베딩·캡션)을 EKS CPU 노드에서 실행하는 방법입니다. 빌드 시점 패치(docker/patch_cpu.py)로 TransNetV2·Cosmos-Embed1의 하드코딩된 `.cuda()` 호출 등 세 곳만 바꾸고, 캡션 생성은 OpenAI 호환 요청을 Amazon Bedrock 호출로 변환하는 Caption Proxy로 분리했습니다. Ray head/worker 배치에 따라 온디맨드·Spot 조합 배포 옵션 3가지를 제공합니다.
+- 주목할 point: 임베딩은 CPU에 AMX가 있으면 bf16, 없으면 fp32를 쓰며 클립당 c7i(bf16) 4.6초, c5(fp32) 23.8초, m6a 38.7초였습니다. 프록시는 윈도우 영상에서 ffmpeg로 8프레임을 추출해 Converse API로 보냅니다. Spot 용량이 부족하면 온디맨드 옵션으로 자동 전환하고, OrderedReady·이미지 사전 pull로 head 기동 문제를 피했습니다.
+- keyword: #AmazonEKS #CosmosCurator #PhysicalAI #AmazonBedrock #Spot
 
-## [스마일샤크, AWS Transform 으로 Microsoft SQL Server를 Amazon Aurora PostgreSQL로 현대화한 사례](https://aws.amazon.com/ko/blogs/tech/smileshark-aws-transform-sql-server-aurora-postgresql/)
-- 회사: AWS
-- 본문 요약: AWS 파트너 스마일샤크가 코어 기반 SQL Server 라이선스 부담을 줄이기 위해 고객사 DB를 Aurora PostgreSQL Serverless v2로 전환한 사례입니다. 사내에 이기종 전환 경험이 없어 AWS Transform for SQL Server Modernization으로 스키마 DDL을 변환·검증하고, 생성된 DDL을 원본과 대조해 데이터 타입·문자열 비교 방식 차이를 보정한 뒤 AWS DMS로 데이터를 이관했습니다.
-- 주목할 point: AWS Transform은 이제 SQL Server에서 DDL 파일을 추출해 콘솔에 업로드하는 오프라인 소스 방식으로 동작하며, 구조·의미·기능 3단계 검증을 거쳐 스키마를 배포합니다. 합성 데이터 테스트는 지원하지만 실제 데이터 이관은 DMS가 필요합니다.
-- keyword: #AWS #AWSTransform #SQLServer #AuroraPostgreSQL #DMS
+## [OmniEvaluator: AI 모델과 에이전트를 위한 통합 평가 프레임워크](https://d2.naver.com/helloworld/4331341)
+- 회사: 네이버 D2
+- 본문 요약: NAVER Engineering Day 10th 발표 영상 공개 글입니다. 모달리티마다 평가 툴킷이 다르고 프롬프트·파서·메트릭 구현에 따라 점수가 크게 달라지는 문제를 해결하기 위해, 추론 엔진 4종(HF Transformers·vLLM·SGLang·상용 API)과 평가 프레임워크 4종(lm-eval-harness·lmms-eval·VLMEvalKit·built-in)을 하나의 중간 스키마로 연결해 텍스트·이미지·비디오·오디오 1,000개 이상 벤치마크를 단일 인터페이스로 실행하는 OmniEvaluator를 소개합니다.
+- 주목할 point: 모든 실행을 설정·예측·점수 아티팩트로 남겨 재현 가능하고, CPU에서 도는 내장 Verifier가 일관된 채점 신호를 줍니다. 2026년 추가된 Agent Harness는 옵션 두 개로 툴 호출 궤적까지 채점합니다. EMNLP 2026 System Demonstrations 논문과 공개 저장소(naver-ai/omni-evaluator)가 있습니다.
+- keyword: #LLM평가 #멀티모달 #벤치마크 #AgentHarness #EngineeringDay
 
-## [AgentCore와 함께 쓰는 Amazon Bedrock Managed Agents, powered by OpenAI](https://aws.amazon.com/ko/blogs/tech/agentcore-managed-agents-openai/)
-- 회사: AWS
-- 본문 요약: 에이전트 루프·세션 상태·컨텍스트 압축·복구·실행 환경을 묶은 하네스를 AWS가 관리형으로 운영하는 Managed Agents(OpenAI Codex 하네스)를 AgentCore의 Runtime·Gateway·Observability와 연결하고, 프리뷰에 없는 세션 간 메모리와 평가를 앱이 AgentCore Memory·Evaluations로 보완하는 방법을 합성 장애 분석 데모로 설명합니다.
-- 주목할 point: Memory에 넣은 우선순위를 지침에 반영한 세션은 최근 설정 변경을 먼저 확인했고, 다른 판정 모델을 쓴 평가자는 원인을 바꾼 대조용 답을 가려냈습니다. Runtime 스팬·로그에 Managed Agents 세션 ID가 없어 환경 ID와 turn_id로 이어야 했던 점 등 문서에 없는 프리뷰 제약도 공유합니다.
-- keyword: #AmazonBedrock #ManagedAgents #AgentCore #OpenAI #에이전트하네스
+## [AI가 만든 결과를 그대로 믿고 계신가요?](https://d2.naver.com/helloworld/5512498)
+- 회사: 네이버 D2
+- 본문 요약: NAVER Engineering Day 10th 발표 영상 공개 글입니다. 테스트가 모두 통과했는데도 결함이 남아 있던 경험에서 출발해, 구현이 아니라 검증이 병목이 된 상황에서 AI의 자기 보고를 기계가 반증하게 만드는 세 가지 방법(돌연변이 테스팅, 훅, 에이전트 팀)을 테스트·규칙 준수·자기검증의 세 층으로 나눠 설명합니다.
+- 주목할 point: "문서는 부탁이고 훅은 강제다", "저자와 검증자를 겸하면 채점이 안 된다"처럼, 한 줄을 지워 보는 돌연변이 테스트로 AI가 짠 테스트를 검증하고, 규칙은 훅으로 강제하며, 에이전트 팀으로 작성·검증 역할을 구조적으로 분리하는 접근입니다.
+- keyword: #AI코딩 #돌연변이테스팅 #훅 #에이전트팀 #EngineeringDay
 
-## [AI 에이전트를 실제 팀원처럼 – Jira x Hermes Agent](https://tech.osci.kr/ai-agent-as-a-team-member-jira-x-hermes/)
-- 회사: 오픈소스컨설팅
-- 본문 요약: 대화형으로 지시하는 대신 "배정이 일을 굴리는" 방식으로 AI 에이전트를 운영한 사례입니다. 셀프호스트 오픈소스 에이전트 Hermes Agent를 자체 서버에 두고, 처음엔 Discord에 붙였다가 Jira로 옮겨 이슈 담당자로 지정하면 에이전트가 호출되고 구현→검증→취합 순으로 다음 에이전트에게 넘긴 뒤, 사람은 처음 배정과 마지막 완료 승인만 하도록 구성했습니다.
-- 주목할 point: Teamwork Graph로 관계 기반 맥락만 가져오니 이슈 하나 조회에 REST(MCP) 약 2,900 토큰 → 약 220 토큰으로 줄었습니다(작은 이슈 1건 측정이라 일반화는 어렵다고 명시). 토큰보다 맥락 누락으로 인한 그럴듯하지만 엉뚱한 결과를 막는 것이 더 중요하다고 강조합니다.
-- keyword: #AI에이전트 #HermesAgent #Jira #TeamworkGraph #Atlassian
+## [운영자의 시간을 아끼는 AI 에이전트 1부 - RCA·Q&A 운영 지식그래프](https://d2.naver.com/helloworld/6934862)
+- 회사: 네이버 D2
+- 본문 요약: NAVER Engineering Day 10th 발표 영상 공개 글입니다. 사내 쿠버네티스 기반 컨테이너 플랫폼 n3r의 운영 이슈 대화에서 LLM으로 RCA(근본 원인 분석)와 Q&A를 추출해 Neo4j 지식 그래프에 쌓고, Care AI 에이전트가 이를 검색해 운영 문의 답변에 활용하도록 만든 과정을 "OpenSearch 업그레이드가 멈췄어요"라는 실제 문의를 따라가며 설명합니다.
+- 주목할 point: 대화를 그래프로 바꾸는 프롬프트와 추출 결과 검증 방법, 증상뿐 아니라 원인까지 같은 사례를 찾기 위한 하이브리드 검색·LLM 리랭킹·클러스터 상태 정보 활용이 포인트입니다.
+- keyword: #지식그래프 #Neo4j #RCA #LLM #EngineeringDay
 
-## [VDI로 시작하는 병원 정보 보안 | KHISC 2026 후기](https://library.gabia.com/contents/infrahosting/16158/)
+## [운영자의 시간을 아끼는 AI 에이전트 2부 - MCP 부터 Agent 설계까지](https://d2.naver.com/helloworld/5073599)
+- 회사: 네이버 D2
+- 본문 요약: NAVER Engineering Day 10th 발표 영상 공개 글입니다. 업무 시간 외 문의는 첫 답변까지 약 13시간이 걸리던 OpenSearch 운영 문의에 운영자보다 먼저 답하는 에이전트 care-ai를 만들며 겪은 시행착오(처음 만든 에이전트, MCP 응답 설계, 모델 vs 코드, 답변 설계)를 사례와 수치로 공유합니다.
+- 주목할 point: MCP 서버가 요약을 먼저 주고 원본은 요청 시에만 반환하도록 바꾸자 24회 평가 정답이 10회 → 17회로 늘고 토큰은 26% 줄었습니다. 모델은 탐색·판단, 코드는 근거 검증·최종 판정을 맡기자 같은 문의 3회 평가에서 정확한 원인 답변이 0회 → 3회가 됐습니다.
+- keyword: #MCP #AI에이전트 #OpenSearch #AIOps #EngineeringDay
+
+## [디자인 시스템이 있는데도 화면은 왜 제각각일까?](https://toss.tech/article/loan_review)
+- 회사: 토스(토스뱅크)
+- 본문 요약: 토스뱅크 대출 심사 플랫폼(내부 업무 툴)은 기초 컴포넌트를 갖춘 디자인 시스템이 있었는데도, '확정' 버튼 위치가 상품마다 다를 만큼 대출 상품별로 화면이 제각각이었습니다. 상품별 화면을 단계별로 나란히 비교하고 운영 담당자 인터뷰·관찰로 실제 업무 흐름을 파악한 뒤, 컴포넌트를 더 만드는 대신 리스트 화면·단계별 작업 화면·부가 정보 영역의 화면 단위 패턴으로 통일했습니다.
+- 주목할 point: 담당자들이 단계를 오가며 여러 화면으로 교차 검증한다는 관찰을 반영해 언제든 조회 가능한 부가 정보 영역을 만들었습니다. AI로 구축한 DLOS Docs에 패턴과 규칙을 정리하고, 속도를 걱정하는 PO·PM을 장기 운영 비용 관점으로 설득한 과정, "고맥락 제품은 도메인을 익힌 뒤 인터뷰하라"는 팁도 담겼습니다.
+- keyword: #디자인시스템 #UX #내부툴 #패턴 #토스뱅크
+
+## [AI 에이전트 운영 복잡성을 해결하는 Amazon Bedrock AgentCore](https://library.gabia.com/contents/16174/)
 - 회사: 가비아
-- 본문 요약: KHISC 2026 병원 의료정보보호 컨퍼런스 참가 후기로, 환자 정보가 EMR 서버뿐 아니라 접수·원무·청구 직원 PC에 흩어져 유출·랜섬웨어 위험을 키운다는 점을 짚습니다. 개인정보 보호법·안전성 확보조치 기준·의료법의 관련 조항을 정리하고, VDI로 업무를 서버의 가상 PC에서 처리해 직원 PC에는 화면만 전달하는 구조와 진료망·인터넷망 논리적 분리를 소개합니다.
-- 주목할 point: 인터넷망 차단 의무는 일평균 이용자 100만 명 이상 처리자에게만 적용되지만, 의무가 아니어도 악성코드 확산 경로를 줄이려는 수요가 있다고 설명합니다. VDI 도입 시에도 파일 전송·클립보드·USB 정책을 함께 정해야 PC에 정보가 남지 않습니다.
-- keyword: #VDI #망분리 #의료정보보안 #개인정보보호 #KHISC
+- 본문 요약: 에이전틱 AI 프로젝트의 약 50%가 PoC·파일럿 단계에 머무는 이유를 에이전트마다 모델·도구·인증·모니터링을 따로 구성하는 파편화된 개발 환경에서 찾고, 프레임워크·모델과 무관하게 에이전트를 구축·배포·운영하는 Amazon Bedrock AgentCore의 핵심 기능인 Runtime, Gateway, Harness를 설명합니다.
+- 주목할 point: Runtime은 컨테이너 단위 서버리스 실행과 사용자 세션 격리를, Gateway는 기존 API·Lambda를 MCP 도구로 노출하고 A2A 호출·인바운드 인증·Policy·시맨틱 도구 검색을 한 엔드포인트에서 관리하며, Harness는 모델 호출·도구 선택·맥락 관리의 오케스트레이션 루프를 프로덕션에서 실행하도록 묶어 줍니다.
+- keyword: #AmazonBedrock #AgentCore #AI에이전트 #MCP #A2A
+
+## [DSPy로 자동 프롬프트 최적화하기](https://blog.cslee.co.kr/automatic-prompt-optimization-with-dspy/)
+- 회사: CSLEE
+- 본문 요약: DSPy의 Instruction 필드를 대상으로 COPRO·MIPROv2·GEPA 세 optimizer를 같은 조건(학습 15·검증 5·홀드아웃 테스트 30문항, 모델·시작 지시문·평가 함수 고정)으로 비교했습니다. 정확성·근거 충실성·간결성을 60%·30%·10% 가중한 종합점수를 최대화했고, 세 optimizer 모두 기준 프롬프트보다 점수가 올랐습니다. (원문 페이지 접속이 연결 거부로 실패해 원문 확인 불가 — velopers.kr 요약 기반으로 작성)
+- 주목할 point: MIPROv2가 종합점수 78.9%(정확성 73.3%, 근거 충실성 86.7%)로 가장 높았고, GEPA는 길이 피드백을 반영해 간결성 100%를 달성했습니다. 30문항·고정 시드 단일 실행, 최적화와 판정에 같은 Gemini 모델을 쓴 Judge 과적합 가능성 등 한계를 밝히고 독립 판정 모델·사람 검토·반복 실험을 권합니다.
+- keyword: #DSPy #프롬프트최적화 #MIPROv2 #GEPA #LLM평가
+
+## [케클s피드 11월호｜AI 시대의 데이터센터, 짓는 기술부터 운영의 현실까지](https://tech.ktcloud.com/entry/202611-ktcloud-newsletter)
+- 회사: KT 클라우드
+- 본문 요약: kt cloud 11월 뉴스레터로, 1GW 규모 AIDC 공급을 준비하는 엔지니어 인터뷰(리퀴드 쿨링·커미셔닝), 데이터센터 운영 현장의 AI 활용 설문, Harbor·Gitea를 두 AZ로 이중화하며 겪은 토큰 인증·로그인 세션·스토리지 문제, APAC 전력망·북미 AIDC 인프라 변천·해양 데이터센터(FDC) 등 글로벌 동향 글을 묶어 소개합니다.
+- 주목할 point: 웨비나 참석자 설문에서 응답자의 32.4%가 이미 AI를 운영 업무에 활용하지만, 절반가량은 운영 데이터를 사후 분석에만 쓰거나 충분히 활용하지 못하고 있었습니다. "인스턴스를 늘리는 것만으로 이중화가 완성되지 않는다"는 멀티 AZ 구현기가 눈여겨볼 만합니다.
+- keyword: #AIDC #리퀴드쿨링 #멀티AZ #데이터센터 #뉴스레터
+
+## [[케클러 인터뷰 시리즈] #7 - GPU가 바뀌면 데이터센터도 바뀐다, 2027년 AIDC 6대 변화](https://tech.ktcloud.com/entry/2026-11-aidc-outlook)
+- 회사: KT 클라우드
+- 본문 요약: kt cloud DC엔지니어링팀 안경근 팀장 인터뷰로, 랙당 10kW 공랭식에서 140kW 이상(차세대 수백 kW)으로 높아지는 GPU 전력밀도에 맞춰 달라지는 AI 데이터센터의 설계·구축·검증 변화를 다룹니다. Server–TCS–CDU–FWS를 하나의 시스템으로 보고 설계부터 운영까지 검토하는 액체 냉각(D2C) 노하우와 용산 PoC·목동 AI Innovation Center·가산 코로케이션 적용 경험을 소개합니다.
+- 주목할 point: 최대 600kW 랙에 대비한 파드 단위 설계, 목동 센터에서 최대 140kW 발열을 재현한 냉각 검증, 목표 PUE 1.1(세계 평균 1.54), CDU를 파드 중심에 배치해 70~80m 배관 끝까지 온도·유량·압력을 맞추는 것, 재질·플러싱·장애 시나리오까지 자체 부하기와 L1~L5 커미셔닝으로 사전 검증하는 방식이 핵심입니다.
+- keyword: #AIDC #액체냉각 #D2C #커미셔닝 #PUE
+
+## [Node2Shell 취약점(CVE-2026-111497) 분석 및 컨테이너 조치 방법](https://tech.osci.kr/node2shell-cve-2026-111497/)
+- 회사: 오픈소스컨설팅
+- 본문 요약: 2026년 10월 Node.js 보안 릴리스로 공개된 Brotli 디코더 메모리 결함(Out-of-bounds write) 취약점 'Node2Shell'을 정리했습니다. 개발자가 Brotli를 직접 호출하지 않아도 fetch()·axios·got의 `Content-Encoding: br` 응답 자동 해제, Express 5(body-parser 2.x)의 요청 본문 디코딩, node:zlib brotliDecompress 사용 경로로 노출되며, 취약한 Brotli 라이브러리를 포함한 Python 등 다른 이미지도 대상이 될 수 있습니다.
+- 주목할 point: 수정 버전은 Node.js 22.23.4 / 24.22.1 / 26.12.1 이상입니다. 이미지 확인 → 패키지 조치 → 재빌드·재배포 → 다이제스트·AWS Inspector 검증의 4단계 가이드를 제시하며, ECR 푸시만으로는 끝나지 않고 실행 중인 Pod/Task 교체까지 해야 하고, 인바운드 헤더 차단만으로는 아웃바운드 fetch() 공격을 막을 수 없다고 강조합니다.
+- keyword: #CVE #Nodejs #Brotli #컨테이너보안 #Trivy
